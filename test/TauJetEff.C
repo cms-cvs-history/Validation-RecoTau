@@ -1,11 +1,12 @@
 //Author: Konstantinos A. Petridis
 //Macro that Collects Iso Eff plots together
 
-void TauJetEff(TString rootfile,TString jetTagSrc)
+//void TauJetEff(TString rootfile,TString jetTagSrc)
+void TauJetEff(TString rootfile)
 {
   
   TFile f(rootfile);
-  f.cd(jetTagSrc);
+  f.cd("DQMData/IsolationConeEffConeIsolationForEffValid");
   gDirectory->ls();
   
   TH1F* hIso07;gDirectory->GetObject("EffVsRisoRsig07_130Et150",hIso07); 
@@ -52,14 +53,14 @@ void TauJetEff(TString rootfile,TString jetTagSrc)
   c1->Divide(1,1);
   c1->cd(1);
 
-   hIso07->Draw();
-   hIso107->Draw("SAME");
-   hIso207->Draw("SAME");
-   hIso307->Draw("SAME");
-   hIso04->Draw("SAME");
-   hIso104->Draw("SAME");
-   hIso204->Draw("SAME");
-   hIso304->Draw("SAME");
+  hIso07->Draw();
+  hIso107->Draw("SAME");
+  hIso207->Draw("SAME");
+  hIso307->Draw("SAME");
+  hIso04->Draw("SAME");
+  hIso104->Draw("SAME");
+  hIso204->Draw("SAME");
+  hIso304->Draw("SAME");
 
   TFile* g=new TFile("IsoEffPlots.root","RECREATE");  
   c1->Write();
