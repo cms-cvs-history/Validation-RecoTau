@@ -53,14 +53,14 @@ void TauJetEff(TString rootfile)
   c1->Divide(1,1);
   c1->cd(1);
 
-  hIso07->Draw();
-  hIso107->Draw("SAME");
-  hIso207->Draw("SAME");
-  hIso307->Draw("SAME");
-  hIso04->Draw("SAME");
-  hIso104->Draw("SAME");
-  hIso204->Draw("SAME");
-  hIso304->Draw("SAME");
+  hIso07->DrawCopy();
+  hIso107->DrawCopy("SAME");
+  hIso207->DrawCopy("SAME");
+  hIso307->DrawCopy("SAME");
+  hIso04->DrawCopy("SAME");
+  hIso104->DrawCopy("SAME");
+  hIso204->DrawCopy("SAME");
+  hIso304->DrawCopy("SAME");
 
   TFile* g=new TFile("IsoEffPlots.root","RECREATE");  
   c1->Write();
