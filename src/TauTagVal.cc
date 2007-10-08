@@ -13,7 +13,7 @@
 //
 // Original Author:  Simone Gennai/Ricardo Vasquez Sierra
 //         Created:  Wed Apr 12 11:12:49 CEST 2006
-// $Id: TauTagVal.cc,v 1.11 2007/09/17 17:54:28 vasquez Exp $
+// $Id: TauTagVal.cc,v 1.11.2.1 2007/10/08 10:27:49 gennai Exp $
 //
 //
 // user include files
@@ -203,7 +203,7 @@ void TauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   int num_taujet_candidates=0;
 
   Handle<EMIsolatedTauTagInfoCollection> tauEMTagInfoHandle;
-  iEvent.getByLabel(jetTagSrc_, tauEMTagInfoHandle);
+  iEvent.getByLabel(jetEMTagSrc_, tauEMTagInfoHandle);
   
   const EMIsolatedTauTagInfoCollection & tauEMTagInfo = *(tauEMTagInfoHandle.product());
 
@@ -400,7 +400,7 @@ void TauTagVal::endJob(){
   else 
     cout<<setw(9)<<"--"<<endl;
 
-  cout<<setfill('-')<<setw(110)<<"-"<<endl;
+  //  cout<<setfill('-')<<setw(110)<<"-"<<endl;
 
   cout<<setfill('-')<<setw(85)<<left<<" Step 4. PLUS ECAL ISOLATION ";
   cout<<setfill(' ')<<setw(7) <<right<<nEMIsolatedJet_etaTauJet_->getEntries();
