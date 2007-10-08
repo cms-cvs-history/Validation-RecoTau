@@ -13,7 +13,7 @@
 //
 // Original Author:  Simone Gennai/Ricardo Vasquez Sierra
 //         Created:  Wed Apr 12 11:12:49 CEST 2006
-// $Id: TauTagVal.cc,v 1.11.2.1 2007/10/08 10:27:49 gennai Exp $
+// $Id: TauTagVal.cc,v 1.11.2.2 2007/10/08 11:33:09 gennai Exp $
 //
 //
 // user include files
@@ -26,8 +26,10 @@ using namespace reco;
 
 TauTagVal::TauTagVal(const edm::ParameterSet& iConfig)
 {
+  dataType_ = iConfig.getParameter<string>("DataType");
   jetTagSrc_ = iConfig.getParameter<InputTag>("JetTagProd");
   jetEMTagSrc_ = iConfig.getParameter<InputTag>("JetEMTagProd");
+  genJetSrc_ = iConfig.getParameter<InputTag>("GenJetProd");
   outPutFile_ = iConfig.getParameter<string>("OutPutFile");
 
   rSig_ = iConfig.getParameter<double>("SignalCone");
@@ -154,8 +156,26 @@ void TauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
   HepMC::GenEvent * myGenEvent = new  HepMC::GenEvent(*(evt->GetEvent()));
 
+  edm::Handle< GenJetCollection > genJets ;
+  iEvent.getByLabel( genJetSrc_, genJets ) ;
+
+  int jjj=0;
+  vector<TLorentzVector> GenJets;
+  GenJets.clear();
+  GenJetCollection::const_iterator jetItr = genJets->begin();
+  if(jetItr != genJets->end() )
+    {
+      math::XYZTLorentzVector p4 = jetItr->p4() ;
+      TLorentzVector genJetMC(p4.x(),p4.y(),p4.z(),p4.e());
+      if(jjj<2) GenJets.push_back(genJetMC);
+      jjj++;
+    }
+
   // Get a TLorentzVector with the Visible Taus at Generator level (the momentum of the neutrino is substracted
-  vector<TLorentzVector> TauJetsMC=getVectorOfVisibleTauJets(myGenEvent); 
+  vector<TLorentzVector> TauJetsMC;
+  if(dataType_ == "TAU")  TauJetsMC=getVectorOfVisibleTauJets(myGenEvent); 
+  if(dataType_ == "QCD")  TauJetsMC=GenJets;
+ 
   //---------------------LET's See what this CaloTau has -----------------
 
   //Handle<CaloTauCollection> theCaloTauHandle;

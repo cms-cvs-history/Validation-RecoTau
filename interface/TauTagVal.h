@@ -35,7 +35,7 @@
 #include "SimDataFormats/HepMCProduct/interface/HepMCProduct.h"
 #include "DataFormats/JetReco/interface/PFJet.h"
 //#include "DataFormats/TauReco/interface/CaloTau.h"
-
+#include "DataFormats/JetReco/interface/GenJet.h"
 // Math
 #include "Math/GenVector/VectorUtil.h"
 #include "Math/GenVector/PxPyPzE4D.h"
@@ -69,12 +69,12 @@ private:
   std::vector<TLorentzVector> getVectorOfVisibleTauJets(HepMC::GenEvent *theEvent);
 
   // ----------- MEMBER DATA--------------------------------
-  edm::InputTag jetTagSrc_, jetEMTagSrc_;
+  edm::InputTag jetTagSrc_, jetEMTagSrc_, genJetSrc_;
   
   std::string outPutFile_;
   float rSig_,rMatch_,ptLeadTk_, rIso_, minPtIsoRing_;
   int nTracksInIsolationRing_;
-
+  std::string dataType_;
   //AGGIUNGERE MC INFO???
 
   // MonteCarlo Taus -- to see what kind of Taus do we originally have!
