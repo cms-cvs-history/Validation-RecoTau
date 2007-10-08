@@ -13,7 +13,7 @@
 //
 // Original Author:  Simone Gennai/Ricardo Vasquez Sierra
 //         Created:  Wed Apr 12 11:12:49 CEST 2006
-// $Id: TauTagVal.cc,v 1.10 2007/09/16 12:18:02 vasquez Exp $
+// $Id: TauTagVal.cc,v 1.11 2007/09/17 17:54:28 vasquez Exp $
 //
 //
 // user include files
@@ -27,6 +27,7 @@ using namespace reco;
 TauTagVal::TauTagVal(const edm::ParameterSet& iConfig)
 {
   jetTagSrc_ = iConfig.getParameter<InputTag>("JetTagProd");
+  jetEMTagSrc_ = iConfig.getParameter<InputTag>("JetEMTagProd");
   outPutFile_ = iConfig.getParameter<string>("OutPutFile");
 
   rSig_ = iConfig.getParameter<double>("SignalCone");
@@ -90,6 +91,16 @@ TauTagVal::TauTagVal(const edm::ParameterSet& iConfig)
     nIsolatedTausDeltaR_LTandJet_= dbe->book1D("DeltaR_LT_and_Jet_After_Isolation","DeltaR_LT_and_Jet_After_Isolation", 22, 0.,0.11);
     nAssociatedTracks_of_IsolatedTaus_ = dbe->book1D("Associated_Tks_After_Isolation","Associated_Tks_After_Isolation", 10, 0., 10.);
     nSelectedTracks_of_IsolatedTaus_ = dbe->book1D("Selected_Tks_After_Isolation","Selected_Tks_After_Isolation", 10, 0., 10.); 
+
+
+  // What are the numbers of Tagged and matched EM IsolatedTauTagInfoCollection with  MC Jet
+    dbe->setCurrentFolder("TauEMTaggedJets_"+jetEMTagSrc_.label());
+
+    nEMIsolatedJet_ptTauJet_ =       dbe->book1D("n_EMIsolatedTauTaggedJets_vs_ptTauJet","n_EMIsolatedTauTaggedJets_vs_ptTauJet", 75, 0., 150.);
+    nEMIsolatedJet_etaTauJet_ =      dbe->book1D("n_EMIsolatedTauTaggedJets_vs_etaTauJet","n_EMIsolatedTauTaggedJets_vs_etaTauJet", 60, -3.0, 3.0 );
+    nEMIsolatedJet_phiTauJet_ =      dbe->book1D("n_EMIsolatedTauTaggedJets_vs_phiTauJet","n_EMIsolatedTauTaggedJets_vs_phiTauJets", 36, -180., 180);
+    nEMIsolatedJet_energyTauJet_ =   dbe->book1D("n_EMIsolatedTauTaggedJets_vs_energyTauJet", "n_EMIsolatedTauTaggedJets_vs_energyTauJet", 45, 0., 450.0); 
+
 
  // What is the behaviour of cone isolation size on tagging of MC Taus (CONE_MATCHING_CRITERIA) 
     dbe->setCurrentFolder("TaggingStudies_"+ jetTagSrc_.label());
@@ -190,6 +201,12 @@ void TauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   IsolatedTauTagInfoCollection::const_iterator i = tauTagInfo.begin();
   int numTauRecoJets = 0;
   int num_taujet_candidates=0;
+
+  Handle<EMIsolatedTauTagInfoCollection> tauEMTagInfoHandle;
+  iEvent.getByLabel(jetTagSrc_, tauEMTagInfoHandle);
+  
+  const EMIsolatedTauTagInfoCollection & tauEMTagInfo = *(tauEMTagInfoHandle.product());
+
   //bool trueTauJet=false;
   
   //  cout <<rMatch_<<" "<< rSig_ << " "<< rIso_ << " "<< ptLeadTk_ << " " << minPtIsoRing_ << " "<< nTracksInIsolationRing_ << endl;
@@ -233,6 +250,19 @@ void TauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         nAssociatedTracks_of_IsolatedTaus_->Fill(double(i->allTracks().size()));
         nSelectedTracks_of_IsolatedTaus_->Fill(double(i->selectedTracks().size()));	
 	//	nSignalTracksAfterIsolation->Fill(double (i->tracksInCone(momentum, rSig_,1.)).size()));           // Fill the histograms of the ones that get isolated
+
+	//Filling histos for EMIsolated jets after Track Isolation
+	double ecalIsolation = tauEMTagInfo [num_taujet_candidates].discriminator();
+	if(ecalIsolation > 0.){
+	  
+	nEMIsolatedJet_ptTauJet_->Fill(MCjet->Perp());  // Fill the histogram with the Pt, Eta, Energy of the Tau Jet at Generator level only for matched Jets
+	nEMIsolatedJet_etaTauJet_->Fill(MCjet->Eta()); 
+        nEMIsolatedJet_phiTauJet_->Fill(MCjet->Phi()*180./TMath::Pi()); 
+	nEMIsolatedJet_energyTauJet_->Fill(MCjet->E());
+
+	}
+
+
       }
       
       // ------------------------------------------------------------------------------------------------------------------------------ 
@@ -324,6 +354,7 @@ void TauTagVal::endJob(){
   double CaloJets_Taus = nRecoJet_etaTauJet_->getEntries();
   double CaloJetsLeadTrack_Taus = nRecoJet_LeadingTrack_etaTauJet_->getEntries();
   double IsolatedTagged_Taus = nIsolatedJet_etaTauJet_->getEntries();
+  double EMIsolatedTagged_Taus = nEMIsolatedJet_etaTauJet_->getEntries();
   
   std::streamsize prec = cout.precision();
  
@@ -366,6 +397,20 @@ void TauTagVal::endJob(){
   
   if (MC_Taus > 0)
     cout<<setw(9)<<setprecision(3)<< IsolatedTagged_Taus/MC_Taus  << setprecision(prec)<<endl;
+  else 
+    cout<<setw(9)<<"--"<<endl;
+
+  cout<<setfill('-')<<setw(110)<<"-"<<endl;
+
+  cout<<setfill('-')<<setw(85)<<left<<" Step 4. PLUS ECAL ISOLATION ";
+  cout<<setfill(' ')<<setw(7) <<right<<nEMIsolatedJet_etaTauJet_->getEntries();
+  if (IsolatedTagged_Taus > 0) 
+    cout<<setw(9)<<setprecision(3)<< EMIsolatedTagged_Taus/IsolatedTagged_Taus <<setprecision(prec);
+  else
+    cout<<setw(9)<<"--"<<endl;
+  
+  if (MC_Taus > 0)
+    cout<<setw(9)<<setprecision(3)<< EMIsolatedTagged_Taus/MC_Taus  << setprecision(prec)<<endl;
   else 
     cout<<setw(9)<<"--"<<endl;
 

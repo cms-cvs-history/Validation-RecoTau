@@ -69,7 +69,7 @@ private:
   std::vector<TLorentzVector> getVectorOfVisibleTauJets(HepMC::GenEvent *theEvent);
 
   // ----------- MEMBER DATA--------------------------------
-  edm::InputTag jetTagSrc_;jetEMTagSrc_;
+  edm::InputTag jetTagSrc_, jetEMTagSrc_;
   
   std::string outPutFile_;
   float rSig_,rMatch_,ptLeadTk_, rIso_, minPtIsoRing_;
@@ -124,7 +124,7 @@ private:
   MonitorElement* nEMIsolatedJet_ptTauJet_;
   MonitorElement* nEMIsolatedJet_etaTauJet_;
   MonitorElement* nEMIsolatedJet_phiTauJet_;
-  MonitorElement* nEMIsolatedJet_energyTauJet_
+  MonitorElement* nEMIsolatedJet_energyTauJet_;
 
 
   // What is the behaviour of cone isolation size on tagging of MC Taus (CONE_MATCHING_CRITERIA) 
