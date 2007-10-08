@@ -28,6 +28,7 @@
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/BTauReco/interface/JetTracksAssociation.h"
 #include "DataFormats/BTauReco/interface/IsolatedTauTagInfo.h"
+#include "DataFormats/BTauReco/interface/EMIsolatedTauTagInfo.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "DataFormats/Math/interface/Vector3D.h"
@@ -68,7 +69,7 @@ private:
   std::vector<TLorentzVector> getVectorOfVisibleTauJets(HepMC::GenEvent *theEvent);
 
   // ----------- MEMBER DATA--------------------------------
-  edm::InputTag jetTagSrc_;
+  edm::InputTag jetTagSrc_;jetEMTagSrc_;
   
   std::string outPutFile_;
   float rSig_,rMatch_,ptLeadTk_, rIso_, minPtIsoRing_;
@@ -117,6 +118,14 @@ private:
   MonitorElement* nIsolatedTausDeltaR_LTandJet_;
   MonitorElement* nAssociatedTracks_of_IsolatedTaus_;
   MonitorElement* nSelectedTracks_of_IsolatedTaus_;
+
+
+// The following histograms count the number of EM isolated isolatedTauTagInfoCollection
+  MonitorElement* nEMIsolatedJet_ptTauJet_;
+  MonitorElement* nEMIsolatedJet_etaTauJet_;
+  MonitorElement* nEMIsolatedJet_phiTauJet_;
+  MonitorElement* nEMIsolatedJet_energyTauJet_
+
 
   // What is the behaviour of cone isolation size on tagging of MC Taus (CONE_MATCHING_CRITERIA) 
   MonitorElement* nTausTotvsConeIsolation_;
