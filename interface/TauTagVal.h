@@ -36,6 +36,7 @@
 #include "DataFormats/JetReco/interface/PFJet.h"
 //#include "DataFormats/TauReco/interface/CaloTau.h"
 #include "DataFormats/JetReco/interface/GenJet.h"
+
 // Math
 #include "Math/GenVector/VectorUtil.h"
 #include "Math/GenVector/PxPyPzE4D.h"
@@ -67,6 +68,8 @@ private:
 
   std::vector<HepMC::GenParticle*> Daughters(HepMC::GenParticle* p);
   std::vector<TLorentzVector> getVectorOfVisibleTauJets(HepMC::GenEvent *theEvent);
+  std::vector<TLorentzVector> getVectorOfGenJets(edm::Handle< reco::GenJetCollection >& genJets );
+
 
   // ----------- MEMBER DATA--------------------------------
   edm::InputTag jetTagSrc_, jetEMTagSrc_, genJetSrc_;

@@ -13,7 +13,7 @@
 //
 // Original Author:  Simone Gennai/Ricardo Vasquez Sierra
 //         Created:  Wed Apr 12 11:12:49 CEST 2006
-// $Id: TauTagVal.cc,v 1.11.2.2 2007/10/08 11:33:09 gennai Exp $
+// $Id: TauTagVal.cc,v 1.11.2.3 2007/10/08 14:30:35 gennai Exp $
 //
 //
 // user include files
@@ -159,22 +159,11 @@ void TauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   edm::Handle< GenJetCollection > genJets ;
   iEvent.getByLabel( genJetSrc_, genJets ) ;
 
-  int jjj=0;
-  vector<TLorentzVector> GenJets;
-  GenJets.clear();
-  GenJetCollection::const_iterator jetItr = genJets->begin();
-  if(jetItr != genJets->end() )
-    {
-      math::XYZTLorentzVector p4 = jetItr->p4() ;
-      TLorentzVector genJetMC(p4.x(),p4.y(),p4.z(),p4.e());
-      if(jjj<2) GenJets.push_back(genJetMC);
-      jjj++;
-    }
-
+  
   // Get a TLorentzVector with the Visible Taus at Generator level (the momentum of the neutrino is substracted
   vector<TLorentzVector> TauJetsMC;
   if(dataType_ == "TAU")  TauJetsMC=getVectorOfVisibleTauJets(myGenEvent); 
-  if(dataType_ == "QCD")  TauJetsMC=GenJets;
+  if(dataType_ == "QCD")  TauJetsMC=getVectorOfGenJets(genJets);
  
   //---------------------LET's See what this CaloTau has -----------------
 
@@ -460,6 +449,35 @@ std::vector<HepMC::GenParticle*> TauTagVal::Daughters(HepMC::GenParticle* p)
   return Daughters;
 }
 
+
+//Get a list of Gen Jets
+std::vector<TLorentzVector> TauTagVal::getVectorOfGenJets(Handle< GenJetCollection >& genJets ) {
+int jjj=0;
+  vector<TLorentzVector> GenJets;
+  GenJets.clear();
+  GenJetCollection::const_iterator jetItr = genJets->begin();
+  if(jetItr != genJets->end() )
+    {
+      math::XYZTLorentzVector p4 = jetItr->p4() ;
+      TLorentzVector genJetMC(p4.x(),p4.y(),p4.z(),p4.e());
+      if(jjj<1.) {
+	if (abs(genJetMC.Eta())<2.5 && genJetMC.Perp()>5.0) {
+	  
+	  nMCTaus_ptTauJet_->Fill(genJetMC.Perp());  // Fill the histogram with the Pt, Eta, Energy of the Tau Jet at Generator level
+	  nMCTaus_etaTauJet_->Fill(genJetMC.Eta()); 
+	  nMCTaus_phiTauJet_->Fill(genJetMC.Phi()*180./TMath::Pi());
+	  nMCTaus_energyTauJet_->Fill(genJetMC.E());
+	  GenJets.push_back(genJetMC);
+	}
+      }
+		  jjj++;
+    }
+  return GenJets;
+
+
+
+
+}
 //Get a list of visible Tau Jets
 
 std::vector<TLorentzVector> TauTagVal::getVectorOfVisibleTauJets(HepMC::GenEvent *theEvent)
