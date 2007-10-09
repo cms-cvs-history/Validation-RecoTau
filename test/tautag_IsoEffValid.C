@@ -170,6 +170,10 @@
   text_ptCut->SetFillColor(0);
   text_ptCut->AddText(Form(" P_{T} > %.1f GeV", 5.0));
 
+  TGraphAsymmErrors* gr0 =  new TGraphAsymmErrors(nTaggedJetsetaTauJet, nMCetaTauJet);
+  c4 = new TCanvas("c4","IsolationTotalEfficiencyEta",30,30,520,520);
+  drawEfficiency("Isolated/MC Visible Tau "+ReleaseVersion, gr0, "#eta (MC Vis. Tau)", (TH1F*) nMCetaTauJet->Clone(), c4, text_ptCut);
+
   TGraphAsymmErrors* gr1 =  new TGraphAsymmErrors(nEMTaggedJetsetaTauJet, nMCetaTauJet);
   c5 = new TCanvas("c5","TotalEfficiencyEta",30,30,520,520);
   drawEfficiency("EMIsolated/MC Visible Tau "+ReleaseVersion, gr1, "#eta (MC Vis. Tau)", (TH1F*) nMCetaTauJet->Clone(), c5, text_ptCut);
@@ -203,29 +207,34 @@
   text_etaCut->SetFillColor(0);
   text_etaCut->AddText(Form(" %.1f  < #eta < %.1f ", -2.5, 2.5));
 
-  TGraphAsymmErrors* gr5 =  new TGraphAsymmErrors(nEMTaggedJetsptTauJet, nMCptTauJet);
-  c9 = new TCanvas("c5","TotalEfficiencyPt",30,30,520,520);
-  drawEfficiency("EMIsolated/MC Visible Taus "+ ReleaseVersion, gr5, "P_{T} (GeV) (MC Vis. Tau)", (TH1F*) nMCptTauJet->Clone(), c9, text_etaCut);
+  TGraphAsymmErrors* gr50 =  new TGraphAsymmErrors(nTaggedJetsptTauJet, nMCptTauJet);
+  c40 = new TCanvas("c40","IsolationTotalEfficiencyPt",30,30,520,520);
+  drawEfficiency("Isolated/MC Visible Tau "+ReleaseVersion, gr50, "P_{T} (GeV/c) (MC Vis. Tau)", (TH1F*) nMCptTauJet->Clone(), c40, text_etaCut);
   
+
+    TGraphAsymmErrors* gr5 =  new TGraphAsymmErrors(nEMTaggedJetsptTauJet, nMCptTauJet);
+  c9 = new TCanvas("c5","TotalEfficiencyPt",30,30,520,520);
+  drawEfficiency("EMIsolated/MC Visible Taus "+ ReleaseVersion, gr5, "P_{T} (GeV/c) (MC Vis. Tau)", (TH1F*) nMCptTauJet->Clone(), c9, text_etaCut);
+
   TGraphAsymmErrors* gr6 =  new TGraphAsymmErrors(nRecoJetptTauJet,  nMCptTauJet);
   c10 = new TCanvas("c10","CaloJetTotalEfficiencyPt",35,35,525,525);
-  drawEfficiency("Jets(Matched)/MC Visible Taus "+ ReleaseVersion, gr6, "P_{T} (GeV) (MC Vis. Tau)",(TH1F*)  nMCptTauJet->Clone(), c10, text_etaCut);
+  drawEfficiency("Jets(Matched)/MC Visible Taus "+ ReleaseVersion, gr6, "P_{T} (GeV/c) (MC Vis. Tau)",(TH1F*)  nMCptTauJet->Clone(), c10, text_etaCut);
   
   TGraphAsymmErrors* gr101 = new TGraphAsymmErrors(nRecoJetLTptTauJet, nMCptTauJet);
   c101 = new TCanvas("c101", "EfficienciesStepByStepPt", 230, 230, 720, 720);
-  drawEfficiencies("Different Steps/MC Visible Taus "+ ReleaseVersion, gr5, gr6, gr101,  "P_{T} (GeV) (MC Vis. Tau)",(TH1F*)  nMCptTauJet->Clone(), c101, text_etaCut);  
+  drawEfficiencies("Different Steps/MC Visible Taus "+ ReleaseVersion, gr5, gr6, gr101,  "P_{T} (GeV/c) (MC Vis. Tau)",(TH1F*)  nMCptTauJet->Clone(), c101, text_etaCut);  
 
   TGraphAsymmErrors* gr7 =  new TGraphAsymmErrors(nRecoJetLTptTauJet,  nRecoJetptTauJet);
   c11 = new TCanvas("c11","FindingLeadTrackPartialEfficiencyPt",35,35,525,525);
-  drawEfficiency("Jets+LeadTr/Jets(Matched) "+ ReleaseVersion, gr7, "P_{T} (GeV) (MC Vis. Tau)",(TH1F*)  nRecoJetptTauJet->Clone(), c11, text_etaCut);  
+  drawEfficiency("Jets+LeadTr/Jets(Matched) "+ ReleaseVersion, gr7, "P_{T} (GeV/c) (MC Vis. Tau)",(TH1F*)  nRecoJetptTauJet->Clone(), c11, text_etaCut);  
   		 
   TGraphAsymmErrors* gr8 =  new TGraphAsymmErrors(nTaggedJetsptTauJet,  nRecoJetLTptTauJet);
   c12 = new TCanvas("c12","IsolationPartialEfficencyPt",35,35,525,525);
-  drawEfficiency("Isolated/Jets+LeadTr "+ ReleaseVersion, gr8, "P_{T} (GeV) (MC Vis. Tau)",(TH1F*)  nRecoJetptTauJet->Clone(), c12, text_etaCut); 
+  drawEfficiency("Isolated/Jets+LeadTr "+ ReleaseVersion, gr8, "P_{T} (GeV/c) (MC Vis. Tau)",(TH1F*)  nRecoJetptTauJet->Clone(), c12, text_etaCut); 
 
  TGraphAsymmErrors* gr9 =  new TGraphAsymmErrors(nEMTaggedJetsptTauJet,  nTaggedJetsptTauJet);
   c13 = new TCanvas("c13","EMIsolationPartialEfficencyPt",35,35,525,525);
-  drawEfficiency("EMIsolated/Isolated"+ReleaseVersion, gr9, "#eta (MC Vis. Tau)",(TH1F*)  nTaggedJetsptTauJet->Clone(), c13, text_etaCut); 
+  drawEfficiency("EMIsolated/Isolated"+ReleaseVersion, gr9, "P_{T} (Gev/c) (MC Vis. Tau)",(TH1F*)  nTaggedJetsptTauJet->Clone(), c13, text_etaCut); 
 
   //===============================================================Energy========================================================
 
@@ -234,6 +243,11 @@
   text_bothCuts->SetFillColor(0);
   text_bothCuts->AddText(Form(" P_{T} > %.1f GeV", 5.0));
   text_bothCuts->AddText(Form(" %.1f  < #eta < %.1f ", -2.5, 2.5));
+
+TGraphAsymmErrors* gr90 =  new TGraphAsymmErrors(nTaggedJetsenergyTauJet, nMCenergyTauJet);
+  c90 = new TCanvas("c90","IsolationTotalEfficiencyEnergy",30,30,520,520);
+  drawEfficiency("Isolated/MC Visible Tau "+ReleaseVersion, gr90, "Energy (GeV) (MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c90, text_bothCuts);
+
 
   TGraphAsymmErrors* gr9 =  new TGraphAsymmErrors(nEMTaggedJetsenergyTauJet, nMCenergyTauJet);
   c13 = new TCanvas("c13","TotalEfficiencyEnergy",30,30,520,520);
