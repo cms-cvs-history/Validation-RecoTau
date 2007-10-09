@@ -13,7 +13,7 @@
 //
 // Original Author:  Ricardo Vasquez Sierra
 //         Created:  October 8, 2007 
-// $Id: PFTauTagVal.cc,v 1.11.2.4 2007/10/08 18:07:30 gennai Exp $
+// $Id: PFTauTagVal.cc,v 1.1.2.1 2007/10/09 12:43:19 vasquez Exp $
 //
 //
 // user include files
@@ -26,10 +26,10 @@ using namespace reco;
 
 PFTauTagVal::PFTauTagVal(const edm::ParameterSet& iConfig)
 {
-  //  dataType_ = iConfig.getParameter<string>("DataType");
+  dataType_ = iConfig.getParameter<string>("DataType");
   //jetTagSrc_ = iConfig.getParameter<InputTag>("JetTagProd");
   //jetEMTagSrc_ = iConfig.getParameter<InputTag>("JetEMTagProd");
-  //genJetSrc_ = iConfig.getParameter<InputTag>("GenJetProd");
+  genJetSrc_ = iConfig.getParameter<InputTag>("GenJetProd");
   
   ExtensionName_ = iConfig.getParameter<InputTag>("ExtensionName");
   outPutFile_ = iConfig.getParameter<string>("OutPutFile"); 
@@ -128,7 +128,7 @@ void PFTauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   // Get a TLorentzVector with the Visible Taus at Generator level (the momentum of the neutrino is substracted
   vector<TLorentzVector> TauJetsMC;
   if(dataType_ == "PFTAU")  TauJetsMC=getVectorOfVisibleTauJets(myGenEvent); 
-  //  if(dataType_ == "QCD")  TauJetsMC=getVectorOfGenJets(genJets);
+    if(dataType_ == "QCD")  TauJetsMC=getVectorOfGenJets(genJets);
  
   //  myGenEvent->print();
 
@@ -191,7 +191,7 @@ void PFTauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	}
       }
     }
-   
+    /*
     //Prints out some quantities
     cout<<"Jet Number "<<i_PFTau<<endl;
     cout<<"PFDiscriminatorByIsolation value "<<(*thePFTauDiscriminatorByIsolation)[thePFTau]<<endl;
@@ -215,6 +215,7 @@ void PFTauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       cout<<"Sum of Pt of charged hadr. PFCandidates in isolation annulus around Lead PF = "<<(*thePFTau).isolationPFChargedHadrCandsPtSum()<<endl;
       cout<<"Sum of Et of gamma PFCandidates in other isolation annulus around Lead PF = "<<(*thePFTau).isolationPFGammaCandsEtSum()<<endl;	
     }
+    */
     i_PFTau++;    
   }//Closing the looping for PFTaus
 
@@ -497,3 +498,32 @@ std::vector<HepMC::GenParticle*> PFTauTagVal::getGenStableDecayProducts(const He
 }
 
 
+//Get a list of Gen Jets
+std::vector<TLorentzVector> TauTagVal::getVectorOfGenJets(Handle< GenJetCollection >& genJets ) {
+int jjj=0;
+  vector<TLorentzVector> GenJets;
+  GenJets.clear();
+  GenJetCollection::const_iterator jetItr = genJets->begin();
+  if(jetItr != genJets->end() )
+    {
+      math::XYZTLorentzVector p4 = jetItr->p4() ;
+      TLorentzVector genJetMC(p4.x(),p4.y(),p4.z(),p4.e());
+	if (abs(genJetMC.Eta())<2.5 && genJetMC.Perp()>5.0) {
+      if(jjj<2.) {
+	  
+	  nMCTaus_ptTauJet_->Fill(genJetMC.Perp());  // Fill the histogram with the Pt, Eta, Energy of the Tau Jet at Generator level
+	  nMCTaus_etaTauJet_->Fill(genJetMC.Eta()); 
+	  nMCTaus_phiTauJet_->Fill(genJetMC.Phi()*180./TMath::Pi());
+	  nMCTaus_energyTauJet_->Fill(genJetMC.E());
+	  GenJets.push_back(genJetMC);
+	  jjj++;
+
+	}
+      }
+		    }
+  return GenJets;
+
+
+
+
+}

@@ -272,7 +272,7 @@ TGraphAsymmErrors* gr90 =  new TGraphAsymmErrors(nTaggedJetsenergyTauJet, nMCene
   TGraphAsymmErrors* gr13 =  new TGraphAsymmErrors(nEMTaggedJetsenergyTauJet, nTaggedJetsenergyTauJet);
   c170 = new TCanvas("c170","EMIsolationPartialEfficencyEnergy",35,35,525,525);
   drawEfficiency("EMIsolated/Isolated " +ReleaseVersion, gr13, "Energy (GeV) (MC Vis. Tau)",(TH1F*)  nTaggedJetsenergyTauJet->Clone(), c170, text_bothCuts); 
-
+  /*
   TH1F* nTausTaggedvsMatchingConeSize = (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tagged_vs_MatchingConeSize");
   TH1F* nTausTotvsMatchingConeSize =    (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tot_vs_MatchingConeSize");
   TH1F* nTausTaggedvsPtLeadingTrack =   (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tagged_vs_PtLeadingTrack");
@@ -298,7 +298,7 @@ TGraphAsymmErrors* gr90 =  new TGraphAsymmErrors(nTaggedJetsenergyTauJet, nMCene
   TGraphAsymmErrors* gr16 =  new TGraphAsymmErrors(nTausTaggedvsConeSignal, nTausTotvsConeSignal );
   c20 = new TCanvas("c20","EfficiencyChangingSignalCone",35,35,525,525);
   drawEfficiency("Isolated/MC Visible Taus " +ReleaseVersion, gr16, "Signal Cone Size (#Delta R)",(TH1F*) nTausTotvsConeSignal->Clone(), c20, text_bothCuts);
- 
+  */
 }
 
 
