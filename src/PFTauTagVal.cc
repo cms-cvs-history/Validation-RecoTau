@@ -13,7 +13,7 @@
 //
 // Original Author:  Ricardo Vasquez Sierra
 //         Created:  October 8, 2007 
-// $Id: PFTauTagVal.cc,v 1.1.2.2 2007/10/09 14:11:59 gennai Exp $
+// $Id: PFTauTagVal.cc,v 1.1.2.3 2007/10/09 14:36:51 gennai Exp $
 //
 //
 // user include files
@@ -150,7 +150,7 @@ void PFTauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   for (PFTauCollection::size_type iPFTau=0;iPFTau<thePFTauHandle->size();iPFTau++) {
     PFTauRef thePFTau(thePFTauHandle,iPFTau);
 
-    TLorentzVector PFTauDirection((*thePFTau).px(), (*thePFTau).px(), (*thePFTau).px());
+    TLorentzVector PFTauDirection((*thePFTau).px(), (*thePFTau).py(), (*thePFTau).pz());
     bool truePFTau=false;
    
     std::vector<TLorentzVector>::iterator MCjet;
@@ -443,8 +443,8 @@ std::vector<TLorentzVector> PFTauTagVal::getVectorOfVisibleTauJets(HepMC::GenEve
 		
 	      }
 	      
-	      if(FinalTau)   // Meaning: did it find a Neutrino in the list of Daughter particles? Then fill histograms of the original Tau info
-		{
+	      if(FinalTau) {  // Meaning: did it find a Neutrino in the list of Daughter particles? Then fill histograms of the original Tau info
+		
 		  ptTauMC_->Fill((*p)->momentum().perp());
 		  etaTauMC_->Fill((*p)->momentum().eta()); 
                   phiTauMC_->Fill((*p)->momentum().phi()*(180./TMath::Pi()));
@@ -461,7 +461,7 @@ std::vector<TLorentzVector> PFTauTagVal::getVectorOfVisibleTauJets(HepMC::GenEve
 		    tempvec.push_back(TauJetMC);
 		    ++numMCTaus;
 		  }
-		}
+	    }
 	    }
 	}
     } // closing the loop over the Particles at Generator level
