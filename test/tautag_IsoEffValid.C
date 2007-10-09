@@ -185,7 +185,7 @@
 
   TGraphAsymmErrors* gr100 = new TGraphAsymmErrors(nRecoJetLTetaTauJet, nMCetaTauJet);
   c100 = new TCanvas("c100", "EfficienciesStepByStepEta", 230, 230, 720, 720);
-  drawEfficiencies("Different Steps/MC Visible Taus "+ReleaseVersion, gr2, gr100, gr0,gr1,  "#eta (MC Vis. Tau)",(TH1F*)  nMCetaTauJet->Clone(), c100, text_ptCut,"Calo");
+  drawEfficiencies("Different Steps/MC Visible Taus "+ReleaseVersion, gr2, gr100, gr0,gr1,  "#eta (MC Vis. Tau)",(TH1F*)  nMCetaTauJet->Clone(), c100, text_ptCut,"Calo", Scale);
 
   TGraphAsymmErrors* gr3 =  new TGraphAsymmErrors(nRecoJetLTetaTauJet,  nRecoJetetaTauJet);
   c7 = new TCanvas("c7","FindingLeadTrackPartialEfficiencyEta",35,35,525,525);
@@ -222,7 +222,7 @@
   
   TGraphAsymmErrors* gr101 = new TGraphAsymmErrors(nRecoJetLTptTauJet, nMCptTauJet);
   c101 = new TCanvas("c101", "EfficienciesStepByStepPt", 230, 230, 720, 720);
-  drawEfficiencies("Different Steps/MC Visible Taus "+ ReleaseVersion,  gr6, gr101, gr50,gr5,  "P_{T} (GeV/c) (MC Vis. Tau)",(TH1F*)  nMCptTauJet->Clone(), c101, text_etaCut, "Calo");  
+  drawEfficiencies("Different Steps/MC Visible Taus "+ ReleaseVersion,  gr6, gr101, gr50,gr5,  "P_{T} (GeV/c) (MC Vis. Tau)",(TH1F*)  nMCptTauJet->Clone(), c101, text_etaCut, "Calo", Scale);  
   TGraphAsymmErrors* gr7 =  new TGraphAsymmErrors(nRecoJetLTptTauJet,  nRecoJetptTauJet);
   c11 = new TCanvas("c11","FindingLeadTrackPartialEfficiencyPt",35,35,525,525);
   drawEfficiency("Jets+LeadTr/Jets(Matched) "+ ReleaseVersion, gr7, "P_{T} (GeV/c) (MC Vis. Tau)",(TH1F*)  nRecoJetptTauJet->Clone(), c11, text_etaCut, Scale);  
@@ -257,7 +257,7 @@
 
   TGraphAsymmErrors* gr102 = new TGraphAsymmErrors(nRecoJetLTenergyTauJet, nMCenergyTauJet);
   c102 = new TCanvas("c102", "EfficienciesStepByStepEnergy", 230, 230, 720, 720);
-  drawEfficiencies("Different Steps/MC Visible Taus "+ ReleaseVersion, gr10, gr102, gr90, gr9,  "Energy (GeV) (MC Vis. Tau)",(TH1F*)  nMCenergyTauJet->Clone(), c102, text_bothCuts, "Calo");
+  drawEfficiencies("Different Steps/MC Visible Taus "+ ReleaseVersion, gr10, gr102, gr90, gr9,  "Energy (GeV) (MC Vis. Tau)",(TH1F*)  nMCenergyTauJet->Clone(), c102, text_bothCuts, "Calo", Scale);
 
   TGraphAsymmErrors* gr11 =  new TGraphAsymmErrors(nRecoJetLTenergyTauJet,  nRecoJetenergyTauJet);
   c15 = new TCanvas("c15","FindingLeadTrackPartialEfficiencyEnergy",35,35,525,525);
