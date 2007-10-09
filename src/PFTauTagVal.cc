@@ -13,7 +13,7 @@
 //
 // Original Author:  Ricardo Vasquez Sierra
 //         Created:  October 8, 2007 
-// $Id: PFTauTagVal.cc,v 1.1.2.1 2007/10/09 12:43:19 vasquez Exp $
+// $Id: PFTauTagVal.cc,v 1.1.2.2 2007/10/09 14:11:59 gennai Exp $
 //
 //
 // user include files
@@ -124,7 +124,10 @@ void PFTauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   iEvent.getByLabel("source", evt);
 
   HepMC::GenEvent * myGenEvent = new  HepMC::GenEvent(*(evt->GetEvent()));
-  
+
+  edm::Handle< GenJetCollection > genJets ;
+  iEvent.getByLabel( genJetSrc_, genJets ) ;
+
   // Get a TLorentzVector with the Visible Taus at Generator level (the momentum of the neutrino is substracted
   vector<TLorentzVector> TauJetsMC;
   if(dataType_ == "PFTAU")  TauJetsMC=getVectorOfVisibleTauJets(myGenEvent); 
@@ -499,7 +502,7 @@ std::vector<HepMC::GenParticle*> PFTauTagVal::getGenStableDecayProducts(const He
 
 
 //Get a list of Gen Jets
-std::vector<TLorentzVector> TauTagVal::getVectorOfGenJets(Handle< GenJetCollection >& genJets ) {
+std::vector<TLorentzVector> PFTauTagVal::getVectorOfGenJets(Handle< GenJetCollection >& genJets ) {
 int jjj=0;
   vector<TLorentzVector> GenJets;
   GenJets.clear();
@@ -508,8 +511,8 @@ int jjj=0;
     {
       math::XYZTLorentzVector p4 = jetItr->p4() ;
       TLorentzVector genJetMC(p4.x(),p4.y(),p4.z(),p4.e());
-	if (abs(genJetMC.Eta())<2.5 && genJetMC.Perp()>5.0) {
-      if(jjj<2.) {
+      if (abs(genJetMC.Eta())<2.5 && genJetMC.Perp()>5.0) {
+	if(jjj<2.) {
 	  
 	  nMCTaus_ptTauJet_->Fill(genJetMC.Perp());  // Fill the histogram with the Pt, Eta, Energy of the Tau Jet at Generator level
 	  nMCTaus_etaTauJet_->Fill(genJetMC.Eta()); 
@@ -517,13 +520,13 @@ int jjj=0;
 	  nMCTaus_energyTauJet_->Fill(genJetMC.E());
 	  GenJets.push_back(genJetMC);
 	  jjj++;
-
+	  
 	}
       }
-		    }
+    }
   return GenJets;
-
-
-
+  
+  
+  
 
 }

@@ -79,7 +79,7 @@ std::vector<TLorentzVector> getVectorOfGenJets(edm::Handle< reco::GenJetCollecti
 		      kThreeProng0pi0, kThreeProng1pi0,
 		      kOther, kUndefined};
 
-  edm::InputTag ExtensionName_;
+  edm::InputTag ExtensionName_, genJetSrc_;
   std::string outPutFile_;
   std::string dataType_;
   std::string PFTauProducer_;
