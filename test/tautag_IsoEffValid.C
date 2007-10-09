@@ -62,7 +62,7 @@
   nMCenergyTauJet->GetXaxis()->SetTitle("Energy (GeV)");
   nMCenergyTauJet->DrawNormalized();
   c23->Print(TString("MCEnergyTauJets.gif"),"gif");
-
+  /*
   c24 = new TCanvas("c24","", 10,10,500,410);
   nMCetaTau->SetTitle("# MC Taus "+ReleaseVersion);
   nMCetaTau->GetXaxis()->SetTitle("#eta");
@@ -74,7 +74,7 @@
   nMCptTau->GetXaxis()->SetTitle("Pt (GeV)");
   nMCptTau->DrawNormalized();
   c25->Print(TString("MCPtTau.gif"),"gif");	 
-
+  */
   c26 = new TCanvas("c26","", 10,10,500,410);
   nAssociatedTracks->SetTitle("Associated Tracks Matched Reconstructed Jet "+ReleaseVersion);
   nAssociatedTracks->GetXaxis()->SetTitle("# Associated Tracks");
@@ -256,8 +256,8 @@
   drawEfficiency("Isolated/Jets+LeadTr " +ReleaseVersion, gr12, "Energy (GeV) (MC Vis. Tau)",(TH1F*)  nRecoJetenergyTauJet->Clone(), c16, text_bothCuts); 
 
   TGraphAsymmErrors* gr13 =  new TGraphAsymmErrors(nEMTaggedJetsenergyTauJet, nTaggedJetsenergyTauJet);
-  c17 = new TCanvas("c17","EMIsolationPartialEfficencyEnergy",35,35,525,525);
-  drawEfficiency("EMIsolated/Isolated " +ReleaseVersion, gr13, "Energy (GeV) (MC Vis. Tau)",(TH1F*)  nTaggedJetsenergyTauJet->Clone(), c17, text_bothCuts); 
+  c170 = new TCanvas("c170","EMIsolationPartialEfficencyEnergy",35,35,525,525);
+  drawEfficiency("EMIsolated/Isolated " +ReleaseVersion, gr13, "Energy (GeV) (MC Vis. Tau)",(TH1F*)  nTaggedJetsenergyTauJet->Clone(), c170, text_bothCuts); 
 
   TH1F* nTausTaggedvsMatchingConeSize = (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tagged_vs_MatchingConeSize");
   TH1F* nTausTotvsMatchingConeSize =    (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tot_vs_MatchingConeSize");
@@ -267,6 +267,7 @@
   TH1F* nTausTotvsConeIsolation=        (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tot_vs_coneIsolation");
   TH1F* nTausTaggedvsConeSignal=        (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tagged_vs_coneSignal");
   TH1F* nTausTotvsConeSignal=           (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tot_vs_coneSignal");
+
 
   TGraphAsymmErrors* gr13 =  new TGraphAsymmErrors(nTausTaggedvsMatchingConeSize,nTausTotvsMatchingConeSize );
   c17 = new TCanvas("c17","EfficiencyChangingMatchingCone",35,35,525,525);

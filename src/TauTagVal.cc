@@ -13,7 +13,7 @@
 //
 // Original Author:  Simone Gennai/Ricardo Vasquez Sierra
 //         Created:  Wed Apr 12 11:12:49 CEST 2006
-// $Id: TauTagVal.cc,v 1.11.2.3 2007/10/08 14:30:35 gennai Exp $
+// $Id: TauTagVal.cc,v 1.11.2.4 2007/10/08 18:07:30 gennai Exp $
 //
 //
 // user include files
@@ -331,7 +331,7 @@ void TauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	ptLeadingTrack_->Fill((*leadTk1).pt());                    // Fill the ptLeadingTrack histogram with the pt of the leadTrack found
       }
 
-
+      //To be fixed!!!
       const TrackRef leadTk2= (i->leadingSignalTrack(0.15,6.0));  //   Get the leading Track for rMatch_ =0.15 and pt greater than 6.0 GeV
 
       if(!leadTk2)
@@ -460,18 +460,19 @@ int jjj=0;
     {
       math::XYZTLorentzVector p4 = jetItr->p4() ;
       TLorentzVector genJetMC(p4.x(),p4.y(),p4.z(),p4.e());
-      if(jjj<1.) {
 	if (abs(genJetMC.Eta())<2.5 && genJetMC.Perp()>5.0) {
+      if(jjj<2.) {
 	  
 	  nMCTaus_ptTauJet_->Fill(genJetMC.Perp());  // Fill the histogram with the Pt, Eta, Energy of the Tau Jet at Generator level
 	  nMCTaus_etaTauJet_->Fill(genJetMC.Eta()); 
 	  nMCTaus_phiTauJet_->Fill(genJetMC.Phi()*180./TMath::Pi());
 	  nMCTaus_energyTauJet_->Fill(genJetMC.E());
 	  GenJets.push_back(genJetMC);
+	  jjj++;
+
 	}
       }
-		  jjj++;
-    }
+		    }
   return GenJets;
 
 
