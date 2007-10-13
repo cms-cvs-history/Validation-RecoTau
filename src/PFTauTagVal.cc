@@ -139,7 +139,7 @@ void PFTauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   using namespace reco;
   using namespace std;
   numEvents_++;
-  double matching_criteria=0.15;
+  double matching_criteria;
 
   //  std::cout << "--------------------------------------------------------------"<<endl;
   //std::cout << " RunNumber: " << iEvent.id().run() << ", EventNumber: " << iEvent.id().event() << std:: endl;
