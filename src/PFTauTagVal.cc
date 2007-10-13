@@ -13,7 +13,7 @@
 //
 // Original Author:  Ricardo Vasquez Sierra
 //         Created:  October 8, 2007 
-// $Id: PFTauTagVal.cc,v 1.1.2.3 2007/10/09 14:36:51 gennai Exp $
+// $Id: PFTauTagVal.cc,v 1.1.2.4 2007/10/09 15:29:01 gennai Exp $
 //
 //
 // user include files
@@ -62,7 +62,13 @@ PFTauTagVal::PFTauTagVal(const edm::ParameterSet& iConfig)
     nPFTauCand_etaTauJet_ =    dbe->book1D("n_PFTauCand_vs_etaTauJet", "n_PFTauCand_vs_etaTauJet",60, -3.0, 3.0 );
     nPFTauCand_phiTauJet_ =    dbe->book1D("n_PFTauCand_vs_phiTauJet", "n_PFTauCand_vs_phiTauJet",36, -180.,180.);
     nPFTauCand_energyTauJet_ = dbe->book1D("n_PFTauCand_vs_energyTauJet", "n_PFTauCand_vs_energyTauJet", 45, 0., 450.0);  
-   
+    nPFTauCand_ChargedHadronsSignal_     =dbe->book1D("nPFTauCand_ChargedHadronsSignal","nPFTauCand_ChargedHadronsSignal", 21, -0.5, 20.5);
+    nPFTauCand_ChargedHadronsIsolAnnulus_=dbe->book1D("nPFTauCand_ChargedHadronsIsolAnnulus","nPFTauCand_ChargedHadronsIsolAnnulus", 21, -0.5, 20.5);
+    nPFTauCand_GammasSignal_             =dbe->book1D("nPFTauCand_GammasSignal","nPFTauCand_GammasSignal",21, -0.5, 20.5);
+    nPFTauCand_GammasIsolAnnulus_        =dbe->book1D("nPFTauCand_GammasIsolAnnulus","nPFTauCand_GammasIsolAnnulus",21, -0.5, 20.5);  
+    nPFTauCand_NeutralHadronsSignal_     =dbe->book1D("nPFTauCand_NeutralHadronsSignal","nPFTauCand_NeutralHadronsSignal",21, -0.5, 20.5);
+    nPFTauCand_NeutralHadronsIsolAnnulus_=dbe->book1D("nPFTauCand_NeutralHadronsIsolAnnulus","nPFTauCand_NeutralHadronsIsolAnnulus",21, -0.5, 20.5);   
+
     // Number of PFTau Candidates with a Leading charged hadron in it (within a cone of 0.1 avound the jet axis and a minimum pt of 6 GeV)
     dbe->setCurrentFolder("PFTauPlusLeadingChargedHadron_"+ExtensionName_.label());
 
@@ -70,7 +76,13 @@ PFTauTagVal::PFTauTagVal(const edm::ParameterSet& iConfig)
     nPFTau_LeadingChargedHadron_etaTauJet_ =    dbe->book1D("n_PFTau_LeadingChargedHadron_vs_etaTauJet", "n_PFTau_LeadingChargedHadron_vs_etaTauJet",60, -3.0, 3.0 );
     nPFTau_LeadingChargedHadron_phiTauJet_ =    dbe->book1D("n_PFTau_LeadingChargedHadron_vs_phiTauJet", "n_PFTau_LeadingChargedHadron_vs_phiTauJet",36,-180.,180);
     nPFTau_LeadingChargedHadron_energyTauJet_ = dbe->book1D("n_PFTau_LeadingChargedHadron_vs_energyTauJet", "n_PFTau_LeadingChargedHadron_vs_energyTauJet", 45, 0., 450.0); 
-
+    nPFTau_LeadingChargedHadron_ChargedHadronsSignal_     =dbe->book1D("n_PFTau_LeadingChargedHadron_ChargedHadronsSignal","n_PFTau_LeadingChargedHadron_ChargedHadronsSignal",21, -0.5, 20.5);
+    nPFTau_LeadingChargedHadron_ChargedHadronsIsolAnnulus_=dbe->book1D("n_PFTau_LeadingChargedHadron_ChargedHadronsIsolAnnulus", "n_PFTau_LeadingChargedHadron_ChargedHadronsIsolAnnulus",21, -0.5, 20.5);
+    nPFTau_LeadingChargedHadron_GammasSignal_             =dbe->book1D("n_PFTau_LeadingChargedHadron_GammasSignal","n_PFTau_LeadingChargedHadron_GammasSignal",21, -0.5, 20.5);
+    nPFTau_LeadingChargedHadron_GammasIsolAnnulus_        =dbe->book1D("n_PFTau_LeadingChargedHadron_GammasIsolAnnulus","n_PFTau_LeadingChargedHadron_GammasIsolAnnulus",21, -0.5, 20.5);          
+    nPFTau_LeadingChargedHadron_NeutralHadronsSignal_     =dbe->book1D("n_PFTau_LeadingChargedHadron_NeutralHadronsSignal","n_PFTau_LeadingChargedHadron_NeutralHadronsSignal",21, -0.5, 20.5);
+    nPFTau_LeadingChargedHadron_NeutralHadronsIsolAnnulus_=dbe->book1D("n_PFTau_LeadingChargedHadron_NeutralHadronsIsolAnnulus","n_PFTau_LeadingChargedHadron_NeutralHadronsIsolAnnulus",21, -0.5, 20.5);
+    
     // Isolated PFTau with a Leading charged hadron with no Charged Hadrons inside the isolation annulus
     dbe->setCurrentFolder("Isolated_NoChargedHadrons_"+ExtensionName_.label());
 
@@ -78,6 +90,12 @@ PFTauTagVal::PFTauTagVal(const edm::ParameterSet& iConfig)
     nIsolated_NoChargedHadrons_etaTauJet_ =      dbe->book1D("n_Isolated_NoChargedHadrons_vs_etaTauJet","n_Isolated_NoChargedHadrons_vs_etaTauJet", 60, -3.0, 3.0 );
     nIsolated_NoChargedHadrons_phiTauJet_ =      dbe->book1D("n_Isolated_NoChargedHadrons_vs_phiTauJet","n_Isolated_NoChargedHadrons_vs_phiTauJets", 36, -180., 180);
     nIsolated_NoChargedHadrons_energyTauJet_ =   dbe->book1D("n_Isolated_NoChargedHadrons_vs_energyTauJet", "n_Isolated_NoChargedHadrons_vs_energyTauJet", 45, 0., 450.0);    
+    nIsolated_NoChargedHadrons_ChargedHadronsSignal_     =dbe->book1D("n_Isolated_NoChargedHadrons_ChargedHadronsSignal","n_Isolated_NoChargedHadrons_ChargedHadronsSignal",21, -0.5, 20.5);	  
+    nIsolated_NoChargedHadrons_ChargedHadronsIsolAnnulus_=dbe->book1D("n_Isolated_NoChargedHadrons_ChargedHadronsIsolAnnulus","n_Isolated_NoChargedHadrons_ChargedHadronsIsolAnnulus",21, -0.5, 20.5); 
+    nIsolated_NoChargedHadrons_GammasSignal_             =dbe->book1D("n_Isolated_NoChargedHadrons_GammasSignal","n_Isolated_NoChargedHadrons_GammasSignal",21, -0.5, 20.5);		  
+    nIsolated_NoChargedHadrons_GammasIsolAnnulus_        =dbe->book1D("n_Isolated_NoChargedHadrons_GammasIsolAnnulus","n_Isolated_NoChargedHadrons_GammasIsolAnnulus",21, -0.5, 20.5);         
+    nIsolated_NoChargedHadrons_NeutralHadronsSignal_     =dbe->book1D("n_Isolated_NoChargedHadrons_NeutralHadronsSignal","n_Isolated_NoChargedHadrons_NeutralHadronsSignal",21, -0.5, 20.5);
+    nIsolated_NoChargedHadrons_NeutralHadronsIsolAnnulus_=dbe->book1D("n_Isolated_NoChargedHadrons_NeutralHadronsIsolAnnulus","n_Isolated_NoChargedHadrons_NeutralHadronsIsolAnnulus",21, -0.5, 20.5);
     
     // Isolated PFTau with a Leading charge hadron with no Charged Hadron inside the isolation annulus with no Ecal/Gamma candidates in the isolation annulus
     dbe->setCurrentFolder("Isolated_NoChargedNoGammas_"+ExtensionName_.label());
@@ -85,7 +103,14 @@ PFTauTagVal::PFTauTagVal(const edm::ParameterSet& iConfig)
     nIsolated_NoChargedNoGammas_ptTauJet_ =       dbe->book1D("n_Isolated_NoChargedNoGammas_vs_ptTauJet","n_Isolated_NoChargedNoGammas_vs_ptTauJet", 75, 0., 150.);
     nIsolated_NoChargedNoGammas_etaTauJet_ =      dbe->book1D("n_Isolated_NoChargedNoGammas_vs_etaTauJet","n_Isolated_NoChargedNoGammas_vs_etaTauJet", 60, -3.0, 3.0 );
     nIsolated_NoChargedNoGammas_phiTauJet_ =      dbe->book1D("n_Isolated_NoChargedNoGammas_vs_phiTauJet","n_Isolated_NoChargedNoGammas_vs_phiTauJets", 36, -180., 180);
-    nIsolated_NoChargedNoGammas_energyTauJet_ =   dbe->book1D("n_Isolated_NoChargedNoGammas_vs_energyTauJet", "n_Isolated_NoChargedNoGammas_vs_energyTauJet", 45, 0., 450.0);  
+    nIsolated_NoChargedNoGammas_energyTauJet_ =   dbe->book1D("n_Isolated_NoChargedNoGammas_vs_energyTauJet", "n_Isolated_NoChargedNoGammas_vs_energyTauJet", 45, 0., 450.0); 
+    nIsolated_NoChargedNoGammas_ChargedHadronsSignal_     =dbe->book1D("n_Isolated_NoChargedNoGammas_ChargedHadronsSignal","n_Isolated_NoChargedNoGammas_ChargedHadronsSignal",20, -0.5, 20.5);	  
+    nIsolated_NoChargedNoGammas_ChargedHadronsIsolAnnulus_=dbe->book1D("n_Isolated_NoChargedNoGammas_ChargedHadronsIsolAnnulus","n_Isolated_NoChargedNoGammas_ChargedHadronsIsolAnnulus",20, -0.5, 20.5);    
+    nIsolated_NoChargedNoGammas_GammasSignal_             =dbe->book1D("n_Isolated_NoChargedNoGammas_GammasSignal","n_Isolated_NoChargedNoGammas_GammasSignal",20, -0.5, 20.5);	  
+    nIsolated_NoChargedNoGammas_GammasIsolAnnulus_        =dbe->book1D("n_Isolated_NoChargedNoGammas_GammasIsolAnnulus","n_Isolated_NoChargedNoGammas_GammasIsolAnnulus",20, -0.5, 20.5);         
+    nIsolated_NoChargedNoGammas_NeutralHadronsSignal_     =dbe->book1D("n_Isolated_NoChargedNoGammas_NeutralHadronsSignal","n_Isolated_NoChargedNoGammas_NeutralHadronsSignal",20, -0.5, 20.5);
+    nIsolated_NoChargedNoGammas_NeutralHadronsIsolAnnulus_=dbe->book1D("n_Isolated_NoChargedNoGammas_NeutralHadronsIsolAnnulus","n_Isolated_NoChargedNoGammas_NeutralHadronsIsolAnnulus",20, -0.5, 20.5);
+
     TString tversion(edm::getReleaseVersion());
     cout<<endl<<"-----------------------*******************************Version: " << tversion<<endl;
   }
@@ -169,6 +194,12 @@ void PFTauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       nPFTauCand_etaTauJet_->Fill(MCjet->Eta());
       nPFTauCand_phiTauJet_->Fill(MCjet->Phi()*180.0/TMath::Pi());
       nPFTauCand_energyTauJet_->Fill(MCjet->E());
+      nPFTauCand_ChargedHadronsSignal_->Fill((*thePFTau).signalPFChargedHadrCands().size());	
+      nPFTauCand_ChargedHadronsIsolAnnulus_->Fill((*thePFTau).isolationPFChargedHadrCands().size());
+      nPFTauCand_GammasSignal_->Fill((*thePFTau).signalPFGammaCands().size());		
+      nPFTauCand_GammasIsolAnnulus_->Fill((*thePFTau).isolationPFGammaCands().size());  	
+      nPFTauCand_NeutralHadronsSignal_->Fill((*thePFTau).signalPFNeutrHadrCands().size());	
+      nPFTauCand_NeutralHadronsIsolAnnulus_->Fill((*thePFTau).isolationPFNeutrHadrCands().size());
       
       PFCandidateRef theLeadPFCand = (*thePFTau).leadPFChargedHadrCand();
       
@@ -178,18 +209,36 @@ void PFTauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 	nPFTau_LeadingChargedHadron_etaTauJet_->Fill(MCjet->Eta());  
 	nPFTau_LeadingChargedHadron_phiTauJet_->Fill(MCjet->Phi()*180.0/TMath::Pi()); 
 	nPFTau_LeadingChargedHadron_energyTauJet_->Fill(MCjet->E());
+	nPFTau_LeadingChargedHadron_ChargedHadronsSignal_->Fill((*thePFTau).signalPFChargedHadrCands().size());
+	nPFTau_LeadingChargedHadron_ChargedHadronsIsolAnnulus_->Fill((*thePFTau).isolationPFChargedHadrCands().size());
+	nPFTau_LeadingChargedHadron_GammasSignal_->Fill((*thePFTau).signalPFGammaCands().size());		 
+	nPFTau_LeadingChargedHadron_GammasIsolAnnulus_->Fill((*thePFTau).isolationPFGammaCands().size());        
+	nPFTau_LeadingChargedHadron_NeutralHadronsSignal_->Fill((*thePFTau).signalPFNeutrHadrCands().size());	 
+	nPFTau_LeadingChargedHadron_NeutralHadronsIsolAnnulus_->Fill((*thePFTau).isolationPFNeutrHadrCands().size());
 	
 	if ((*thePFTau).isolationPFChargedHadrCands().size()==0) {
 	  nIsolated_NoChargedHadrons_ptTauJet_->Fill(MCjet->Perp()); 
 	  nIsolated_NoChargedHadrons_etaTauJet_->Fill(MCjet->Eta());     
 	  nIsolated_NoChargedHadrons_phiTauJet_->Fill(MCjet->Phi()*180.0/TMath::Pi());     
 	  nIsolated_NoChargedHadrons_energyTauJet_->Fill(MCjet->E());
-	  
+	  nIsolated_NoChargedHadrons_ChargedHadronsSignal_->Fill((*thePFTau).signalPFChargedHadrCands().size());	 
+	  nIsolated_NoChargedHadrons_ChargedHadronsIsolAnnulus_->Fill((*thePFTau).isolationPFChargedHadrCands().size());
+	  nIsolated_NoChargedHadrons_GammasSignal_->Fill((*thePFTau).signalPFGammaCands().size());		
+	  nIsolated_NoChargedHadrons_GammasIsolAnnulus_->Fill((*thePFTau).isolationPFGammaCands().size());        
+	  nIsolated_NoChargedHadrons_NeutralHadronsSignal_->Fill((*thePFTau).signalPFNeutrHadrCands().size());	
+	  nIsolated_NoChargedHadrons_NeutralHadronsIsolAnnulus_->Fill((*thePFTau).isolationPFNeutrHadrCands().size());
+
 	  if ((*thePFTau).isolationPFGammaCands().size()==0) {
 	    nIsolated_NoChargedNoGammas_ptTauJet_->Fill(MCjet->Perp());     
 	    nIsolated_NoChargedNoGammas_etaTauJet_ ->Fill(MCjet->Eta());    
 	    nIsolated_NoChargedNoGammas_phiTauJet_->Fill(MCjet->Phi()*180.0/TMath::Pi());     
 	    nIsolated_NoChargedNoGammas_energyTauJet_->Fill(MCjet->E());
+            nIsolated_NoChargedNoGammas_ChargedHadronsSignal_->Fill((*thePFTau).signalPFChargedHadrCands().size());	 
+	    nIsolated_NoChargedNoGammas_ChargedHadronsIsolAnnulus_->Fill((*thePFTau).isolationPFChargedHadrCands().size());
+	    nIsolated_NoChargedNoGammas_GammasSignal_->Fill((*thePFTau).signalPFGammaCands().size());		 
+	    nIsolated_NoChargedNoGammas_GammasIsolAnnulus_->Fill((*thePFTau).isolationPFGammaCands().size());        
+	    nIsolated_NoChargedNoGammas_NeutralHadronsSignal_->Fill((*thePFTau).signalPFNeutrHadrCands().size());	 
+	    nIsolated_NoChargedNoGammas_NeutralHadronsIsolAnnulus_->Fill((*thePFTau).isolationPFNeutrHadrCands().size());
 	  }
 	}
       }
