@@ -13,7 +13,7 @@
 //
 // Original Author:  Simone Gennai/Ricardo Vasquez Sierra
 //         Created:  Wed Apr 12 11:12:49 CEST 2006
-// $Id: TauTagVal.cc,v 1.11.2.4 2007/10/08 18:07:30 gennai Exp $
+// $Id: TauTagVal.cc,v 1.11.2.5 2007/10/09 07:17:37 gennai Exp $
 //
 //
 // user include files
@@ -145,6 +145,7 @@ void TauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   using namespace edm;
   using namespace reco;
   numEvents_++;
+  double  matching_criteria;
   //  std::cout << "--------------------------------------------------------------"<<endl;
   //std::cout << " RunNumber: " << iEvent.id().run() << ", EventNumber: " << iEvent.id().event() << std:: endl;
   //std::cout << "Event number: " << ++numEvents_ << endl;
@@ -162,8 +163,16 @@ void TauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   
   // Get a TLorentzVector with the Visible Taus at Generator level (the momentum of the neutrino is substracted
   vector<TLorentzVector> TauJetsMC;
-  if(dataType_ == "TAU")  TauJetsMC=getVectorOfVisibleTauJets(myGenEvent); 
-  if(dataType_ == "QCD")  TauJetsMC=getVectorOfGenJets(genJets);
+
+  if(dataType_ == "TAU"){
+    TauJetsMC=getVectorOfVisibleTauJets(myGenEvent);
+    matching_criteria=0.15;
+  }
+
+  if(dataType_ == "QCD")  {
+    TauJetsMC=getVectorOfGenJets(genJets);
+    matching_criteria=0.30;
+  }
  
   //---------------------LET's See what this CaloTau has -----------------
 
@@ -226,7 +235,7 @@ void TauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     bool trueTauJet=false;
     std::vector<TLorentzVector>::iterator MCjet;
     for (MCjet = TauJetsMC.begin(); MCjet != TauJetsMC.end(); MCjet++){ 
-      if ( MCjet->DeltaR(recoTauJet) < 0.15 ) {
+      if ( MCjet->DeltaR(recoTauJet) < matching_criteria ) {
 	trueTauJet=true;
 	numTauRecoJets++;
         break;
