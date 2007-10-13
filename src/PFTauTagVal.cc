@@ -139,6 +139,8 @@ void PFTauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   using namespace reco;
   using namespace std;
   numEvents_++;
+  double matching_criteria=0.15;
+
   //  std::cout << "--------------------------------------------------------------"<<endl;
   //std::cout << " RunNumber: " << iEvent.id().run() << ", EventNumber: " << iEvent.id().event() << std:: endl;
   //std::cout << "Event number: " << ++numEvents_ << endl;
@@ -155,11 +157,19 @@ void PFTauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
   // Get a TLorentzVector with the Visible Taus at Generator level (the momentum of the neutrino is substracted
   vector<TLorentzVector> TauJetsMC;
-  if(dataType_ == "PFTAU")  TauJetsMC=getVectorOfVisibleTauJets(myGenEvent); 
-    if(dataType_ == "QCD")  TauJetsMC=getVectorOfGenJets(genJets);
- 
-  //  myGenEvent->print();
+  if(dataType_ == "PFTAU"){
+    TauJetsMC=getVectorOfVisibleTauJets(myGenEvent);
+    matching_criteria=0.15;
+  }
 
+  if(dataType_ == "QCD")  {
+    TauJetsMC=getVectorOfGenJets(genJets);
+    matching_criteria=0.30;
+  }
+  
+  
+  //  myGenEvent->print();
+    
   // ------------------------------ PFTauCollection---------------------------------------------------------
   Handle<PFTauCollection> thePFTauHandle;
   iEvent.getByLabel(PFTauProducer_,thePFTauHandle);
@@ -180,7 +190,8 @@ void PFTauTagVal::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
    
     std::vector<TLorentzVector>::iterator MCjet;
     for (MCjet = TauJetsMC.begin(); MCjet != TauJetsMC.end(); MCjet++){ 
-      if ( MCjet->DeltaR(PFTauDirection) < 0.15 ) {
+     
+      if ( MCjet->DeltaR(PFTauDirection) <  matching_criteria ) {
 	truePFTau=true;
 	numTruePFTausCand++;
         break;
