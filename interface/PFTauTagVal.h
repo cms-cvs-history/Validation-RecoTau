@@ -101,11 +101,11 @@ std::vector<TLorentzVector> getVectorOfGenJets(edm::Handle< reco::GenJetCollecti
   MonitorElement* nPFTauCand_etaTauJet_;     
   MonitorElement* nPFTauCand_phiTauJet_;    
   MonitorElement* nPFTauCand_energyTauJet_;
-  MonitorElement* nPFTauCand_ChargedHadronsSignal_;
+  MonitorElement* nPFTauCand_ChargedHadronsSignal_;	
   MonitorElement* nPFTauCand_ChargedHadronsIsolAnnulus_;
-  MonitorElement* nPFTauCand_GammasSignal_;
-  MonitorElement* nPFTauCand_GammasIsolAnnulus_;  
-  MonitorElement* nPFTauCand_NeutralHadronsSignal_;
+  MonitorElement* nPFTauCand_GammasSignal_;		
+  MonitorElement* nPFTauCand_GammasIsolAnnulus_;  	
+  MonitorElement* nPFTauCand_NeutralHadronsSignal_;	
   MonitorElement* nPFTauCand_NeutralHadronsIsolAnnulus_;
   
   // Number of PFTau Candidates with a Leading charged hadron in it (within a cone of 0.1 avound the jet axis and a minimum pt of 6 GeV)
@@ -117,7 +117,7 @@ std::vector<TLorentzVector> getVectorOfGenJets(edm::Handle< reco::GenJetCollecti
   MonitorElement* nPFTau_LeadingChargedHadron_ChargedHadronsIsolAnnulus_; 
   MonitorElement* nPFTau_LeadingChargedHadron_GammasSignal_;		  
   MonitorElement* nPFTau_LeadingChargedHadron_GammasIsolAnnulus_;          
-  MonitorElement* nPFTau_LeadingChargedHadron_NeutralHadronsSignal_;
+  MonitorElement* nPFTau_LeadingChargedHadron_NeutralHadronsSignal_;	 
   MonitorElement* nPFTau_LeadingChargedHadron_NeutralHadronsIsolAnnulus_;
     
   // Isolated PFTau with a Leading charged hadron with no Charged Hadrons inside the isolation annulus
@@ -126,10 +126,10 @@ std::vector<TLorentzVector> getVectorOfGenJets(edm::Handle< reco::GenJetCollecti
   MonitorElement* nIsolated_NoChargedHadrons_phiTauJet_;     
   MonitorElement* nIsolated_NoChargedHadrons_energyTauJet_;
   MonitorElement* nIsolated_NoChargedHadrons_ChargedHadronsSignal_;	  
-  MonitorElement* nIsolated_NoChargedHadrons_ChargedHadronsIsolAnnulus_;    
+
   MonitorElement* nIsolated_NoChargedHadrons_GammasSignal_;		  
   MonitorElement* nIsolated_NoChargedHadrons_GammasIsolAnnulus_;         
-  MonitorElement* nIsolated_NoChargedHadrons_NeutralHadronsSignal_;
+  MonitorElement* nIsolated_NoChargedHadrons_NeutralHadronsSignal_;	
   MonitorElement* nIsolated_NoChargedHadrons_NeutralHadronsIsolAnnulus_;
 
   // Isolated PFTau with a Leading charge hadron with no Charged Hadron inside the isolation annulus with no Ecal/Gamma candidates in the isolation annulus
@@ -137,15 +137,27 @@ std::vector<TLorentzVector> getVectorOfGenJets(edm::Handle< reco::GenJetCollecti
   MonitorElement* nIsolated_NoChargedNoGammas_etaTauJet_;     
   MonitorElement* nIsolated_NoChargedNoGammas_phiTauJet_;     
   MonitorElement* nIsolated_NoChargedNoGammas_energyTauJet_;
-  MonitorElement* nIsolated_NoChargedNoGammas_ChargedHadronsSignal_;	  
-  MonitorElement* nIsolated_NoChargedNoGammas_ChargedHadronsIsolAnnulus_;    
-  MonitorElement* nIsolated_NoChargedNoGammas_GammasSignal_;		  
-  MonitorElement* nIsolated_NoChargedNoGammas_GammasIsolAnnulus_;         
-  MonitorElement* nIsolated_NoChargedNoGammas_NeutralHadronsSignal_;
+  MonitorElement* nIsolated_NoChargedNoGammas_ChargedHadronsSignal_;    
+
+  MonitorElement* nIsolated_NoChargedNoGammas_GammasSignal_;
+         
+  MonitorElement* nIsolated_NoChargedNoGammas_NeutralHadronsSignal_;	 
   MonitorElement* nIsolated_NoChargedNoGammas_NeutralHadronsIsolAnnulus_;
   
-  // book-keeping variables
+
+
+  MonitorElement* nChargedHadronsSignalCone_isolated_;
+  MonitorElement* nGammasSignalCone_isolated_;
+  MonitorElement* nNeutralHadronsSignalCone_isolated_;
+  MonitorElement* N_1_ChargedHadronsSignal_;	  
+  MonitorElement* N_1_ChargedHadronsIsolAnnulus_; 
+  MonitorElement* N_1_GammasSignal_;		  
+  MonitorElement* N_1_GammasIsolAnnulus_;          
+  MonitorElement* N_1_NeutralHadronsSignal_;	 
+  MonitorElement* N_1_NeutralHadronsIsolAnnulus_;
  
+  // book-keeping variables
+
   int numEvents_;
 
 };
