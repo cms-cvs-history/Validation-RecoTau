@@ -18,10 +18,22 @@
   TH1F* nPFTauCandetaTauJet =    (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_etaTauJet");
   TH1F* nPFTauCandptTauJet =     (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_ptTauJet");
   TH1F* nPFTauCandenergyTauJet = (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_energyTauJet");
+  TH1F* nPFTauCandChargedHadronsSignal =      (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/nPFTauCand_ChargedHadronsSignal");
+  TH1F* nPFTauCandChargedHadronsIsolAnnulus = (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/nPFTauCand_ChargedHadronsIsolAnnulus");
+  TH1F* nPFTauCandGammasSignal =              (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/nPFTauCand_GammasSignal");
+  TH1F* nPFTauCandGammasIsolAnnulus =         (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/nPFTauCand_GammasIsolAnnulus");
+  TH1F* nPFTauCandNeutralHadronsSignal =      (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/nPFTauCand_NeutralHadronsSignal");
+  TH1F* nPFTauCandNeutralHadronsIsolAnnulus=  (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/nPFTauCand_NeutralHadronsIsolAnnulus");
 
   TH1F* nPFTauCandLCHetaTauJet =    (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_etaTauJet");
   TH1F* nPFTauCandLCHptTauJet =     (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_ptTauJet");
-  TH1F* nPFTauCandLCHenergyTauJet = (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_energyTauJet");
+  TH1F* nPFTauCandLCHenergyTauJet =              (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_energyTauJet");
+  TH1F* nPFTauCandLCHChargedHadronsSignal =      (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/nPFTau_LeadingChargedHadron_ChargedHadronsSignal");
+  TH1F* nPFTauCandLCHChargedHadronsIsolAnnulus = (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/nPFTau_LeadingChargedHadron_ChargedHadronsIsolAnnulus");
+  TH1F* nPFTauCandLCHGammasSignal =              (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/nPFTau_LeadingChargedHadron_GammasSignal");
+  TH1F* nPFTauCandLCHGammasIsolAnnulus =         (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/nPFTau_LeadingChargedHadron_GammasIsolAnnulus");
+  TH1F* nPFTauCandLCHNeutralHadronsSignal =      (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/nPFTau_LeadingChargedHadron_NeutralHadronsSignal");
+  TH1F* nPFTauCandLCHNeutralHadronsIsolAnnulus=  (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/nPFTau_LeadingChargedHadron_NeutralHadronsIsolAnnulus");
 
   TH1F* nIsolNoChargedHadronsetaTauJet =    (TH1F*)f.Get("DQMData/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_etaTauJet");
   TH1F* nIsolNoChargedHadronsptTauJet =     (TH1F*)f.Get("DQMData/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_ptTauJet");
@@ -30,6 +42,16 @@
   TH1F* nIsolNoChargedNoGammasetaTauJet =    (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_etaTauJet");
   TH1F* nIsolNoChargedNoGammasptTauJet =     (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_ptTauJet");
   TH1F* nIsolNoChargedNoGammasenergyTauJet = (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_energyTauJet");
+ 
+  TH1F* nIsolNoChargedNoGammasNeutralHadronsSignal=     (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_NeutralHadronsSignal");
+  TH1F* nIsolNoChargedNoGammasNeutralHadronsIsolAnnulus=     (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_NeutralHadronsIsolAnnulus");
+
+
+  // PF Candidates in signal cone after all isolation is applied plus the N-1 plots in signal cone +isolation annulus
+
+  TH1F* n_1_ChargedHadronsSignalCone_isolated = (TH1F*)f.Get("DQMData/PFCandidates_in_SignalOrIsolationAnnulus_PFTauIsolationValidation/nChargedHadronsSignalCone_isolated");
+  TH1F* n_1_GammasSignalCone_isolated =         (TH1F*)f.Get("DQMData/PFCandidates_in_SignalOrIsolationAnnulus_PFTauIsolationValidation/nGammasSignalCone_isolated");
+  TH1F* n_1_NeutralHadronsSignalCone_isolated = (TH1F*)f.Get("DQMData/PFCandidates_in_SignalOrIsolationAnnulus_PFTauIsolationValidation/nNeutralHadronsSignalCone_isolated");
 
   gStyle->SetOptStat("ie");
 
@@ -65,12 +87,126 @@
   nMCptTau->DrawNormalized();
   c25->Print(TString("MCPtTau.gif"),"gif");	 
   */
+// Number of PF Candidates in signal cone and isolation annulus after PFTau matching
+
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandChargedHadronsSignal->SetTitle("PFCharged Hadrons in Signal Cone after PFTau matching "+ReleaseVersion);
+  nPFTauCandChargedHadronsSignal->GetXaxis()->SetTitle("# Charged Hadrons in Signal Cone");
+  nPFTauCandChargedHadronsSignal->Draw();
+  c23->Print(TString("PFTauMatching_ChargedHadronsSignal.gif"),"gif");
+  
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandChargedHadronsIsolAnnulus->SetTitle("PFCharged Hadrons in Isolation Annulus after PFTau matching "+ReleaseVersion);
+  nPFTauCandChargedHadronsIsolAnnulus->GetXaxis()->SetTitle("# Charged Hadrons in Isolation Annulus");
+  nPFTauCandChargedHadronsIsolAnnulus->Draw();
+  c23->Print(TString("PFTauMatching_ChargedHadronsIsolAnnulus.gif"),"gif");
+
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandGammasSignal->SetTitle("PFGammas in Signal Cone after PFTau matching "+ReleaseVersion);
+  nPFTauCandGammasSignal->GetXaxis()->SetTitle("# Gammas in Signal Cone");
+  nPFTauCandGammasSignal->Draw();
+  c23->Print(TString("PFTauMatching_GammasSignal.gif"),"gif");
+
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandGammasIsolAnnulus->SetTitle("PFGammas in Isolation Annulus after PFTau matching "+ReleaseVersion);
+  nPFTauCandGammasIsolAnnulus->GetXaxis()->SetTitle("# Gammas in Isolation Annulus");
+  nPFTauCandGammasIsolAnnulus->Draw();
+  c23->Print(TString("PFTauMatching_GammasIsolAnnulus.gif"),"gif");
+
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandNeutralHadronsSignal->SetTitle("PFNeutral Hadrons in Signal Cone after PFTau matching "+ReleaseVersion);
+  nPFTauCandNeutralHadronsSignal->GetXaxis()->SetTitle("# Neutral Hadrons in Signal Cone");
+  nPFTauCandNeutralHadronsSignal->Draw();
+  c23->Print(TString("PFTauMatching_NeutralHadronsSignal.gif"),"gif");
+
+  
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandNeutralHadronsIsolAnnulus->SetTitle("PFNeutral Hadrons in Isolation Annulus after PFTau matching "+ReleaseVersion);
+  nPFTauCandNeutralHadronsIsolAnnulus->GetXaxis()->SetTitle("# Neutral Hadrons in Isolation Annulus");
+  nPFTauCandNeutralHadronsIsolAnnulus->Draw();
+  c23->Print(TString("PFTauMatching_NeutralHadronsIsolAnnulus.gif"),"gif");
+
+
+  // Number of PF Candidates in signal cone and isolation annulus after PFTau matching plus Leading Charged Hadron
+ 
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandLCHChargedHadronsSignal->SetTitle("PFCharged Hadrons in Signal Cone after finding Leading Hadron "+ReleaseVersion);
+  nPFTauCandLCHChargedHadronsSignal->GetXaxis()->SetTitle("# Charged Hadrons in Signal Cone");
+  nPFTauCandLCHChargedHadronsSignal->Draw();
+  c23->Print(TString("PFTauMatchingLCH_ChargedHadronsSignal.gif"),"gif");
+ 
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandLCHChargedHadronsIsolAnnulus->SetTitle("PFCharged Hadrons in Isolation Annulus after finding Leading Hadron "+ReleaseVersion);
+  nPFTauCandLCHChargedHadronsIsolAnnulus->GetXaxis()->SetTitle("# Charged Hadrons in Isolation Annulus");
+  nPFTauCandLCHChargedHadronsIsolAnnulus->Draw();
+  c23->Print(TString("PFTauMatchingLCH_ChargedHadronsIsolAnnulus.gif"),"gif");
+
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandLCHGammasSignal->SetTitle("PFGammas in Signal Cone after finding Leading Hadron "+ReleaseVersion);
+  nPFTauCandLCHGammasSignal->GetXaxis()->SetTitle("# Gammas in Signal Cone");
+  nPFTauCandLCHGammasSignal->Draw();
+  c23->Print(TString("PFTauMatchingLCH_GammasSignal.gif"),"gif");
+
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandLCHGammasIsolAnnulus->SetTitle("PFGammas in Isolation Annulus after finding Leading Hadron "+ReleaseVersion);
+  nPFTauCandLCHGammasIsolAnnulus->GetXaxis()->SetTitle("# Gammas in Isolation Annulus");
+  nPFTauCandLCHGammasIsolAnnulus->Draw();
+  c23->Print(TString("PFTauMatchingLCH_GammasIsolAnnulus.gif"),"gif");
+
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandLCHNeutralHadronsSignal->SetTitle("PFNeutral Hadrons in Signal Cone after finding Leading Hadron "+ReleaseVersion);
+  nPFTauCandLCHNeutralHadronsSignal->GetXaxis()->SetTitle("# Neutral Hadrons in Signal Cone");
+  nPFTauCandLCHNeutralHadronsSignal->Draw();
+  c23->Print(TString("PFTauMatchingLCH_NeutralHadronsSignal.gif"),"gif");
+
+  
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nPFTauCandNeutralHadronsIsolAnnulus->SetTitle("PFNeutral Hadrons in Isolation Annulus after finding Leading Hadron "+ReleaseVersion);
+  nPFTauCandNeutralHadronsIsolAnnulus->GetXaxis()->SetTitle("# Neutral Hadrons in Isolation Annulus");
+  nPFTauCandNeutralHadronsIsolAnnulus->Draw();
+  c23->Print(TString("PFTauMatchingLCH_NeutralHadronsIsolAnnulus.gif"),"gif");
+
+  // PF Candidates in signal cone after all isolation is applied plus the N-1 plots in signal cone +isolation annulus
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  n_1_ChargedHadronsSignalCone_isolated->SetTitle("PFCharged Hadrons in Signal Cone after total isolation "+ReleaseVersion);
+  n_1_ChargedHadronsSignalCone_isolated->GetXaxis()->SetTitle("# Charged Hadrons in Signal Cone");
+  n_1_ChargedHadronsSignalCone_isolated->Draw();
+  c23->Print(TString("PFTauIsolated_ChargedHadronsSignalCone.gif"),"gif");
+
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  n_1_GammasSignalCone_isolated->SetTitle("PFGammas in Signal Cone after total isolation "+ReleaseVersion); 
+  n_1_GammasSignalCone_isolated->GetXaxis()->SetTitle("# Gammas in Signal Cone");
+  n_1_GammasSignalCone_isolated ->Draw();
+  c23->Print(TString("PFTauIsolated_GammasSignalCone.gif"),"gif");
+
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  n_1_NeutralHadronsSignalCone_isolated->SetTitle("PFNeutral Hadrons in Signal Cone after total isolation"+ReleaseVersion);
+  n_1_NeutralHadronsSignalCone_isolated->GetXaxis()->SetTitle("# Neutral Hadrons in Signal Cone");
+  n_1_NeutralHadronsSignalCone_isolated->Draw();
+  c23->Print(TString("PFTauIsolated_NeutralHadronsSignalCone.gif"),"gif");
+
+  /*  
 
   //====================================================ETA================================================================= 
   TPaveText* text_ptCut = new TPaveText(0.66, 0.82, 0.92, 0.92, "brNDC");
   text_ptCut->SetBorderSize(0);
   text_ptCut->SetFillColor(0);
-  text_ptCut->AddText(Form(" P_{T} > %.1f GeV", 5.0));
+  text_ptCut->AddTex t(Form(" P_{T} > %.1f GeV", 5.0));
 
   TGraphAsymmErrors* gr0 =  new TGraphAsymmErrors(nIsolNoChargedHadronsetaTauJet, nMCetaTauJet);
   c4 = new TCanvas("c4","IsolationNoChargedHadronsEta",30,30,520,520);
@@ -169,7 +305,8 @@
   TGraphAsymmErrors* gr13 =  new TGraphAsymmErrors(nIsolNoChargedNoGammasenergyTauJet, nIsolNoChargedHadronsenergyTauJet);
   c170 = new TCanvas("c170","IsolationNoChargedNoGammasPartialEfficencyEnergy",35,35,525,525);
   drawEfficiency("NoChargedNoGammas/NoCharged " +ReleaseVersion, gr13, "Energy (GeV) (MC Vis. Tau)",(TH1F*)  nIsolNoChargedHadronsenergyTauJet->Clone(), c170, text_bothCuts, Scale);
-  
+
+  */
 }
 
 
