@@ -14,10 +14,13 @@
   TH1F* nMCetaTauJet =    (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_etaTauJet");
   TH1F* nMCptTauJet =     (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_ptTauJet");
   TH1F* nMCenergyTauJet = (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_energyTauJet");
+  TH1F* nMCphiTauJet = (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_phiTauJet");
 
   TH1F* nPFTauCandetaTauJet =    (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_etaTauJet");
   TH1F* nPFTauCandptTauJet =     (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_ptTauJet");
   TH1F* nPFTauCandenergyTauJet = (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_energyTauJet");
+  TH1F* nPFTauCandphiTauJet=     (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_phiTauJet");
+
   TH1F* nPFTauCandChargedHadronsSignal =      (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/nPFTauCand_ChargedHadronsSignal");
   TH1F* nPFTauCandChargedHadronsIsolAnnulus = (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/nPFTauCand_ChargedHadronsIsolAnnulus");
   TH1F* nPFTauCandGammasSignal =              (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/nPFTauCand_GammasSignal");
@@ -27,7 +30,9 @@
 
   TH1F* nPFTauCandLCHetaTauJet =    (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_etaTauJet");
   TH1F* nPFTauCandLCHptTauJet =     (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_ptTauJet");
-  TH1F* nPFTauCandLCHenergyTauJet =              (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_energyTauJet");
+  TH1F* nPFTauCandLCHenergyTauJet = (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_energyTauJet");
+  TH1F* nPFTauCandLCHphiTauJet =    (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_phiTauJet");
+
   TH1F* nPFTauCandLCHChargedHadronsSignal =      (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/nPFTau_LeadingChargedHadron_ChargedHadronsSignal");
   TH1F* nPFTauCandLCHChargedHadronsIsolAnnulus = (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/nPFTau_LeadingChargedHadron_ChargedHadronsIsolAnnulus");
   TH1F* nPFTauCandLCHGammasSignal =              (TH1F*)f.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/nPFTau_LeadingChargedHadron_GammasSignal");
@@ -38,13 +43,15 @@
   TH1F* nIsolNoChargedHadronsetaTauJet =    (TH1F*)f.Get("DQMData/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_etaTauJet");
   TH1F* nIsolNoChargedHadronsptTauJet =     (TH1F*)f.Get("DQMData/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_ptTauJet");
   TH1F* nIsolNoChargedHadronsenergyTauJet = (TH1F*)f.Get("DQMData/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_energyTauJet");
+  TH1F* nIsolNoChargedHadronsphiTauJet =    (TH1F*)f.Get("DQMData/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_phiTauJet");
 
   TH1F* nIsolNoChargedNoGammasetaTauJet =    (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_etaTauJet");
   TH1F* nIsolNoChargedNoGammasptTauJet =     (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_ptTauJet");
   TH1F* nIsolNoChargedNoGammasenergyTauJet = (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_energyTauJet");
- 
-  TH1F* nIsolNoChargedNoGammasNeutralHadronsSignal=     (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_NeutralHadronsSignal");
-  TH1F* nIsolNoChargedNoGammasNeutralHadronsIsolAnnulus=     (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_NeutralHadronsIsolAnnulus");
+  TH1F* nIsolNoChargedNoGammasphiTauJet =    (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_phiTauJet");  
+
+  TH1F* nIsolNoChargedNoGammasNeutralHadronsSignal=     (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/nIsolated_NoChargedNoGammas_NeutralHadronsSignal");
+  TH1F* nIsolNoChargedNoGammasNeutralHadronsIsolAnnulus=     (TH1F*)f.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/nIsolated_NoChargedNoGammas_NeutralHadronsIsolAnnulus");
 
 
   // PF Candidates in signal cone after all isolation is applied plus the N-1 plots in signal cone +isolation annulus
@@ -74,7 +81,7 @@
   nMCenergyTauJet->GetXaxis()->SetTitle("Energy (GeV)");
   nMCenergyTauJet->DrawNormalized();
   c23->Print(TString("MCEnergyTauJets.gif"),"gif");
-  /*
+  
   c24 = new TCanvas("c24","", 10,10,500,410);
   nMCetaTau->SetTitle("# MC Taus "+ReleaseVersion);
   nMCetaTau->GetXaxis()->SetTitle("#eta");
@@ -86,7 +93,7 @@
   nMCptTau->GetXaxis()->SetTitle("Pt (GeV)");
   nMCptTau->DrawNormalized();
   c25->Print(TString("MCPtTau.gif"),"gif");	 
-  */
+ 
 // Number of PF Candidates in signal cone and isolation annulus after PFTau matching
 
   delete c23;
@@ -178,6 +185,15 @@
   nPFTauCandNeutralHadronsIsolAnnulus->Draw();
   c23->Print(TString("PFTauMatchingLCH_NeutralHadronsIsolAnnulus.gif"),"gif");
 
+  // PFNeutral Hadrons 
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nIsolNoChargedNoGammasNeutralHadronsIsolAnnulus->SetTitle("PFNeutral Hadrons in Isolation Annulus after Isolation"+ ReleaseVersion);
+  nIsolNoChargedNoGammasNeutralHadronsIsolAnnulus->GetXaxis()->SetTitle("# Neutral Hadrons in Isolation Annulus");
+  nIsolNoChargedNoGammasNeutralHadronsIsolAnnulus->Draw();
+  c23->Print(TString("PFTauSemiIsolated_NeutralHadronsIsolAnnulus.gif"),"gif");
+  
+
   // PF Candidates in signal cone after all isolation is applied plus the N-1 plots in signal cone +isolation annulus
   delete c23;
   c23 = new TCanvas("c23","", 10,10,500,410);
@@ -200,7 +216,7 @@
   n_1_NeutralHadronsSignalCone_isolated->Draw();
   c23->Print(TString("PFTauIsolated_NeutralHadronsSignalCone.gif"),"gif");
 
-  /*  
+    
 
   //====================================================ETA================================================================= 
   TPaveText* text_ptCut = new TPaveText(0.66, 0.82, 0.92, 0.92, "brNDC");
@@ -278,6 +294,42 @@
   text_bothCuts->AddText(Form(" P_{T} > %.1f GeV", 5.0));
   text_bothCuts->AddText(Form(" %.1f  < #eta < %.1f ", -2.5, 2.5));
 
+  TGraphAsymmErrors* gr90 =  new TGraphAsymmErrors(nIsolNoChargedHadronsphiTauJet, nMCphiTauJet);
+  c90 = new TCanvas("c90","IsolationNoChargedHadronsEfficiencyPhi",30,30,520,520);
+  drawEfficiency("Isolated_NoChargedHadrons/MC Visible Tau "+ReleaseVersion, gr90, "#phi (MC Vis. Tau)", (TH1F*) nMCphiTauJet->Clone(), c90, text_bothCuts, Scale);
+
+  TGraphAsymmErrors* gr9 =  new TGraphAsymmErrors(nIsolNoChargedNoGammasphiTauJet, nMCphiTauJet);
+  c13 = new TCanvas("c13","TotalEfficiencyPhi",30,30,520,520);
+  drawEfficiency("Isolated_NoChargedNoGammas/MC Visible Taus "+ ReleaseVersion, gr9, "#phi (MC Vis. Tau)", (TH1F*) nMCphiTauJet->Clone(), c13, text_bothCuts, Scale);
+  
+  TGraphAsymmErrors* gr10 =  new TGraphAsymmErrors(nPFTauCandphiTauJet,  nMCphiTauJet);
+  c14 = new TCanvas("c14","PFTauCandTotalEfficiencyPhi",35,35,525,525);
+  drawEfficiency("PFTauCand(Matched)/MC Visible Taus "+ ReleaseVersion, gr10, "#phi (MC Vis. Tau)",(TH1F*)  nMCphiTauJet->Clone(), c14, text_bothCuts, Scale);
+
+  TGraphAsymmErrors* gr102 = new TGraphAsymmErrors(nPFTauCandLCHphiTauJet, nMCphiTauJet);
+  c102 = new TCanvas("c102", "EfficienciesStepByStepPhi", 230, 230, 720, 720);
+  drawEfficiencies("Different Steps/MC Visible Taus "+ ReleaseVersion, gr10, gr102, gr90, gr9,  "#phi (MC Vis. Tau)",(TH1F*)  nMCphiTauJet->Clone(), c102, text_bothCuts, "PFTaus", Scale);
+
+  TGraphAsymmErrors* gr11 =  new TGraphAsymmErrors(nPFTauCandLCHphiTauJet,  nPFTauCandphiTauJet);
+  c15 = new TCanvas("c15","FindingLeadingChargeHadronPartialEfficiencyPhi",35,35,525,525);
+  drawEfficiency(" PFTau+LeadChargeHadron/PFTau(Matched) "+ReleaseVersion, gr11, "#phi (MC Vis. Tau)",(TH1F*)  nPFTauCandphiTauJet->Clone(), c15, text_bothCuts, Scale);  
+  		 
+  TGraphAsymmErrors* gr12 =  new TGraphAsymmErrors(nIsolNoChargedHadronsphiTauJet,  nPFTauCandLCHphiTauJet);
+  c16 = new TCanvas("c16","IsolationNoChargedHadronsPartialEfficencyPhi",35,35,525,525);
+  drawEfficiency(" IsolatedNoChargeHadrons/PFTau+LCH" +ReleaseVersion, gr12, "#phi (MC Vis. Tau)",(TH1F*)  nPFTauCandLCHphiTauJet->Clone(), c16, text_bothCuts, Scale); 
+
+  TGraphAsymmErrors* gr13 =  new TGraphAsymmErrors(nIsolNoChargedNoGammasphiTauJet, nIsolNoChargedHadronsphiTauJet);
+  c170 = new TCanvas("c170","IsolationNoChargedNoGammasPartialEfficencyPhi",35,35,525,525);
+  drawEfficiency("NoChargedNoGammas/NoCharged " +ReleaseVersion, gr13, "#phi (MC Vis. Tau)",(TH1F*)  nIsolNoChargedHadronsphiTauJet->Clone(), c170, text_bothCuts, Scale);
+
+  //=============================================================== Phi ========================================================
+  
+  TPaveText* text_bothCuts = new TPaveText(0.66, 0.82, 0.92, 0.92, "brNDC");
+  text_bothCuts->SetBorderSize(0);
+  text_bothCuts->SetFillColor(0);
+  text_bothCuts->AddText(Form(" P_{T} > %.1f GeV", 5.0));
+  text_bothCuts->AddText(Form(" %.1f  < #eta < %.1f ", -2.5, 2.5));
+
   TGraphAsymmErrors* gr90 =  new TGraphAsymmErrors(nIsolNoChargedHadronsenergyTauJet, nMCenergyTauJet);
   c90 = new TCanvas("c90","IsolationNoChargedHadronsEfficiencyEnergy",30,30,520,520);
   drawEfficiency("Isolated_NoChargedHadrons/MC Visible Tau "+ReleaseVersion, gr90, "Energy (GeV) (MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c90, text_bothCuts, Scale);
@@ -306,7 +358,7 @@
   c170 = new TCanvas("c170","IsolationNoChargedNoGammasPartialEfficencyEnergy",35,35,525,525);
   drawEfficiency("NoChargedNoGammas/NoCharged " +ReleaseVersion, gr13, "Energy (GeV) (MC Vis. Tau)",(TH1F*)  nIsolNoChargedHadronsenergyTauJet->Clone(), c170, text_bothCuts, Scale);
 
-  */
+  
 }
 
 
