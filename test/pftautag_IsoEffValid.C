@@ -193,6 +193,12 @@
   nIsolNoChargedNoGammasNeutralHadronsIsolAnnulus->Draw();
   c23->Print(TString("PFTauSemiIsolated_NeutralHadronsIsolAnnulus.gif"),"gif");
   
+  delete c23;
+  c23 = new TCanvas("c23","", 10,10,500,410);
+  nIsolNoChargedNoGammasNeutralHadronsSignal->SetTitle("PFNeutral Hadrons in Signal Cone"+ReleaseVersion);
+  nIsolNoChargedNoGammasNeutralHadronsSignal->GetXaxis()->SetTitle("# Neutral Hadrons in Signal Cone");
+  nIsolNoChargedNoGammasNeutralHadronsSignal->Draw();
+  c23->Print(TString("PFTauSemiIsolated_NeutralHadronsSignal.gif"),"gif");
 
   // PF Candidates in signal cone after all isolation is applied plus the N-1 plots in signal cone +isolation annulus
   delete c23;
