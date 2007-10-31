@@ -66,12 +66,17 @@ public:
 private:
   //------------HELPER FUNCTIONS---------------------------
 
-  std::vector<HepMC::GenParticle*> Daughters(HepMC::GenParticle* p);
+
   std::vector<TLorentzVector> getVectorOfVisibleTauJets(HepMC::GenEvent *theEvent);
+  std::vector<HepMC::GenParticle*> getGenStableDecayProducts(const HepMC::GenParticle* particle);
   std::vector<TLorentzVector> getVectorOfGenJets(edm::Handle< reco::GenJetCollection >& genJets );
 
-
   // ----------- MEMBER DATA--------------------------------
+  enum tauDecayModes {kElectron, kMuon, 
+		      kOneProng0pi0, kOneProng1pi0, kOneProng2pi0,
+		      kThreeProng0pi0, kThreeProng1pi0,
+		      kOther, kUndefined};
+
   edm::InputTag jetTagSrc_, jetEMTagSrc_, genJetSrc_;
   
   std::string outPutFile_;
@@ -85,7 +90,8 @@ private:
   MonitorElement* etaTauMC_;
   MonitorElement* phiTauMC_;
   MonitorElement* energyTauMC_;
- 
+  MonitorElement* hGenTauDecay_DecayModes_;
+
   MonitorElement* nMCTaus_ptTauJet_;
   MonitorElement* nMCTaus_etaTauJet_;
   MonitorElement* nMCTaus_phiTauJet_;
