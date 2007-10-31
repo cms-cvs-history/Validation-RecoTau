@@ -13,7 +13,7 @@
 //
 // Original Author:  Simone Gennai/Ricardo Vasquez Sierra
 //         Created:  Wed Apr 12 11:12:49 CEST 2006
-// $Id: TauTagVal.cc,v 1.11.2.5 2007/10/09 07:17:37 gennai Exp $
+// $Id: TauTagVal.cc,v 1.11.2.6 2007/10/13 21:46:34 vasquez Exp $
 //
 //
 // user include files
@@ -50,6 +50,7 @@ TauTagVal::TauTagVal(const edm::ParameterSet& iConfig)
     etaTauMC_   = dbe->book1D("eta_Tau_GenLevel", "eta_Tau_GenLevel", 60, -3.0, 3.0 );
     phiTauMC_   = dbe->book1D("phi_Tau_GenLevel", "phi_Tau_GenLevel", 36, -180., 180.);
     energyTauMC_= dbe->book1D("Energy_Tau_GenLevel", "Energy_Tau_GenLevel", 45, 0., 450.0);
+    hGenTauDecay_DecayModes_ = dbe->book1D("genDecayMode", "DecayMode", kOther + 1, -0.5, kOther + 0.5);
 
     nMCTaus_ptTauJet_ = dbe->book1D("nMC_Taus_vs_ptTauJet", "nMC_Taus_vs_ptTauJet", 75, 0., 150.); 
     nMCTaus_etaTauJet_ = dbe->book1D("nMC_Taus_vs_etaTauJet", "nMC_Taus_vs_etaTauJet", 60, -3.0, 3.0 );
@@ -442,20 +443,181 @@ void TauTagVal::endJob(){
 // Helper function  
 
 // Get all the daughter particles of a particle
-std::vector<HepMC::GenParticle*> TauTagVal::Daughters(HepMC::GenParticle* p)
+std::vector<TLorentzVector> TauTagVal::getVectorOfVisibleTauJets(HepMC::GenEvent *theEvent)
 {
-  std::vector<HepMC::GenParticle*>Daughters;
-  HepMC::GenVertex* end_vertex;
-  end_vertex = p->end_vertex();
-  if(end_vertex)
+  std::vector<TLorentzVector> tempvec;   
+  HepMC::GenVertex* TauDecVtx = 0 ;
+  int numMCTaus = 0;
+  TLorentzVector TauJetMC(0.0,0.0,0.0,0.0);
+  for ( HepMC::GenEvent::particle_iterator p = theEvent->particles_begin(); // Loop over all particles
+	p != theEvent->particles_end(); ++p ) 
     {
-      HepMC::GenVertex::particles_out_const_iterator outp;
-      for(outp=end_vertex->particles_out_const_begin();outp!=end_vertex->particles_out_const_end();++outp)
+      
+      if(abs((*p)->pdg_id())==15 && ((*p)->status()==2))   // Is it a Tau and Decayed?
 	{
-	  Daughters.push_back((*outp));
+	  bool FinalTau=true;                           // This looks like a final decayed Tau 
+	  TLorentzVector TauDecayProduct(0.0,0.0,0.0,0.);   // Neutrino momentum from the Tau decay at GenLevel
+	  TLorentzVector TauJetMC(0.0,0.0,0.0,0.); 
+
+	  vector<HepMC::GenParticle*> TauDaught;
+
+	  TauDaught=getGenStableDecayProducts(*p);
+          TauDecVtx = (*p)->end_vertex();
+	  
+	  if ( TauDecVtx != 0 )
+	    {	    
+	      int numElectrons      = 0;
+	      int numMuons          = 0;
+	      int numChargedPions   = 0;
+	      int numNeutralPions   = 0;
+	      int numNeutrinos      = 0;
+	      int numOtherParticles = 0;
+	      TString output7="";
+	      // Loop over Tau Daughter particles and store the Tau neutrino momentum for future use
+	      for(vector<HepMC::GenParticle*>::const_iterator pit=TauDaught.begin();pit!=TauDaught.end();++pit) 
+		{
+		  int pdg_id = abs((*pit)->pdg_id());
+		  output7+=" PDG_ID = ";
+		  stringstream out;
+		  out<<pdg_id;
+		  output7+=out.str();
+		  if (pdg_id == 11) numElectrons++;
+		  else if (pdg_id == 13) numMuons++;
+		  else if (pdg_id == 211) numChargedPions++;
+		  else if (pdg_id == 111) numNeutralPions++;
+		  else if (pdg_id == 12 || 
+			   pdg_id == 14 || 
+			   pdg_id == 16)  numNeutrinos++;
+		  else if (pdg_id != 22) {
+		    numOtherParticles++;
+		    //    cout<< " PDG_ID " << pdg_id << endl;
+		  }
+
+		  if (pdg_id != 12 &&
+		      pdg_id != 14 && 
+		      pdg_id != 16){
+		    TauDecayProduct=TLorentzVector((*pit)->momentum().px(),(*pit)->momentum().py(),(*pit)->momentum().pz(),(*pit)->momentum().e());
+		    TauJetMC+=TauDecayProduct;
+		  }
+		}
+	      
+	      int tauDecayMode = kOther;
+
+	      if ( numOtherParticles == 0 ){
+		if ( numElectrons == 1 ){
+		  //--- tau decays into electrons
+		  tauDecayMode = kElectron;
+		} else if ( numMuons == 1 ){
+		  //--- tau decays into muons
+		  tauDecayMode = kMuon;
+		} else {
+		  //--- hadronic tau decays
+		  switch ( numChargedPions ){
+		  case 1 : 
+		    switch ( numNeutralPions ){
+		    case 0 : 
+		      tauDecayMode = kOneProng0pi0;
+		      break;
+		    case 1 : 
+		      tauDecayMode = kOneProng1pi0;
+		      break;
+		    case 2 : 
+		      tauDecayMode = kOneProng2pi0;
+		      break;
+		    }
+		    break;
+		  case 3 : 
+		    switch ( numNeutralPions ){
+		    case 0 : 
+		      tauDecayMode = kThreeProng0pi0;
+		      break;
+		    case 1 : 
+		      tauDecayMode = kThreeProng1pi0;
+		      break;
+		    }
+		    break;
+		  }
+		}
+	      }
+	      //	      cout<<" tauDecayMode: "<<tauDecayMode<<endl;
+	      if (tauDecayMode == kOther){
+//		cout<<output7<<endl;
+//                   std::cout << "HepMCProduct INFO" << std::endl;
+//		   theEvent->print();
+//		   std::cout << std::endl;
+	      }
+	      hGenTauDecay_DecayModes_->Fill(tauDecayMode);
+	      FinalTau=false;
+	      if ( tauDecayMode == kOneProng0pi0   ||
+		   tauDecayMode == kOneProng1pi0   ||
+		   tauDecayMode == kOneProng2pi0   ||
+		   tauDecayMode == kThreeProng0pi0 ||
+		   tauDecayMode == kThreeProng1pi0 ||
+		   tauDecayMode == kOther) { 
+		FinalTau=true; 
+	      }
+	      else {
+		FinalTau=false;
+		//		if ( numOtherParticles != 0 )
+		//  cout <<" This decay mode has no cathegory. "<< endl;
+		
+	      }
+	      
+	      if(FinalTau) {  // Meaning: did it find a Neutrino in the list of Daughter particles? Then fill histograms of the original Tau info
+		
+		  ptTauMC_->Fill((*p)->momentum().perp());
+		  etaTauMC_->Fill((*p)->momentum().eta()); 
+                  phiTauMC_->Fill((*p)->momentum().phi()*(180./TMath::Pi()));
+		  energyTauMC_->Fill((*p)->momentum().e());		   
+                  
+		  // Get the Tau Lorentz Vector
+		  //		  TLorentzVector theTau((*p)->momentum().x(),(*p)->momentum().y(),(*p)->momentum().z(),(*p)->momentum().e());
+		  //	  TauJetMC=theTau-TauNeutrino;      // Substract the Neutrino Lorentz Vector from the Tau
+		  if (abs(TauJetMC.Eta())<2.5 && TauJetMC.Perp()>5.0) {
+		    nMCTaus_ptTauJet_->Fill(TauJetMC.Perp());  // Fill the histogram with the Pt, Eta, Energy of the Tau Jet at Generator level
+		    nMCTaus_etaTauJet_->Fill(TauJetMC.Eta()); 
+                    nMCTaus_phiTauJet_->Fill(TauJetMC.Phi()*180./TMath::Pi());
+		    nMCTaus_energyTauJet_->Fill(TauJetMC.E());
+		    tempvec.push_back(TauJetMC);
+		    ++numMCTaus;
+		  }
+	    }
+	    }
 	}
+    } // closing the loop over the Particles at Generator level
+
+  return tempvec;
+  //  cout<<" Number of Taus at Generator Level: "<< numMCTaus << endl; 
+}
+
+std::vector<HepMC::GenParticle*> TauTagVal::getGenStableDecayProducts(const HepMC::GenParticle* particle)
+{
+  HepMC::GenVertex* vertex = particle->end_vertex();
+
+  std::vector<HepMC::GenParticle*> decayProducts;
+  for ( HepMC::GenVertex::particles_out_const_iterator daughter_particle = vertex->particles_out_const_begin(); 
+	daughter_particle != vertex->particles_out_const_end(); ++daughter_particle ){
+    int pdg_id = abs((*daughter_particle)->pdg_id());
+
+    // check if particle is stable
+    if ( pdg_id == 11 || pdg_id == 12 || pdg_id == 13 || pdg_id == 14 || pdg_id == 16 ||  pdg_id == 111 || pdg_id == 211 ){
+      // stable particle, identified by pdg code
+      decayProducts.push_back((*daughter_particle));
+    } else if ( (*daughter_particle)->end_vertex() != NULL ){
+      // unstable particle, identified by non-zero decay vertex
+
+      std::vector<HepMC::GenParticle*> addDecayProducts = getGenStableDecayProducts(*daughter_particle);
+
+      for ( std::vector<HepMC::GenParticle*>::const_iterator adddaughter_particle = addDecayProducts.begin(); adddaughter_particle != addDecayProducts.end(); ++adddaughter_particle ){
+	decayProducts.push_back((*adddaughter_particle));
+      }
+    } else {
+      // stable particle, not identified by pdg code
+      decayProducts.push_back((*daughter_particle));
     }
-  return Daughters;
+  }
+   
+  return decayProducts;
 }
 
 
@@ -490,70 +652,3 @@ int jjj=0;
 }
 //Get a list of visible Tau Jets
 
-std::vector<TLorentzVector> TauTagVal::getVectorOfVisibleTauJets(HepMC::GenEvent *theEvent)
-{
-  std::vector<TLorentzVector> tempvec;   
-  HepMC::GenVertex* TauDecVtx = 0 ;
-  int numMCTaus = 0;
-  TLorentzVector TauJetMC(0.0,0.0,0.0,0.0);
-  for ( HepMC::GenEvent::particle_iterator p = theEvent->particles_begin(); // Loop over all particles
-	p != theEvent->particles_end(); ++p ) 
-    {
-      
-      if(abs((*p)->pdg_id())==15 && ((*p)->status()==2))   // Is it a Tau and Decayed?
-	{
-	  bool FinalTau=true;                           // This looks like a final decayed Tau 
-	  TLorentzVector TauNeutrino(0.0,0.0,0.0,0.);   // Neutrino momentum from the Tau decay at GenLevel
-	  
-	  vector<HepMC::GenParticle*> TauDaught;
-          TauDaught=Daughters((*p));
-	  
-          TauDecVtx = (*p)->end_vertex();
-	  
-	  if ( TauDecVtx != 0 )
-	    {
-	      // Loop over Tau Daughter particles and store the Tau neutrino momentum for future use
-	      for(vector<HepMC::GenParticle*>::iterator pit=TauDaught.begin();pit!=TauDaught.end();++pit) 
-		{
-		  if(abs((*pit)->pdg_id())==15) FinalTau=false;
-		  if(abs((*pit)->pdg_id())==16) {
-		    TauNeutrino=TLorentzVector((*pit)->momentum().px(),(*pit)->momentum().py(),(*pit)->momentum().pz(),(*pit)->momentum().e());
-		  }
-		}
-	    
-	      if(FinalTau)   // Meaning: did it find a Neutrino in the list of Daughter particles? Then fill histograms of the original Tau info
-		{
-		  ptTauMC_->Fill((*p)->momentum().perp());
-		  etaTauMC_->Fill((*p)->momentum().eta()); 
-                  phiTauMC_->Fill((*p)->momentum().phi()*(180./TMath::Pi()));
-		  energyTauMC_->Fill((*p)->momentum().e());		   
-                   
-                      // Get the Tau Lorentz Vector
-		  TLorentzVector theTau((*p)->momentum().x(),(*p)->momentum().y(),(*p)->momentum().z(),(*p)->momentum().e());
-		  TauJetMC=theTau-TauNeutrino;      // Substract the Neutrino Lorentz Vector from the Tau
-		  if (abs(TauJetMC.Eta())<2.5 && TauJetMC.Perp()>5.0) {
-		    nMCTaus_ptTauJet_->Fill(TauJetMC.Perp());  // Fill the histogram with the Pt, Eta, Energy of the Tau Jet at Generator level
-		    nMCTaus_etaTauJet_->Fill(TauJetMC.Eta()); 
-                    nMCTaus_phiTauJet_->Fill(TauJetMC.Phi()*180./TMath::Pi());
-		    nMCTaus_energyTauJet_->Fill(TauJetMC.E());
-		    for (int jj =0; jj != 6; jj++){
-                      double ChangingIsoCone = jj*0.05 + 0.2;
-		      nTausTotvsConeIsolation_->Fill(ChangingIsoCone);
-		      double ChangingSigCone = jj*0.01+0.07;
-		      nTausTotvsConeSignal_->Fill(ChangingSigCone);
-		      int ChangingPtLeadTk = int(jj*1.0 + 2.0);
-		      nTausTotvsPtLeadingTrack_->Fill(double (ChangingPtLeadTk));
-		      double ChangingMatchingCone = jj*0.01 + 0.07;
-		      nTausTotvsMatchingConeSize_->Fill(ChangingMatchingCone);
-		    }
-		    tempvec.push_back(TauJetMC);
-		    ++numMCTaus;
-		  }
-		}
-	    }
-	}
-  } // closing the loop over the Particles at Generator level
-
-  return tempvec;
-  //  cout<<" Number of Taus at Generator Level: "<< numMCTaus << endl; 
-}
