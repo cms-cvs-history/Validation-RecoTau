@@ -13,7 +13,7 @@
 //
 // Original Author:  Simone Gennai/Ricardo Vasquez Sierra
 //         Created:  Wed Apr 12 11:12:49 CEST 2006
-// $Id: TauTagVal.cc,v 1.11.2.6 2007/10/13 21:46:34 vasquez Exp $
+// $Id: TauTagVal.cc,v 1.11.2.7 2007/10/31 18:53:18 vasquez Exp $
 //
 //
 // user include files
@@ -578,6 +578,16 @@ std::vector<TLorentzVector> TauTagVal::getVectorOfVisibleTauJets(HepMC::GenEvent
 		    nMCTaus_etaTauJet_->Fill(TauJetMC.Eta()); 
                     nMCTaus_phiTauJet_->Fill(TauJetMC.Phi()*180./TMath::Pi());
 		    nMCTaus_energyTauJet_->Fill(TauJetMC.E());
+		    for (int jj =0; jj != 6; jj++){
+                      double ChangingIsoCone = jj*0.05 + 0.2;
+		      nTausTotvsConeIsolation_->Fill(ChangingIsoCone);
+		      double ChangingSigCone = jj*0.01+0.07;
+		      nTausTotvsConeSignal_->Fill(ChangingSigCone);
+		      int ChangingPtLeadTk = int(jj*1.0 + 2.0);
+		      nTausTotvsPtLeadingTrack_->Fill(double (ChangingPtLeadTk));
+		      double ChangingMatchingCone = jj*0.01 + 0.07;
+		      nTausTotvsMatchingConeSize_->Fill(ChangingMatchingCone);
+		    }
 		    tempvec.push_back(TauJetMC);
 		    ++numMCTaus;
 		  }
