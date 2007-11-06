@@ -3,43 +3,43 @@
   gSystem->Load("drawEfficiency_C.so");
   gSystem->Load("drawEfficiencies_C.so");
 
-  TFile f("tautag_IsoEffValid.root");
+  TFile f("tautag_IsoEffValid_Z2Tau.root");
 
   TString ReleaseVersion("CMSSW160");
   TString Scale("LinearScale");
 
-  TH1F* nMCetaTau=  (TH1F*)f.Get("DQMData/TausAtGenLevel_ConeIsolationForValidation/eta_Tau_GenLevel");
-  TH1F* nMCptTau=   (TH1F*)f.Get("DQMData/TausAtGenLevel_ConeIsolationForValidation/pt_Tau_GenLevel");
+  TH1F* nMCetaTau=  (TH1F*)f.Get("DQMData/TausAtGenLevel_coneIsolationTauJetTags/eta_Tau_GenLevel");
+  TH1F* nMCptTau=   (TH1F*)f.Get("DQMData/TausAtGenLevel_coneIsolationTauJetTags/pt_Tau_GenLevel");
 
-  TH1F* nMCetaTauJet =    (TH1F*)f.Get("DQMData/TausAtGenLevel_ConeIsolationForValidation/nMC_Taus_vs_etaTauJet");
-  TH1F* nMCptTauJet =     (TH1F*)f.Get("DQMData/TausAtGenLevel_ConeIsolationForValidation/nMC_Taus_vs_ptTauJet");
-  TH1F* nMCenergyTauJet = (TH1F*)f.Get("DQMData/TausAtGenLevel_ConeIsolationForValidation/nMC_Taus_vs_energyTauJet");
+  TH1F* nMCetaTauJet =    (TH1F*)f.Get("DQMData/TausAtGenLevel_coneIsolationTauJetTags/nMC_Taus_vs_etaTauJet");
+  TH1F* nMCptTauJet =     (TH1F*)f.Get("DQMData/TausAtGenLevel_coneIsolationTauJetTags/nMC_Taus_vs_ptTauJet");
+  TH1F* nMCenergyTauJet = (TH1F*)f.Get("DQMData/TausAtGenLevel_coneIsolationTauJetTags/nMC_Taus_vs_energyTauJet");
 
-  TH1F* nRecoJetetaTauJet =    (TH1F*)f.Get("DQMData/ReconstructedJet_ConeIsolationForValidation/n_RecoJet_vs_etaTauJet");
-  TH1F* nRecoJetptTauJet =     (TH1F*)f.Get("DQMData/ReconstructedJet_ConeIsolationForValidation/n_RecoJet_vs_ptTauJet");
-  TH1F* nRecoJetenergyTauJet = (TH1F*)f.Get("DQMData/ReconstructedJet_ConeIsolationForValidation/n_RecoJet_vs_energyTauJet");
-  TH1F* nAssociatedTracks =    (TH1F*)f.Get("DQMData/ReconstructedJet_ConeIsolationForValidation/Number_Associated_Tracks");
-  TH1F* nSelectedTracks =      (TH1F*)f.Get("DQMData/ReconstructedJet_ConeIsolationForValidation/Number_Selected_Tracks");
+  TH1F* nRecoJetetaTauJet =    (TH1F*)f.Get("DQMData/ReconstructedJet_coneIsolationTauJetTags/n_RecoJet_vs_etaTauJet");
+  TH1F* nRecoJetptTauJet =     (TH1F*)f.Get("DQMData/ReconstructedJet_coneIsolationTauJetTags/n_RecoJet_vs_ptTauJet");
+  TH1F* nRecoJetenergyTauJet = (TH1F*)f.Get("DQMData/ReconstructedJet_coneIsolationTauJetTags/n_RecoJet_vs_energyTauJet");
+  TH1F* nAssociatedTracks =    (TH1F*)f.Get("DQMData/ReconstructedJet_coneIsolationTauJetTags/Number_Associated_Tracks");
+  TH1F* nSelectedTracks =      (TH1F*)f.Get("DQMData/ReconstructedJet_coneIsolationTauJetTags/Number_Selected_Tracks");
 
-  TH1F* nRecoJetLTetaTauJet =    (TH1F*)f.Get("DQMData/ReconstructedJetWithLeadingTrack_ConeIsolationForValidation/n_RecoJet+LeadingTrack_vs_etaTauJet");
-  TH1F* nRecoJetLTptTauJet =     (TH1F*)f.Get("DQMData/ReconstructedJetWithLeadingTrack_ConeIsolationForValidation/n_RecoJet+LeadingTrack_vs_ptTauJet");
-  TH1F* nRecoJetLTenergyTauJet = (TH1F*)f.Get("DQMData/ReconstructedJetWithLeadingTrack_ConeIsolationForValidation/n_RecoJet+LeadingTrack_vs_energyTauJet");
+  TH1F* nRecoJetLTetaTauJet =    (TH1F*)f.Get("DQMData/ReconstructedJetWithLeadingTrack_coneIsolationTauJetTags/n_RecoJet+LeadingTrack_vs_etaTauJet");
+  TH1F* nRecoJetLTptTauJet =     (TH1F*)f.Get("DQMData/ReconstructedJetWithLeadingTrack_coneIsolationTauJetTags/n_RecoJet+LeadingTrack_vs_ptTauJet");
+  TH1F* nRecoJetLTenergyTauJet = (TH1F*)f.Get("DQMData/ReconstructedJetWithLeadingTrack_coneIsolationTauJetTags/n_RecoJet+LeadingTrack_vs_energyTauJet");
 
-  TH1F* nTaggedJetsetaTauJet =    (TH1F*)f.Get("DQMData/TauTaggedJets_ConeIsolationForValidation/n_IsolatedTauTaggedJets_vs_etaTauJet");
-  TH1F* nTaggedJetsptTauJet =     (TH1F*)f.Get("DQMData/TauTaggedJets_ConeIsolationForValidation/n_IsolatedTauTaggedJets_vs_ptTauJet");
-  TH1F* nTaggedJetsenergyTauJet = (TH1F*)f.Get("DQMData/TauTaggedJets_ConeIsolationForValidation/n_IsolatedTauTaggedJets_vs_energyTauJet");
+  TH1F* nTaggedJetsetaTauJet =    (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/n_IsolatedTauTaggedJets_vs_etaTauJet");
+  TH1F* nTaggedJetsptTauJet =     (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/n_IsolatedTauTaggedJets_vs_ptTauJet");
+  TH1F* nTaggedJetsenergyTauJet = (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/n_IsolatedTauTaggedJets_vs_energyTauJet");
 
-  TH1F* nEMTaggedJetsetaTauJet =    (TH1F*)f.Get("DQMData/TauEMTaggedJets_ConeIsolationForValidation/n_IsolatedTauTaggedJets_vs_etaTauJet");
+  TH1F* nEMTaggedJetsetaTauJet =    (TH1F*)f.Get("DQMData/TauEMTaggedJets_coneIsolationTauJetTags/n_IsolatedTauTaggedJets_vs_etaTauJet");
   TH1F* nEMTaggedJetsetaTauJet =    (TH1F*)f.Get("DQMData/TauEMTaggedJets_ecalIsolation/n_EMIsolatedTauTaggedJets_vs_etaTauJet");
   TH1F* nEMTaggedJetsptTauJet =     (TH1F*)f.Get("DQMData/TauEMTaggedJets_ecalIsolation/n_EMIsolatedTauTaggedJets_vs_ptTauJet");
   TH1F* nEMTaggedJetsenergyTauJet = (TH1F*)f.Get("DQMData/TauEMTaggedJets_ecalIsolation/n_EMIsolatedTauTaggedJets_vs_energyTauJet");
 
 
-  TH1F* LeadingTrackPt_TaggedTau =   (TH1F*)f.Get("DQMData/TauTaggedJets_ConeIsolationForValidation/LeadingTrackPt_After_Isolation");
-  TH1F* DeltaR_LTandJet_TaggedTau =  (TH1F*)f.Get("DQMData/TauTaggedJets_ConeIsolationForValidation/DeltaR_LT_and_Jet_After_Isolation");
-  TH1F* SignalTracks_TaggedTau =     (TH1F*)f.Get("DQMData/TauTaggedJets_ConeIsolationForValidation/Signal_Tks_After_Isolation");
-  TH1F* SelectedTracks_TaggedTau =   (TH1F*)f.Get("DQMData/TauTaggedJets_ConeIsolationForValidation/Selected_Tks_After_Isolation");
-  TH1F* AssociatedTracks_TaggedTau = (TH1F*)f.Get("DQMData/TauTaggedJets_ConeIsolationForValidation/Associated_Tks_After_Isolation");
+  TH1F* LeadingTrackPt_TaggedTau =   (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/LeadingTrackPt_After_Isolation");
+  TH1F* DeltaR_LTandJet_TaggedTau =  (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/DeltaR_LT_and_Jet_After_Isolation");
+  TH1F* SignalTracks_TaggedTau =     (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/Signal_Tks_After_Isolation");
+  TH1F* SelectedTracks_TaggedTau =   (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/Selected_Tks_After_Isolation");
+  TH1F* AssociatedTracks_TaggedTau = (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/Associated_Tks_After_Isolation");
 
   gStyle->SetOptStat("ie");
 
@@ -157,8 +157,8 @@
   */
   //*****************************************************************************************************
 
-  TH1F* deltaRLeadingTrackJetP =        (TH1F *)f.Get("DQMData/LeadingTrackPtAndDeltaRStudies_ConeIsolationForValidation/DeltaR_LeadingTrack_in_RecoJet");
-  TH1F* leadingTrackPtJet      =        (TH1F *)f.Get("DQMData/LeadingTrackPtAndDeltaRStudies_ConeIsolationForValidation/Leading_track_pt_in_RecoJet");
+  TH1F* deltaRLeadingTrackJetP =        (TH1F *)f.Get("DQMData/LeadingTrackPtAndDeltaRStudies_coneIsolationTauJetTags/DeltaR_LeadingTrack_in_RecoJet");
+  TH1F* leadingTrackPtJet      =        (TH1F *)f.Get("DQMData/LeadingTrackPtAndDeltaRStudies_coneIsolationTauJetTags/Leading_track_pt_in_RecoJet");
 
   c21 = new TCanvas("c21","",125,125,615,615);
   deltaRLeadingTrackJetP->Draw();
@@ -271,14 +271,14 @@
   c170 = new TCanvas("c170","EMIsolationPartialEfficencyEnergy",35,35,525,525);
   drawEfficiency("EMIsolated/Isolated " +ReleaseVersion, gr13, "Energy (GeV) (MC Vis. Tau)",(TH1F*)  nTaggedJetsenergyTauJet->Clone(), c170, text_bothCuts, Scale); 
   /*
-  TH1F* nTausTaggedvsMatchingConeSize = (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tagged_vs_MatchingConeSize");
-  TH1F* nTausTotvsMatchingConeSize =    (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tot_vs_MatchingConeSize");
-  TH1F* nTausTaggedvsPtLeadingTrack =   (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tagged_vs_PtLeadingTrack");
-  TH1F* nTausTotvsPtLeadingTrack=       (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tot_vs_PtLeadingTrack");
-  TH1F* nTausTaggedvsConeIsolation=     (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tagged_vs_coneIsolation");
-  TH1F* nTausTotvsConeIsolation=        (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tot_vs_coneIsolation");
-  TH1F* nTausTaggedvsConeSignal=        (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tagged_vs_coneSignal");
-  TH1F* nTausTotvsConeSignal=           (TH1F *)f.Get("DQMData/TaggingStudies_ConeIsolationForValidation/nTaus_Tot_vs_coneSignal");
+  TH1F* nTausTaggedvsMatchingConeSize = (TH1F *)f.Get("DQMData/TaggingStudies_coneIsolationTauJetTags/nTaus_Tagged_vs_MatchingConeSize");
+  TH1F* nTausTotvsMatchingConeSize =    (TH1F *)f.Get("DQMData/TaggingStudies_coneIsolationTauJetTags/nTaus_Tot_vs_MatchingConeSize");
+  TH1F* nTausTaggedvsPtLeadingTrack =   (TH1F *)f.Get("DQMData/TaggingStudies_coneIsolationTauJetTags/nTaus_Tagged_vs_PtLeadingTrack");
+  TH1F* nTausTotvsPtLeadingTrack=       (TH1F *)f.Get("DQMData/TaggingStudies_coneIsolationTauJetTags/nTaus_Tot_vs_PtLeadingTrack");
+  TH1F* nTausTaggedvsConeIsolation=     (TH1F *)f.Get("DQMData/TaggingStudies_coneIsolationTauJetTags/nTaus_Tagged_vs_coneIsolation");
+  TH1F* nTausTotvsConeIsolation=        (TH1F *)f.Get("DQMData/TaggingStudies_coneIsolationTauJetTags/nTaus_Tot_vs_coneIsolation");
+  TH1F* nTausTaggedvsConeSignal=        (TH1F *)f.Get("DQMData/TaggingStudies_coneIsolationTauJetTags/nTaus_Tagged_vs_coneSignal");
+  TH1F* nTausTotvsConeSignal=           (TH1F *)f.Get("DQMData/TaggingStudies_coneIsolationTauJetTags/nTaus_Tot_vs_coneSignal");
 
 
   TGraphAsymmErrors* gr13 =  new TGraphAsymmErrors(nTausTaggedvsMatchingConeSize,nTausTotvsMatchingConeSize );

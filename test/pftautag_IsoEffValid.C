@@ -5,7 +5,7 @@
 
   TFile f("pftautag_IsoEffValid.root");
 
-  TString ReleaseVersion("CMSSW160");
+  TString ReleaseVersion("CMSSW170pre5");
   TString Scale("LinearScale");
 
   TH1F* nMCetaTau=  (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/eta_Tau_GenLevel");
