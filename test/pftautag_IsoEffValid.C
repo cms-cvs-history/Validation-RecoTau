@@ -3,9 +3,9 @@
   gSystem->Load("drawEfficiency_C.so");
   gSystem->Load("drawEfficiencies_C.so");
 
-  TFile f("pftautag_IsoEffValid.root");
+  TFile f("pftautagval_CMSSW_1_8_0_pre1_OneProngAndThreeProng_PFTAU.root");
 
-  TString ReleaseVersion("CMSSW170pre5");
+  TString ReleaseVersion("CMSSW180pre1");
   TString Scale("LinearScale");
 
   TH1F* nMCetaTau=  (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/eta_Tau_GenLevel");

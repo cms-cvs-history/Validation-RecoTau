@@ -3,9 +3,9 @@
   gSystem->Load("drawEfficiency_C.so");
   gSystem->Load("drawEfficiencies_C.so");
 
-  TFile f("tautag_IsoEffValid_Z2Tau.root");
+  TFile f("tautag_CMSSW_1_8_0_pre1_OneProngAndThreeProng_TAU.root");
 
-  TString ReleaseVersion("CMSSW160");
+  TString ReleaseVersion("CMSSW180pre1");
   TString Scale("LinearScale");
 
   TH1F* nMCetaTau=  (TH1F*)f.Get("DQMData/TausAtGenLevel_coneIsolationTauJetTags/eta_Tau_GenLevel");
@@ -14,26 +14,29 @@
   TH1F* nMCetaTauJet =    (TH1F*)f.Get("DQMData/TausAtGenLevel_coneIsolationTauJetTags/nMC_Taus_vs_etaTauJet");
   TH1F* nMCptTauJet =     (TH1F*)f.Get("DQMData/TausAtGenLevel_coneIsolationTauJetTags/nMC_Taus_vs_ptTauJet");
   TH1F* nMCenergyTauJet = (TH1F*)f.Get("DQMData/TausAtGenLevel_coneIsolationTauJetTags/nMC_Taus_vs_energyTauJet");
+  TH1F* nMCphiTauJet =    (TH1F*)f.Get("DQMData/TausAtGenLevel_coneIsolationTauJetTags/nMC_Taus_vs_phiTauJet");
 
   TH1F* nRecoJetetaTauJet =    (TH1F*)f.Get("DQMData/ReconstructedJet_coneIsolationTauJetTags/n_RecoJet_vs_etaTauJet");
   TH1F* nRecoJetptTauJet =     (TH1F*)f.Get("DQMData/ReconstructedJet_coneIsolationTauJetTags/n_RecoJet_vs_ptTauJet");
   TH1F* nRecoJetenergyTauJet = (TH1F*)f.Get("DQMData/ReconstructedJet_coneIsolationTauJetTags/n_RecoJet_vs_energyTauJet");
+  TH1F* nRecoJetphiTauJet = (TH1F*)f.Get("DQMData/ReconstructedJet_coneIsolationTauJetTags/n_RecoJet_vs_phiTauJet");
   TH1F* nAssociatedTracks =    (TH1F*)f.Get("DQMData/ReconstructedJet_coneIsolationTauJetTags/Number_Associated_Tracks");
   TH1F* nSelectedTracks =      (TH1F*)f.Get("DQMData/ReconstructedJet_coneIsolationTauJetTags/Number_Selected_Tracks");
 
   TH1F* nRecoJetLTetaTauJet =    (TH1F*)f.Get("DQMData/ReconstructedJetWithLeadingTrack_coneIsolationTauJetTags/n_RecoJet+LeadingTrack_vs_etaTauJet");
   TH1F* nRecoJetLTptTauJet =     (TH1F*)f.Get("DQMData/ReconstructedJetWithLeadingTrack_coneIsolationTauJetTags/n_RecoJet+LeadingTrack_vs_ptTauJet");
   TH1F* nRecoJetLTenergyTauJet = (TH1F*)f.Get("DQMData/ReconstructedJetWithLeadingTrack_coneIsolationTauJetTags/n_RecoJet+LeadingTrack_vs_energyTauJet");
-
+  TH1F* nRecoJetLTphiTauJet = (TH1F*)f.Get("DQMData/ReconstructedJetWithLeadingTrack_coneIsolationTauJetTags/n_RecoJet+LeadingTrack_vs_phiTauJet");
+ 
   TH1F* nTaggedJetsetaTauJet =    (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/n_IsolatedTauTaggedJets_vs_etaTauJet");
   TH1F* nTaggedJetsptTauJet =     (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/n_IsolatedTauTaggedJets_vs_ptTauJet");
   TH1F* nTaggedJetsenergyTauJet = (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/n_IsolatedTauTaggedJets_vs_energyTauJet");
+  TH1F* nTaggedJetsphiTauJet = (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/n_IsolatedTauTaggedJets_vs_phiTauJet");
 
-  TH1F* nEMTaggedJetsetaTauJet =    (TH1F*)f.Get("DQMData/TauEMTaggedJets_coneIsolationTauJetTags/n_IsolatedTauTaggedJets_vs_etaTauJet");
   TH1F* nEMTaggedJetsetaTauJet =    (TH1F*)f.Get("DQMData/TauEMTaggedJets_ecalIsolation/n_EMIsolatedTauTaggedJets_vs_etaTauJet");
   TH1F* nEMTaggedJetsptTauJet =     (TH1F*)f.Get("DQMData/TauEMTaggedJets_ecalIsolation/n_EMIsolatedTauTaggedJets_vs_ptTauJet");
   TH1F* nEMTaggedJetsenergyTauJet = (TH1F*)f.Get("DQMData/TauEMTaggedJets_ecalIsolation/n_EMIsolatedTauTaggedJets_vs_energyTauJet");
-
+  TH1F* nEMTaggedJetsphiTauJet = (TH1F*)f.Get("DQMData/TauEMTaggedJets_ecalIsolation/n_EMIsolatedTauTaggedJets_vs_phiTauJet");
 
   TH1F* LeadingTrackPt_TaggedTau =   (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/LeadingTrackPt_After_Isolation");
   TH1F* DeltaR_LTandJet_TaggedTau =  (TH1F*)f.Get("DQMData/TauTaggedJets_coneIsolationTauJetTags/DeltaR_LT_and_Jet_After_Isolation");
@@ -270,6 +273,47 @@
   TGraphAsymmErrors* gr13 =  new TGraphAsymmErrors(nEMTaggedJetsenergyTauJet, nTaggedJetsenergyTauJet);
   c170 = new TCanvas("c170","EMIsolationPartialEfficencyEnergy",35,35,525,525);
   drawEfficiency("EMIsolated/Isolated " +ReleaseVersion, gr13, "Energy (GeV) (MC Vis. Tau)",(TH1F*)  nTaggedJetsenergyTauJet->Clone(), c170, text_bothCuts, Scale); 
+
+
+  //===============================================================Phi========================================================
+
+  TPaveText* text_bothCuts = new TPaveText(0.66, 0.82, 0.92, 0.92, "brNDC");
+  text_bothCuts->SetBorderSize(0);
+  text_bothCuts->SetFillColor(0);
+  text_bothCuts->AddText(Form(" P_{T} > %.1f GeV", 5.0));
+  text_bothCuts->AddText(Form(" %.1f  < #eta < %.1f ", -2.5, 2.5));
+
+  TGraphAsymmErrors* gr90 =  new TGraphAsymmErrors(nTaggedJetsphiTauJet, nMCphiTauJet);
+  c90 = new TCanvas("c90","IsolationTotalEfficiencyPhi",30,30,520,520);
+  drawEfficiency("Isolated/MC Visible Tau "+ReleaseVersion, gr90, "#phi (MC Vis. Tau)", (TH1F*) nMCphiTauJet->Clone(), c90, text_bothCuts, Scale);
+
+  TGraphAsymmErrors* gr9 =  new TGraphAsymmErrors(nEMTaggedJetsphiTauJet, nMCphiTauJet);
+  c13 = new TCanvas("c13","TotalEfficiencyPhi",30,30,520,520);
+  drawEfficiency("EMIsolated/MC Visible Taus "+ ReleaseVersion, gr9, "#phi (MC Vis. Tau)", (TH1F*) nMCphiTauJet->Clone(), c13, text_bothCuts, Scale);
+  
+  TGraphAsymmErrors* gr10 =  new TGraphAsymmErrors(nRecoJetphiTauJet,  nMCphiTauJet);
+  c14 = new TCanvas("c14","CaloJetTotalEfficiencyPhi",35,35,525,525);
+  drawEfficiency("Jets(Matched)/MC Visible Taus "+ ReleaseVersion, gr10, "#phi (MC Vis. Tau)",(TH1F*)  nMCphiTauJet->Clone(), c14, text_bothCuts, Scale);
+
+  TGraphAsymmErrors* gr102 = new TGraphAsymmErrors(nRecoJetLTphiTauJet, nMCphiTauJet);
+  c102 = new TCanvas("c102", "EfficienciesStepByStepPhi", 230, 230, 720, 720);
+  drawEfficiencies("Different Steps/MC Visible Taus "+ ReleaseVersion, gr10, gr102, gr90, gr9,  "#phi (MC Vis. Tau)",(TH1F*)  nMCphiTauJet->Clone(), c102, text_bothCuts, "Calo", Scale);
+
+  TGraphAsymmErrors* gr11 =  new TGraphAsymmErrors(nRecoJetLTphiTauJet,  nRecoJetphiTauJet);
+  c15 = new TCanvas("c15","FindingLeadTrackPartialEfficiencyPhi",35,35,525,525);
+  drawEfficiency("Jets+LeadTr/Jets(Matched) "+ReleaseVersion, gr11, "#phi (MC Vis. Tau)",(TH1F*)  nRecoJetphiTauJet->Clone(), c15, text_bothCuts, Scale);  
+  		 
+  TGraphAsymmErrors* gr12 =  new TGraphAsymmErrors(nTaggedJetsphiTauJet,  nRecoJetLTphiTauJet);
+  c16 = new TCanvas("c16","IsolationPartialEfficencyPhi",35,35,525,525);
+  drawEfficiency("Isolated/Jets+LeadTr " +ReleaseVersion, gr12, "#phi (MC Vis. Tau)",(TH1F*)  nRecoJetphiTauJet->Clone(), c16, text_bothCuts, Scale); 
+
+  TGraphAsymmErrors* gr13 =  new TGraphAsymmErrors(nEMTaggedJetsphiTauJet, nTaggedJetsphiTauJet);
+  c170 = new TCanvas("c170","EMIsolationPartialEfficencyPhi",35,35,525,525);
+  drawEfficiency("EMIsolated/Isolated " +ReleaseVersion, gr13, "#phi (MC Vis. Tau)",(TH1F*)  nTaggedJetsphiTauJet->Clone(), c170, text_bothCuts, Scale); 
+
+
+
+
   /*
   TH1F* nTausTaggedvsMatchingConeSize = (TH1F *)f.Get("DQMData/TaggingStudies_coneIsolationTauJetTags/nTaus_Tagged_vs_MatchingConeSize");
   TH1F* nTausTotvsMatchingConeSize =    (TH1F *)f.Get("DQMData/TaggingStudies_coneIsolationTauJetTags/nTaus_Tot_vs_MatchingConeSize");
