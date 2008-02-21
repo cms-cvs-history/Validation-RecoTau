@@ -32,6 +32,7 @@ void drawEfficiencies(TString histogramTitle, TGraphAsymmErrors* graph1,  TGraph
   hDummy->Draw("p");
   graph1->SetMarkerStyle(20);
   graph1->SetMarkerSize(1);
+  graph1->SetMarkerColor(1); 
   if ( Text ) Text->Draw();
   canvas->Update();
   graph1->Draw("p");
@@ -69,5 +70,5 @@ void drawEfficiencies(TString histogramTitle, TGraphAsymmErrors* graph1,  TGraph
   }
   legend->Draw();
   canvas->Update();
-  canvas->Print(TString(canvas->GetTitle()).Append(".gif"),"gif");
+  canvas->Print(TString(canvas->GetTitle()).Append(".png"),"png");
 }
