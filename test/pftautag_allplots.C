@@ -5,6 +5,7 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
 
   gSystem->Load("drawEfficiencyOther_C.so");
   gSystem->Load("drawEfficiencies_C.so");
+  gSystem->Load("drawHistograms_C.so");
 
   cout << endl << " Filename: "<< originalfilename<<endl;
   cout << endl << " comparison: " << comparison << endl;
@@ -98,6 +99,11 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
   text_ptCut->SetFillColor(0);
   text_ptCut->AddText(Form(" P_{T} > %.1f GeV", 5.0));
 
+  c4 = new TCanvas("c4", "VisibleTauMCEtadistributions", 30, 30, 520, 520);
+  drawHistograms("Visible MC Tau", nMCetaTauJet, nMCetaTauJetO, "#eta", c4, text_ptCut, releaseversion, comparison, Scale);
+
+  delete c4;
+
   TH1F* divisionHisto = (TH1F *) nMCetaTauJetO->Clone();
   divisionHisto->Divide(nPFTauCandetaTauJetO, nMCetaTauJetO, 1, 1);
 
@@ -169,6 +175,12 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
   text_etaCut->SetBorderSize(0);
   text_etaCut->SetFillColor(0);
   text_etaCut->AddText(Form(" %.1f  < #eta < %.1f ", -2.5, 2.5));
+
+  c4 = new TCanvas("c4", "VisibleTauMCPtdistributions", 30, 30, 520, 520);
+  drawHistograms("Visible MC Tau", nMCptTauJet, nMCptTauJetO, " P_{T} (GeV/c) ", c4, text_etaCut, releaseversion, comparison, Scale);
+
+  delete c4;
+
 
   TH1F* divisionHisto7 = (TH1F *) nMCptTauJetO->Clone();
   divisionHisto7->Divide(nPFTauCandptTauJetO, nMCptTauJetO, 1, 1);
@@ -243,12 +255,17 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
   text_bothCuts->AddText(Form(" P_{T} > %.1f GeV", 5.0));
   text_bothCuts->AddText(Form(" %.1f  < #eta < %.1f ", -2.5, 2.5));
 
+  c4 = new TCanvas("c4", "VisibleTauMCEnergydistributions", 30, 30, 520, 520);
+  drawHistograms("Visible MC Tau", nMCenergyTauJet, nMCenergyTauJetO, " Energy (GeV) ", c4, text_bothCuts, releaseversion, comparison, Scale);
+
+  delete c4;
+
   TH1F* divisionHisto13 = (TH1F *) nMCenergyTauJetO->Clone();
   divisionHisto13->Divide(nPFTauCandenergyTauJetO, nMCenergyTauJetO, 1, 1);
 
   TGraphAsymmErrors* gr0 =  new TGraphAsymmErrors(nPFTauCandenergyTauJet, nMCenergyTauJet);
   c4 = new TCanvas("c4","PFTauCandTotalEfficiencyEnergy",30,30,520,520);
-  drawEfficiencyOther("PFTauCand(Matched)/MC Visible Tau "+releaseversion, gr0, divisionHisto13, " Energy (GeV/c)(MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale );  
+  drawEfficiencyOther("PFTauCand(Matched)/MC Visible Tau "+releaseversion, gr0, divisionHisto13, " Energy (GeV)(MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale );  
 
   delete c4; 
 
@@ -257,7 +274,7 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
 
   TGraphAsymmErrors* gr1 =  new TGraphAsymmErrors(nPFTauCandLCHenergyTauJet, nMCenergyTauJet);
   c4 = new TCanvas("c4","FindingLeadingChargeHadronEfficiencyEnergy",30,30,520,520);
-  drawEfficiencyOther(" FindingLeadingChargeHadron/MC Visible Tau "+releaseversion, gr1, divisionHisto14, " Energy (GeV/c)(MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale ); 
+  drawEfficiencyOther(" FindingLeadingChargeHadron/MC Visible Tau "+releaseversion, gr1, divisionHisto14, " Energy (GeV)(MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale ); 
 
   delete c4; 
 
@@ -266,7 +283,7 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
 
   TGraphAsymmErrors* gr2 =  new TGraphAsymmErrors(nIsolNoChargedHadronsenergyTauJet, nMCenergyTauJet);
   c4 = new TCanvas("c4","NoChargedHadronsEfficiencyEnergy",30,30,520,520);
-  drawEfficiencyOther(" NoChargedHadrons/MC Visible Tau "+releaseversion, gr2, divisionHisto15, "Energy (GeV/c) (MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale ); 
+  drawEfficiencyOther(" NoChargedHadrons/MC Visible Tau "+releaseversion, gr2, divisionHisto15, "Energy (GeV) (MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale ); 
 
   delete c4; 
 
@@ -275,12 +292,12 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
 
   TGraphAsymmErrors* gr3 =  new TGraphAsymmErrors(nIsolNoChargedNoGammasenergyTauJet, nMCenergyTauJet);
   c4 = new TCanvas("c4","NoChargedNoGammasEfficiencyEnergy",30,30,520,520);
-  drawEfficiencyOther(" NoChargedNoGammas/MC Visible Tau "+releaseversion, gr3, divisionHisto16, "Energy (GeV/c) (MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale ); 
+  drawEfficiencyOther(" NoChargedNoGammas/MC Visible Tau "+releaseversion, gr3, divisionHisto16, "Energy (GeV) (MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale ); 
 
   delete c4; 
 
   c4 = new TCanvas("c4", "EfficienciesStepByStepEnergy", 230, 230, 720, 720);
-  drawEfficiencies("Different Steps/MC Visible Taus "+releaseversion, gr0, gr1, gr2,gr3,  "Energy (GeV/c)(MC Vis. Tau)",(TH1F*)  nMCenergyTauJet->Clone(), c4, text_bothCuts,"PFTaus", Scale);
+  drawEfficiencies("Different Steps/MC Visible Taus "+releaseversion, gr0, gr1, gr2,gr3,  "Energy (GeV)(MC Vis. Tau)",(TH1F*)  nMCenergyTauJet->Clone(), c4, text_bothCuts,"PFTaus", Scale);
 
   delete c4;
   delete gr0;
@@ -293,7 +310,7 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
 
   TGraphAsymmErrors* gr0 =  new TGraphAsymmErrors(nPFTauCandLCHenergyTauJet, nPFTauCandenergyTauJet);
   c4 = new TCanvas("c4","FindingLeadingChargedHadronPartialEfficiencyEnergy",30,30,520,520);
-  drawEfficiencyOther(" FindingLeadingChargedHadron/ PFTauCand(Matched) "+releaseversion, gr0, divisionHisto17, "Energy (GeV/c) (MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale ); 
+  drawEfficiencyOther(" FindingLeadingChargedHadron/ PFTauCand(Matched) "+releaseversion, gr0, divisionHisto17, "Energy (GeV) (MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale ); 
 
   delete c4;
 
@@ -302,7 +319,7 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
 
   TGraphAsymmErrors* gr1 =  new TGraphAsymmErrors(nIsolNoChargedHadronsenergyTauJet, nPFTauCandLCHenergyTauJet);
   c4 = new TCanvas("c4","NoChargedHadronsPartialEfficiencyEnergy",30,30,520,520);
-  drawEfficiencyOther(" NoChargedHadrons/FindingLeadingChargedHadron "+releaseversion, gr1, divisionHisto18, " Energy (GeV/c)(MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale ); 
+  drawEfficiencyOther(" NoChargedHadrons/FindingLeadingChargedHadron "+releaseversion, gr1, divisionHisto18, " Energy (GeV)(MC Vis. Tau)", (TH1F*) nMCenergyTauJet->Clone(), c4, text_bothCuts,releaseversion, comparison, Scale ); 
 
   delete c4;
   delete gr0;
@@ -315,6 +332,11 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
   text_bothCuts->SetFillColor(0);
   text_bothCuts->AddText(Form(" P_{T} > %.1f GeV", 5.0));
   text_bothCuts->AddText(Form(" %.1f  < #eta < %.1f ", -2.5, 2.5));
+
+  c4 = new TCanvas("c4", "VisibleTauMCPhidistributions", 30, 30, 520, 520);
+  drawHistograms("Visible MC Tau", nMCphiTauJet, nMCphiTauJetO, " #phi ", c4, text_bothCuts, releaseversion, comparison, Scale);
+
+  delete c4;
 
   TH1F* divisionHisto19 = (TH1F *) nMCphiTauJetO->Clone();
   divisionHisto19->Divide(nPFTauCandphiTauJetO, nMCphiTauJetO, 1, 1);
