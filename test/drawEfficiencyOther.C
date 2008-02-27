@@ -11,8 +11,7 @@
 #include <iostream>
 #include <TLegend.h>
 
-void drawEfficiencyOther(TString histogramTitle, TGraphAsymmErrors* graph, 
-TH1F* comparison, TString xAxisTitle,  TH1F* hDummy, TCanvas* canvas, TPaveText* Text,TString version, TString comparedto, TString loglinearscale="LinearScale", double Minimum=0.)
+void drawEfficiencyOther(TString histogramTitle, TGraphAsymmErrors* graph, TH1F* comparison, TString xAxisTitle,  TH1F* hDummy, TCanvas* canvas, TPaveText* Text,TString version, TString comparedto, TString loglinearscale="LinearScale", double Minimum=0.)
 { 
 
   hDummy->SetStats(false);
