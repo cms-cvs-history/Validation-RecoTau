@@ -37,6 +37,6 @@ void drawEfficiency(TString histogramTitle, TGraphAsymmErrors* graph, TString xA
   canvas->Update();
   graph->Draw("p");  
   canvas->Update();
-  canvas->Print(TString(canvas->GetTitle()).Append(".gif"),"gif");
+  canvas->Print(TString(canvas->GetTitle()).Append(".png"),"png");
   
 }
