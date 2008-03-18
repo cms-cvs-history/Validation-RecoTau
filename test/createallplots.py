@@ -42,7 +42,7 @@ for filename in filenames:
            print "pftautag_CMSSW\n"
            rootfilespftautag = rootfilespftautag + 1
 
-       elif string.find(filename,"autag_CMSSW") > 0:
+       elif string.find(filename,"_TAU") > 0:
            rootfilestautag = rootfilestautag + 1
            print "tautag_CMSSW\n"
            
@@ -111,9 +111,3 @@ if rootfilestautag == 3:
     os.system(command)
 
     os.system("mv *png tautag/ThreeProng")
-
-
-    
-
-
-    

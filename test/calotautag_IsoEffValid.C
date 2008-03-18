@@ -2,7 +2,7 @@
   gSystem->Load("drawEfficiency_C.so");
   gSystem->Load("drawEfficiencies_C.so");
 
-  TFile f("calotautag_CMSSW_2_0_0_pre2_OneProngAndThreeProng_CALOTAU.root");
+  TFile f("calotautag_CMSSW_2_0_0_pre4_OneProngAndThreeProng_CALOTAU.root");
 
   TString ReleaseVersion("CMSSW_2_0_0_pre2");
   TString Scale("LinearScale");
