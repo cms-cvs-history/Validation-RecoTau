@@ -1,0 +1,280 @@
+#!/usr/bin/python
+
+import os
+import sys
+
+#define paths
+#--------------------------------------------
+
+mpath = os.getcwd()
+
+def usage():
+     print
+     print 'Usage: '+ sys.argv[0]+ ' <root file of interest> + <release comparison> '
+     print 'e.g.: ' + sys.argv[0]+ ' pftautagHE_CMSSW_1_8_0_pre1_OneProngAndThreeProng_PFTau.root CMSSW_1_7_0_pre5'
+     print 
+     return 0
+   
+if __name__ == "__main__":
+
+   rootfile = ""
+   comparisonrelease = ""
+   if len(sys.argv)==1 or len (sys.argv) == 2 or len(sys.argv)>4:
+	   usage()
+	   sys.exit()
+   if len(sys.argv)==3:
+        try:
+            rootfile = sys.argv[1]
+            comparisonrelease = sys.argv[2]
+        except ValueError:
+            usage()
+            sys.exit()
+
+   
+   outputfilelog = sys.argv[0].replace(".py",".log")
+   outputfilelog = outputfilelog.replace("./","")
+
+   rootfileparts = rootfile.split("_")
+       
+   print " root file " + rootfile
+   
+   print " rootfileparts: "
+   
+   print rootfileparts
+   
+   print  len(rootfileparts) 
+   
+   tagtype = ""
+   releaseversion = ""
+   prongsanalyzed = ""
+   
+   tagtype = rootfileparts[0]
+
+   if len(rootfileparts) == 7:
+       releaseversion =  rootfileparts[1] + "_" +rootfileparts[2] +"_"+ rootfileparts[3] + "_"+ rootfileparts[4]
+       prongsanalyzed = rootfileparts[5]
+   if len(rootfileparts) == 8:
+       releaseversion =  rootfileparts[1] + "_"+ rootfileparts[2] + "_"+ rootfileparts[3] + "_"+ rootfileparts[4] + "_"+ rootfileparts[5]
+       prongsanalyzed = rootfileparts[6]
+	   
+   print  tagtype  + " " + releaseversion + " " + prongsanalyzed + " " + comparisonrelease
+   print 
+   
+   outputwebpage = tagtype + "_" + releaseversion + "_" + prongsanalyzed + ".html"
+   
+   print outputwebpage
+   try:
+    outputfile = open(outputwebpage, "w") 
+#	print "Output html file is being written" 
+   except IOError:
+	print " error opening " + outputwebpage
+	sys.exit()
+   outputfile.write('''<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html>\n''') 
+   outputfile.write('''<head><title>CMSSW Release Validation</title>\n''')
+   outputfile.write('''    <link rel="stylesheet" type="text/css" media="print" href="../css/print.css">\n''')
+   outputfile.write('''    <style type="text/css" media="screen">\n''')
+   outputfile.write('''    @import url("../css/layout.css");\n''')
+   outputfile.write('''    @import url("../css/content.css");\n''')
+   outputfile.write('''    @import url("../css/docbook.css");\n''')
+   outputfile.write('''    </style>\n''')
+   outputfile.write('''    <meta name="MSSmartTagsPreventParsing" content="TRUE">\n''')
+   outputfile.write('''</head>\n\n''')
+   outputfile.write('''<body>\n''')
+
+   outputfile.write('''<div id="fedora-header"><!-- DIV_I -->\n''')
+   outputfile.write('''   <div id="fedora-header-logo">\n''')
+   outputfile.write('''      <strong><big>CMSSW Release Validation</big></strong>\n''')
+   outputfile.write('''      <br>\n''')
+   outputfile.write('''      <div align="right"><a href="mailto:ricardo@fnal.gov">ricardo@fnal.gov</a></div>\n''')
+   outputfile.write('''   </div>\n''')
+   outputfile.write('''   <div id="fedora-header-items">\n''')
+   outputfile.write('''      <span class="fedora-header-icon">\n''')
+   outputfile.write('''     [<a href="https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideTauCodeValidation" alt="">About this page</a>]<br>\n''')
+   outputfile.write('''     <strong><tt class="link-internal"></tt>\n''')					        
+   outputfile.write('''     </strong>\n''')
+   outputfile.write('''     </span>\n''')
+   outputfile.write('''   </div>\n''')
+   outputfile.write('''</div><!-- DIV_I -->\n''')
+   outputfile.write('''<div id="fedora-nav"></div>\n\n''')
+
+   outputfile.write('''<div class="fedora-corner-tr">&nbsp;</div>\n''')
+   outputfile.write('''<div class="fedora-corner-tl">&nbsp;</div>\n''')
+   outputfile.write('''<div class="article" lang="en"></div>\n''')
+   outputfile.write('''<div class="titlepage"> <!-- DIV-2 -->\n''')
+   outputfile.write('''    <div> <!-- DIV-3 -->\n''')
+   outputfile.write('''         <div> <!-- DIV-4 -->\n''')
+   outputfile.write('''         <br>\n''')
+   outputfile.write('''         <center><strong>''' + releaseversion + ''' Collection: '''+ tagtype + '''  ''' + prongsanalyzed + '''</strong></center>\n''')
+   outputfile.write('''         <center><strong>Step by Step Efficiencies</strong></center>\n''')
+   outputfile.write('''         <table border="1" cellpadding="4" align="center">\n''')
+   outputfile.write('''         <tbody align="center">\n''')
+   outputfile.write('''         <center>\n''')
+   outputfile.write('''         <tr>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/EfficienciesStepByStepEta.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/EfficienciesStepByStepEta.png" width="290" border="0" alt="EfficienciesStepByStepEta.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/EfficienciesStepByStepPhi.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/EfficienciesStepByStepPhi.png" width="290" border="0" alt="EfficienciesStepByStepPhi.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/EfficienciesStepByStepPt.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/EfficienciesStepByStepPt.png" width="290" border="0" alt="EfficienciesStepByStepPt.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/EfficienciesStepByStepEnergy.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/EfficienciesStepByStepEnergy.png" width="290" border="0" alt="EfficienciesStepByStepEnergy.png"></a>\n''')   
+   outputfile.write('''         </tr>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </tbody>\n''')
+   outputfile.write('''         </table>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </div><!-- DIV-4 -->\n''')
+   outputfile.write('''         <div></div>\n''')
+   outputfile.write('''         <div> <!-- DIV-4 -->\n''')
+   outputfile.write('''         <br>\n''')       
+   outputfile.write('''         <center><strong>Calo Jet Efficiency (matching deltaR less than 0.15 compared to ''' + comparisonrelease + '''</strong></center>\n''')
+   outputfile.write('''         <table border="1" cellpadding="4" align="center">\n''')
+   outputfile.write('''         <tbody align="center">\n''')
+   outputfile.write('''         <center>\n''')
+   outputfile.write('''         <tr>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/CaloJetTotalEfficiencyEta.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/CaloJetTotalEfficiencyEta.png" width="290" border="0" alt="CaloJetTotalEfficiencyEta.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/CaloJetTotalEfficiencyPhi.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/CaloJetTotalEfficiencyPhi.png" width="290" border="0" alt="CaloJetTotalEfficiencyPhi.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/CaloJetTotalEfficiencyPt.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/CaloJetTotalEfficiencyPt.png" width="290" border="0" alt="CaloJetTotalEfficiencyPt.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/CaloJetTotalEfficiencyEnergy.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/CaloJetTotalEfficiencyEnergy.png" width="290" border="0" alt="CaloJetTotalEfficiencyEnergy.png"></a>\n''')
+   outputfile.write('''         </tr>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </tbody>\n''')
+   outputfile.write('''         </table>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </div><!-- DIV-4 -->\n''')
+   outputfile.write('''         <div></div>\n''')
+
+   outputfile.write('''         <div> <!-- DIV-4 -->\n''')
+   outputfile.write('''         <br>\n''')       
+   outputfile.write('''         <center><strong>Finding Leading Track Efficiency  (compared to ''' + comparisonrelease + '''</strong></center>\n''')
+   outputfile.write('''         <table border="1" cellpadding="4" align="center">\n''')
+   outputfile.write('''         <tbody align="center">\n''')
+   outputfile.write('''         <center>\n''')
+   outputfile.write('''         <tr>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackEfficiencyEta.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackEfficiencyEta.png" width="290" border="0" alt="FindingLeadTrackEfficiencyEta.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackEfficiencyPhi.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackEfficiencyPhi.png" width="290" border="0" alt="FindingLeadTrackEfficiencyPhi.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackEfficiencyPt.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackEfficiencyPt.png" width="290" border="0" alt="FindingLeadTrackEfficiencyPt.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackEfficiencyEnergy.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackEfficiencyEnergy.png" width="290" border="0" alt="FindingLeadTrackEfficiencyEnergy.png"></a>\n''')
+   outputfile.write('''         </tr>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </tbody>\n''')
+   outputfile.write('''         </table>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </div><!-- DIV-4 -->\n''')
+   outputfile.write('''         <div></div>\n''')
+
+   outputfile.write('''         <div> <!-- DIV-4 -->\n''')
+   outputfile.write('''         <br>\n''')       
+   outputfile.write('''         <center><strong>Finding Leading Track Partial Efficiency (compared to ''' + comparisonrelease + '''</strong></center>\n''')
+   outputfile.write('''         <table border="1" cellpadding="4" align="center">\n''')
+   outputfile.write('''         <tbody align="center">\n''')
+   outputfile.write('''         <center>\n''')
+   outputfile.write('''         <tr>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackPartialEfficiencyEta.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackPartialEfficiencyEta.png" width="290" border="0" alt="FindingLeadTrackPartialEfficiencyEta.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackPartialEfficiencyPhi.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackPartialEfficiencyPhi.png" width="290" border="0" alt="FindingLeadTrackPartialEfficiencyPhi.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackPartialEfficiencyPt.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackPartialEfficiencyPt.png" width="290" border="0" alt="FindingLeadTrackPartialEfficiencyPt.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackPartialEfficiencyEnergy.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/FindingLeadTrackPartialEfficiencyEnergy.png" width="290" border="0" alt="FindingLeadTrackPartialEfficiencyEnergy.png"></a>\n''')
+   outputfile.write('''         </tr>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </tbody>\n''')
+   outputfile.write('''         </table>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </div><!-- DIV-4 -->\n''')
+   outputfile.write('''         <div></div>\n''')   
+
+   outputfile.write('''         <div> <!-- DIV-4 -->\n''')
+   outputfile.write('''         <br>\n''')       
+   outputfile.write('''         <center><strong>Track Isolation Efficiency  (compared to ''' + comparisonrelease + '''</strong></center>\n''')
+   outputfile.write('''         <table border="1" cellpadding="4" align="center">\n''')
+   outputfile.write('''         <tbody align="center">\n''')
+   outputfile.write('''         <center>\n''')
+   outputfile.write('''         <tr>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationEfficiencyEta.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationEfficiencyEta.png" width="290" border="0" alt="TrackIsolationEfficiencyEta.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationEfficiencyPhi.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationEfficiencyPhi.png" width="290" border="0" alt="TrackIsolationEfficiencyPhi.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationEfficiencyPt.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationEfficiencyPt.png" width="290" border="0" alt="TrackIsolationEfficiencyPt.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationEfficiencyEnergy.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationEfficiencyEnergy.png" width="290" border="0" alt="TrackIsolationEfficiencyEnergy.png"></a>\n''')
+   outputfile.write('''         </tr>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </tbody>\n''')
+   outputfile.write('''         </table>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </div><!-- DIV-4 -->\n''')
+   outputfile.write('''         <div></div>\n''')
+
+   outputfile.write('''         <div> <!-- DIV-4 -->\n''')
+   outputfile.write('''         <br>\n''')       
+   outputfile.write('''         <center><strong>Track Isolation Partial Efficiency  (compared to ''' + comparisonrelease + '''</strong></center>\n''')
+   outputfile.write('''         <table border="1" cellpadding="4" align="center">\n''')
+   outputfile.write('''         <tbody align="center">\n''')
+   outputfile.write('''         <center>\n''')
+   outputfile.write('''         <tr>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationPartialEfficiencyEta.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationPartialEfficiencyEta.png" width="290" border="0" alt="TrackIsolationPartialEfficiencyEta.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationPartialEfficiencyPhi.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationPartialEfficiencyPhi.png" width="290" border="0" alt="TrackIsolationPartialEfficiencyPhi.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationPartialEfficiencyPt.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationPartialEfficiencyPt.png" width="290" border="0" alt="TrackIsolationPartialEfficiencyPt.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationPartialEfficiencyEnergy.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/TrackIsolationPartialEfficiencyEnergy.png" width="290" border="0" alt="TrackIsolationPartialEfficiencyEnergy.png"></a>\n''')
+   outputfile.write('''         </tr>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </tbody>\n''')
+   outputfile.write('''         </table>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </div><!-- DIV-4 -->\n''')
+   outputfile.write('''         <div></div>\n''')
+
+   outputfile.write('''         <div> <!-- DIV-4 -->\n''')
+   outputfile.write('''         <br>\n''')       
+   outputfile.write('''         <center><strong>EM Isolation Efficiency  (compared to ''' + comparisonrelease + '''</strong></center>\n''')
+   outputfile.write('''         <table border="1" cellpadding="4" align="center">\n''')
+   outputfile.write('''         <tbody align="center">\n''')
+   outputfile.write('''         <center>\n''')
+   outputfile.write('''         <tr>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/EMIsolationEfficiencyEta.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/EMIsolationEfficiencyEta.png" width="290" border="0" alt="EMIsolationEfficiencyEta.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/EMIsolationEfficiencyPhi.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/EMIsolationEfficiencyPhi.png" width="290" border="0" alt="EMIsolationEfficiencyPhi.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/EMIsolationEfficiencyPt.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/EMIsolationEfficiencyPt.png" width="290" border="0" alt="EMIsolationEfficiencyPt.png"></a>\n''')
+   outputfile.write('''         <td><a href="''' + tagtype + '''/''' + prongsanalyzed +'''/EMIsolationEfficiencyEnergy.png">\n''')
+   outputfile.write('''            <img src="''' + tagtype + '''/''' + prongsanalyzed +'''/EMIsolationEfficiencyEnergy.png" width="290" border="0" alt="EMIsolationEfficiencyEnergy.png"></a>\n''')
+   outputfile.write('''         </tr>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </tbody>\n''')
+   outputfile.write('''         </table>\n''')
+   outputfile.write('''         </center>\n''')
+   outputfile.write('''         </div><!-- DIV-4 -->\n''')
+   outputfile.write('''         <div></div>\n''')
+   
+   outputfile.write('''     </div> <!-- DIV-3 -->\n''')   
+   
+   outputfile.write('''</div> <!-- DIV-2 -->\n''')
+   outputfile.write('''<div class="fedora-coner-br">&nbsp;</div>\n''')
+   outputfile.write('''<div class="fedora-coner-bl">&nbsp;</div>\n''')
+   outputfile.write('''<!-- content END -->\n\n''')
+   outputfile.write('''<!-- footer BEGIN -->\n''')
+   outputfile.write('''<div id="fedora-footer">\n''')
+   outputfile.write('''Ricardo Vasquez Sierra\n''')
+   outputfile.write('''<br>\n''')
+   outputfile.write('''Fermilab/UCDavis\n''')
+   outputfile.write('''<br>\n''')
+   outputfile.write('''</div>\n''')
+   outputfile.write('''<!-- footer END -->\n''')
+   outputfile.write('''</body></html>\n''')
