@@ -3,18 +3,18 @@
   gSystem->Load("drawEfficiency_C.so");
   gSystem->Load("drawEfficiencies_C.so");
 
-  TFile f("pftautag_CMSSW_1_8_0_pre8_OneProngAndThreeProng_PFTAU.root");
+  TFile f("test.root");
 
-  TString ReleaseVersion("CMSSW180pre8");
+  TString ReleaseVersion("CMSSW210pre2");
   TString Scale("LinearScale");
 
-  TH1F* nMCetaTau=  (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/eta_Tau_GenLevel");
-  TH1F* nMCptTau=   (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/pt_Tau_GenLevel");
+  TH1F* nMCetaTau=  (TH1F*)f.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/eta_Tau_GenLevel");
+  TH1F* nMCptTau=   (TH1F*)f.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/pt_Tau_GenLevel");
 
-  TH1F* nMCetaTauJet =    (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_etaTauJet");
-  TH1F* nMCptTauJet =     (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_ptTauJet");
-  TH1F* nMCenergyTauJet = (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_energyTauJet");
-  TH1F* nMCphiTauJet = (TH1F*)f.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_phiTauJet");
+  TH1F* nMCetaTauJet =    (TH1F*)f.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_etaTauJet");
+  TH1F* nMCptTauJet =     (TH1F*)f.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_ptTauJet");
+  TH1F* nMCenergyTauJet = (TH1F*)f.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_energyTauJet");
+  TH1F* nMCphiTauJet = (TH1F*)f.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_phiTauJet");
 
   TH1F* nPFTauCandetaTauJet =    (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_etaTauJet");
   TH1F* nPFTauCandptTauJet =     (TH1F*)f.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_ptTauJet");
@@ -368,3 +368,4 @@
 }
 
 
+                                                 
