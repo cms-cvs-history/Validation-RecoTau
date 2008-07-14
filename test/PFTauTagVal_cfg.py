@@ -1,22 +1,71 @@
-Traceback (most recent call last):
-  File "/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_1_0_pre8/src/FWCore/ParameterSet/python/cfg2py.py", line 8, in ?
-    print cmsParse.dumpCfg(fileInPath)
-  File "/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_1_0_pre8/python/FWCore/ParameterSet/parseConfig.py", line 1614, in dumpCfg
-    return cfgDumper.parseFile(_fileFactory(fileName))[0]
-  File "/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_1_0_pre8/python/FWCore/ParameterSet/parsecf/pyparsing.py", line 990, in parseFile
-    return self.parseString(file_contents)
-  File "/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_1_0_pre8/python/FWCore/ParameterSet/parsecf/pyparsing.py", line 770, in parseString
-    loc, tokens = self._parse( instring.expandtabs(), 0 )
-  File "/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_1_0_pre8/python/FWCore/ParameterSet/parsecf/pyparsing.py", line 663, in _parseNoCache
-    loc,tokens = self.parseImpl( instring, preloc, doActions )
-  File "/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_1_0_pre8/python/FWCore/ParameterSet/parsecf/pyparsing.py", line 1810, in parseImpl
-    loc, resultlist = self.exprs[0]._parse( instring, loc, doActions )
-  File "/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_1_0_pre8/python/FWCore/ParameterSet/parsecf/pyparsing.py", line 689, in _parseNoCache
-    tokens = fn( instring, tokensStart, retTokens )
-  File "/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_1_0_pre8/python/FWCore/ParameterSet/parseConfig.py", line 1388, in _dumpCfg
-    values = _getCompressedNodes(s, loc, list(iter(toks[0][1])) )
-  File "/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_1_0_pre8/python/FWCore/ParameterSet/parseConfig.py", line 1380, in _getCompressedNodes
-    raise pp.ParseFatalException(s,loc,"the process contains the error \n"+str(e))
-FWCore.ParameterSet.parsecf.pyparsing.ParseFatalException: the process contains the error 
-Unable to find file 'FWCore/MessageLogger/data/MessageLogger.cfi' using the search path ${'CMSSW_SEARCH_PATH'} 
-/afs/cern.ch/user/v/vasquez/scratch0/CMSSW_2_1_0_pre8/src:/afs/cern.ch/user/v/vasquez/scratch0/CMSSW_2_1_0_pre8/share:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_1_0_pre8/src:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/cmssw/CMSSW_2_1_0_pre8/share:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-CondCore-SQLiteData/24:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-FastSimulation-MaterialEffects/20:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-FastSimulation-PileUpProducer/22:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-Geometry-CaloTopology/19-cms:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-MagneticField-Interpolation/22:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-RecoMuon-MuonIdentification/19-cms:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFBlockProducer/19-cms:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-RecoParticleFlow-PFTracking/22-cms:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-RecoTracker-RingESSource/19-cms:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-RecoTracker-RoadMapESSource/19-cms:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-SimG4CMS-Calo/19-cms:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-Validation-EcalDigis/19-cms:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-Validation-EcalHits/19-cms:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-Validation-EcalRecHits/19-cms:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-Validation-Geometry/19-cms:/afs/cern.ch/cms/sw/slc4_ia32_gcc345/cms/data-Validation-HcalHits/19-cms (at char 0), (line:1, col:1)
+# The following comments couldn't be translated into the new config version:
+
+#module execution use first line for Z->TauTau sample and the second for QCD sample changing accordingly the DataType on the PFTauTagVal module above
+
+import FWCore.ParameterSet.Config as cms
+
+process = cms.Process("TEST")
+process.load("FWCore.MessageLogger.MessageLogger_cfi")
+
+process.load("RecoParticleFlow.Configuration.RecoParticleFlow_cff")
+
+process.load("RecoJets.Configuration.RecoPFJets_cff")
+
+process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
+
+process.load("RecoTauTag.RecoTau.PFRecoTauDiscriminationAgainstElectron_cfi")
+
+process.load("RecoTauTag.RecoTau.PFRecoTauDiscriminationAgainstMuon_cfi")
+
+process.load("MagneticField.Engine.uniformMagneticField_cfi")
+
+process.DQMStore = cms.Service("DQMStore")
+
+process.source = cms.Source("PoolSource",
+    fileNames = cms.untracked.vstring('/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/0A8D021D-BD3E-DD11-B07B-000423D6CA6E.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/1075CAB6-B83E-DD11-8511-000423D98E54.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/160523FF-B83E-DD11-AA36-001617DBCF90.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/1C0F0B63-B73E-DD11-965A-000423D98A44.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/28EB4F12-B83E-DD11-9C2D-000423D98A44.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/2CA709F1-BE3E-DD11-AC34-000423D6BA18.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/363A0954-BA3E-DD11-A084-001617DBCF6A.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/5CC2112E-B63E-DD11-BF56-000423D98A44.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/64DE5D68-BB3E-DD11-BBB2-001617DC1F70.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/6C31B8CB-B63E-DD11-B129-000423D9997E.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/7E4FAA78-BA3E-DD11-B4BE-0019DB29C614.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/828AC38C-BC3E-DD11-AD22-001617DBD224.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/9894270C-B93E-DD11-B27C-000423D98804.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/9E4D4C57-B73E-DD11-BB40-000423D6CAF2.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/C0D36912-B93E-DD11-8CA7-001617DF785A.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/C6B16DE3-B93E-DD11-9423-000423D6CAF2.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/C8A0E252-B73E-DD11-A4E6-000423D99AAA.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/EE1BF32B-B93E-DD11-AB3B-001617C3B79A.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/F0B1EB65-B73E-DD11-B38C-001617C3B5E4.root', 
+        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/F6165ED7-B83E-DD11-A606-0019DB2F3F9B.root')
+)
+
+process.maxEvents = cms.untracked.PSet(
+    input = cms.untracked.int32(100)
+)
+process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
+    ignoreTotal = cms.untracked.int32(1) ## default is one
+
+)
+
+process.pfTauTagBothProngs = cms.EDAnalyzer("PFTauTagVal",
+    OutPutFile = cms.string('pftautagHEpython.root'), ## This name is modified to reflect releaseversion and histograms stored
+
+    PFTauProducer = cms.string('pfRecoTauProducer'),
+    DataType = cms.string('PFTAU'),
+    OutPutHistograms = cms.string('OneProngAndThreeProng'),
+    PFTauDiscriminatorAgainstElectronProducer = cms.string('pfRecoTauDiscriminationAgainstElectron'),
+    PFTauDiscriminatorByIsolationProducer = cms.string('pfRecoTauDiscriminationByIsolation'),
+    ExtensionName = cms.InputTag("PFTauIsolationValidation"),
+    PFTauDiscriminatorAgainstMuonProducer = cms.string('pfRecoTauDiscriminationAgainstMuon'),
+    #    string DataType = "QCD"
+    GenJetProd = cms.InputTag("iterativeCone5GenJets")
+)
+
+process.p = cms.Path(process.pfRecoTauDiscriminationAgainstElectron*process.pfRecoTauDiscriminationAgainstMuon*process.pfTauTagBothProngs)
+
+
