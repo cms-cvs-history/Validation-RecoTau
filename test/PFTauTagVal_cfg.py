@@ -7,45 +7,34 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("TEST")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 
-process.load("RecoParticleFlow.Configuration.RecoParticleFlow_cff")
-
-process.load("RecoJets.Configuration.RecoPFJets_cff")
-
-process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
-
 process.load("RecoTauTag.RecoTau.PFRecoTauDiscriminationAgainstElectron_cfi")
 
 process.load("RecoTauTag.RecoTau.PFRecoTauDiscriminationAgainstMuon_cfi")
 
-process.load("MagneticField.Engine.uniformMagneticField_cfi")
-
 process.DQMStore = cms.Service("DQMStore")
 
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/0A8D021D-BD3E-DD11-B07B-000423D6CA6E.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/1075CAB6-B83E-DD11-8511-000423D98E54.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/160523FF-B83E-DD11-AA36-001617DBCF90.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/1C0F0B63-B73E-DD11-965A-000423D98A44.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/28EB4F12-B83E-DD11-9C2D-000423D98A44.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/2CA709F1-BE3E-DD11-AC34-000423D6BA18.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/363A0954-BA3E-DD11-A084-001617DBCF6A.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/5CC2112E-B63E-DD11-BF56-000423D98A44.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/64DE5D68-BB3E-DD11-BBB2-001617DC1F70.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/6C31B8CB-B63E-DD11-B129-000423D9997E.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/7E4FAA78-BA3E-DD11-B4BE-0019DB29C614.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/828AC38C-BC3E-DD11-AD22-001617DBD224.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/9894270C-B93E-DD11-B27C-000423D98804.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/9E4D4C57-B73E-DD11-BB40-000423D6CAF2.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/C0D36912-B93E-DD11-8CA7-001617DF785A.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/C6B16DE3-B93E-DD11-9423-000423D6CAF2.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/C8A0E252-B73E-DD11-A4E6-000423D99AAA.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/EE1BF32B-B93E-DD11-AB3B-001617C3B79A.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/F0B1EB65-B73E-DD11-B38C-001617C3B5E4.root', 
-        '/store/relval/2008/6/20/RelVal-RelValZTT-1213921089-STARTUP_V1-2nd/0000/F6165ED7-B83E-DD11-A606-0019DB2F3F9B.root')
+    fileNames = cms.untracked.vstring(  '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/14459A48-6F57-DD11-B4E3-000423D6BA18.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/24435CA5-6F57-DD11-A6EC-001617DBD332.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/36ADEB89-7057-DD11-BE2D-000423D94908.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/3C55714D-6F57-DD11-B9AF-000423D991F0.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/542CF7D8-6E57-DD11-84CA-000423D94908.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/56DE4B43-6F57-DD11-BB58-000423D6B358.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/7075E70A-6F57-DD11-B108-000423D60FF6.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/72341589-7057-DD11-A8D2-001617E30D06.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/8062B827-7057-DD11-B170-00161757BF42.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/9E4A7808-6F57-DD11-A13F-000423D98834.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/A457ADFB-6F57-DD11-9CFA-001617E30CD4.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/B4741E9A-6F57-DD11-97EA-000423D991D4.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/B61DD173-6F57-DD11-AA1D-000423D98EA8.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/DE2B1A04-6F57-DD11-9D8F-000423D98800.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/E29CAF03-6F57-DD11-8088-001617E30F56.root',
+        '/store/relval/2008/7/21/RelVal-RelValZTT-1216579576-STARTUP_V4-2nd/RelValZTT/GEN-SIM-DIGI-RAW-HLTDEBUG-RECO/CMSSW_2_1_0_pre9-RelVal-1216579576-STARTUP_V4-2nd-unmerged/0000/FE73BC71-6F57-DD11-A37B-001617E30CD4.root')
+
 )
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100)
+    input = cms.untracked.int32(-1)
 )
 process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
     ignoreTotal = cms.untracked.int32(1) ## default is one
@@ -53,19 +42,17 @@ process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
 )
 
 process.pfTauTagBothProngs = cms.EDAnalyzer("PFTauTagVal",
-    OutPutFile = cms.string('pftautagHEpython.root'), ## This name is modified to reflect releaseversion and histograms stored
-
+    OutPutFile = cms.string('pftautag.root'), ## This name is modified to reflect releaseversion and histograms stored
     PFTauProducer = cms.string('pfRecoTauProducer'),
     DataType = cms.string('PFTAU'),
     OutPutHistograms = cms.string('OneProngAndThreeProng'),
-    PFTauDiscriminatorAgainstElectronProducer = cms.string('pfRecoTauDiscriminationAgainstElectron'),
-    PFTauDiscriminatorByIsolationProducer = cms.string('pfRecoTauDiscriminationByIsolation'),
     ExtensionName = cms.InputTag("PFTauIsolationValidation"),
+    PFTauDiscriminatorAgainstElectronProducer = cms.string('pfRecoTauDiscriminationAgainstElectron'),
     PFTauDiscriminatorAgainstMuonProducer = cms.string('pfRecoTauDiscriminationAgainstMuon'),
     #    string DataType = "QCD"
     GenJetProd = cms.InputTag("iterativeCone5GenJets")
 )
 
-process.p = cms.Path(process.pfRecoTauDiscriminationAgainstElectron*process.pfRecoTauDiscriminationAgainstMuon*process.pfTauTagBothProngs)
+process.p = cms.Path(process.pfTauTagBothProngs)
 
 
