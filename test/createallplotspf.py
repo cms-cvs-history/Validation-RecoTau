@@ -53,11 +53,11 @@ comparisonrelease= sys.argv[1]
 
 comparisonpath = absolutepath.replace(releaseversion, comparisonrelease)
  
-if rootfilespftautag == 3:
+if rootfilespftautag == 1:
     os.system("mkdir pftautag")
     os.system("mkdir pftautag/OneProngAndThreeProng")
-    os.system("mkdir pftautag/OneProng")
-    os.system("mkdir pftautag/ThreeProng")
+#    os.system("mkdir pftautag/OneProng")
+#    os.system("mkdir pftautag/ThreeProng")
     rootfilename = "pftautag_" + releaseversion + "_OneProngAndThreeProng_PFTAU.root"
     comparisonpath = comparisonpath + "/pftautag_" + comparisonrelease + "_OneProngAndThreeProng_PFTAU.root"
     print rootfilename
@@ -73,6 +73,7 @@ if rootfilespftautag == 3:
     os.system(command)
 
     os.system("mv *png pftautag/OneProngAndThreeProng")
+"""
     comparisonpath = ""
     comparisonpath = absolutepath.replace(releaseversion, comparisonrelease)
     rootfilename = "pftautag_" + releaseversion + "_OneProng_PFTAU.root"
@@ -109,7 +110,7 @@ if rootfilespftautag == 3:
 
     os.system("mv *png pftautag/ThreeProng")
 
-
+"""
     
 
 
