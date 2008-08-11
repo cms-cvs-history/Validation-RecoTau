@@ -61,11 +61,11 @@ comparisonrelease= sys.argv[1]
 
 comparisonpath = absolutepath.replace(releaseversion, comparisonrelease)
  
-if rootfilescalotautag == 3:
+if rootfilescalotautag == 1:
     os.system("mkdir calotautag")
     os.system("mkdir calotautag/OneProngAndThreeProng")
-    os.system("mkdir calotautag/OneProng")
-    os.system("mkdir calotautag/ThreeProng")
+#    os.system("mkdir calotautag/OneProng")
+#    os.system("mkdir calotautag/ThreeProng")
     rootfilename = "calotautag_" + releaseversion + "_OneProngAndThreeProng_CALOTAU.root"
     comparisonpath = comparisonpath + "/calotautag_" + comparisonrelease + "_OneProngAndThreeProng_CALOTAU.root"
     print rootfilename
@@ -81,6 +81,7 @@ if rootfilescalotautag == 3:
     os.system(command)
 
     os.system("mv *png calotautag/OneProngAndThreeProng")
+"""
     comparisonpath = ""
     comparisonpath = absolutepath.replace(releaseversion, comparisonrelease)
     rootfilename = "calotautag_" + releaseversion + "_OneProng_CALOTAU.root"
@@ -115,3 +116,4 @@ if rootfilescalotautag == 3:
     os.system(command)
 
     os.system("mv *png calotautag/ThreeProng")
+"""
