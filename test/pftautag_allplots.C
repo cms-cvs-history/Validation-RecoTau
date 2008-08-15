@@ -10,6 +10,15 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
   cout << endl << " Filename: "<< originalfilename<<endl;
   cout << endl << " comparison: " << comparison << endl;
   
+
+  cout << endl << " releaseversion " << releaseversion << " comparison "<< comparison <<endl;
+
+  if (releaseversion.Contains(comparison) )
+    releaseversion += " Fast Sim";
+  
+  cout << endl << " releaseversion " << releaseversion << endl;
+  
+
   TFile f(originalfilename);
   TFile other(comparisonName);
 
@@ -56,38 +65,38 @@ void pftautag_allplots(TString originalfilename, TString comparisonName, TString
   //---------------------------------THE OTHER FILE ----------------------------------------------
   //---------------------------------------------------------------------------------------------  
 
-  TH1F* nMCetaTauO=  (TH1F*)other.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/eta_Tau_GenLevel");
-  TH1F* nMCptTauO=   (TH1F*)other.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/pt_Tau_GenLevel");
+  TH1F* nMCetaTauO=  (TH1F*)other.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/eta_Tau_GenLevel");
+  TH1F* nMCptTauO=   (TH1F*)other.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/pt_Tau_GenLevel");
 
   // THE FOUR HISTOGRAMS AT GENERATOR LEVEL VISIBLE TAU
-  TH1F* nMCetaTauJetO =    (TH1F*)other.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_etaTauJet");
-  TH1F* nMCptTauJetO =     (TH1F*)other.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_ptTauJet");
-  TH1F* nMCenergyTauJetO = (TH1F*)other.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_energyTauJet");
-  TH1F* nMCphiTauJetO = (TH1F*)other.Get("DQMData/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_phiTauJet");
+  TH1F* nMCetaTauJetO =    (TH1F*)other.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_etaTauJet");
+  TH1F* nMCptTauJetO =     (TH1F*)other.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_ptTauJet");
+  TH1F* nMCenergyTauJetO = (TH1F*)other.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_energyTauJet");
+  TH1F* nMCphiTauJetO = (TH1F*)other.Get("DQMData/RecoTauV/TausAtGenLevel_PFTauIsolationValidation/nMC_Taus_vs_phiTauJet");
 
   // RECONSTRUCTED AS PFTAUCANDIDATES
-  TH1F* nPFTauCandetaTauJetO =    (TH1F*)other.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_etaTauJet");
-  TH1F* nPFTauCandptTauJetO =     (TH1F*)other.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_ptTauJet");
-  TH1F* nPFTauCandenergyTauJetO = (TH1F*)other.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_energyTauJet");
-  TH1F* nPFTauCandphiTauJetO=     (TH1F*)other.Get("DQMData/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_phiTauJet");  
+  TH1F* nPFTauCandetaTauJetO =    (TH1F*)other.Get("DQMData/RecoTauV/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_etaTauJet");
+  TH1F* nPFTauCandptTauJetO =     (TH1F*)other.Get("DQMData/RecoTauV/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_ptTauJet");
+  TH1F* nPFTauCandenergyTauJetO = (TH1F*)other.Get("DQMData/RecoTauV/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_energyTauJet");
+  TH1F* nPFTauCandphiTauJetO=     (TH1F*)other.Get("DQMData/RecoTauV/PFTauCandidatesMatched_PFTauIsolationValidation/n_PFTauCand_vs_phiTauJet");  
 
   // WITH A LEADING CHARGED HADRON
-  TH1F* nPFTauCandLCHetaTauJetO =    (TH1F*)other.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_etaTauJet");
-  TH1F* nPFTauCandLCHptTauJetO =     (TH1F*)other.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_ptTauJet");
-  TH1F* nPFTauCandLCHenergyTauJetO = (TH1F*)other.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_energyTauJet");
-  TH1F* nPFTauCandLCHphiTauJetO =    (TH1F*)other.Get("DQMData/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_phiTauJet");
+  TH1F* nPFTauCandLCHetaTauJetO =    (TH1F*)other.Get("DQMData/RecoTauV/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_etaTauJet");
+  TH1F* nPFTauCandLCHptTauJetO =     (TH1F*)other.Get("DQMData/RecoTauV/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_ptTauJet");
+  TH1F* nPFTauCandLCHenergyTauJetO = (TH1F*)other.Get("DQMData/RecoTauV/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_energyTauJet");
+  TH1F* nPFTauCandLCHphiTauJetO =    (TH1F*)other.Get("DQMData/RecoTauV/PFTauPlusLeadingChargedHadron_PFTauIsolationValidation/n_PFTau_LeadingChargedHadron_vs_phiTauJet");
 
   // WITH NO CHARGED HADRONS IN THE ISOLATION ANNULUS
-  TH1F* nIsolNoChargedHadronsetaTauJetO =    (TH1F*)other.Get("DQMData/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_etaTauJet");
-  TH1F* nIsolNoChargedHadronsptTauJetO =     (TH1F*)other.Get("DQMData/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_ptTauJet");
-  TH1F* nIsolNoChargedHadronsenergyTauJetO = (TH1F*)other.Get("DQMData/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_energyTauJet");
-  TH1F* nIsolNoChargedHadronsphiTauJetO =    (TH1F*)other.Get("DQMData/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_phiTauJet");
+  TH1F* nIsolNoChargedHadronsetaTauJetO =    (TH1F*)other.Get("DQMData/RecoTauV/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_etaTauJet");
+  TH1F* nIsolNoChargedHadronsptTauJetO =     (TH1F*)other.Get("DQMData/RecoTauV/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_ptTauJet");
+  TH1F* nIsolNoChargedHadronsenergyTauJetO = (TH1F*)other.Get("DQMData/RecoTauV/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_energyTauJet");
+  TH1F* nIsolNoChargedHadronsphiTauJetO =    (TH1F*)other.Get("DQMData/RecoTauV/Isolated_NoChargedHadrons_PFTauIsolationValidation/n_Isolated_NoChargedHadrons_vs_phiTauJet");
 
   // WITH NO GAMMAS (AND NO CHARGED HADRONS) IN THE ISOLATION ANNULUS
-  TH1F* nIsolNoChargedNoGammasetaTauJetO =    (TH1F*)other.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_etaTauJet");
-  TH1F* nIsolNoChargedNoGammasptTauJetO =     (TH1F*)other.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_ptTauJet");
-  TH1F* nIsolNoChargedNoGammasenergyTauJetO = (TH1F*)other.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_energyTauJet");
-  TH1F* nIsolNoChargedNoGammasphiTauJetO =    (TH1F*)other.Get("DQMData/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_phiTauJet");  
+  TH1F* nIsolNoChargedNoGammasetaTauJetO =    (TH1F*)other.Get("DQMData/RecoTauV/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_etaTauJet");
+  TH1F* nIsolNoChargedNoGammasptTauJetO =     (TH1F*)other.Get("DQMData/RecoTauV/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_ptTauJet");
+  TH1F* nIsolNoChargedNoGammasenergyTauJetO = (TH1F*)other.Get("DQMData/RecoTauV/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_energyTauJet");
+  TH1F* nIsolNoChargedNoGammasphiTauJetO =    (TH1F*)other.Get("DQMData/RecoTauV/Isolated_NoChargedNoGammas_PFTauIsolationValidation/n_Isolated_NoChargedNoGammas_vs_phiTauJet");  
 
 
   cout << endl<< " entriesO "<< nMCetaTauJetO->Integral()<<endl;
