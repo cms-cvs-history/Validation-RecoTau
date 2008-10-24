@@ -84,13 +84,13 @@ process.output = cms.OutputModule("PoolOutputModule",
                                   )
                                  
 process.p = cms.Path( process.PFTau
-                      *process.PFTauHighEfficiency
+#                      *process.PFTauHighEfficiency
                       *process.tautagging
                       *process.TauMCProducer
 #                      *process.output
-#                      *process.CaloTausBothProngs)
- 		      *process.CaloTausBothProngs
-    		      *process.PFTausBothProngs
-                      *process.PFTausHighEfficiencyBothProngs) 
+                      *process.CaloTausBothProngs)
+# 		      *process.CaloTausBothProngs
+#    		      *process.PFTausBothProngs)
+#                      *process.PFTausHighEfficiencyBothProngs) 
 
 #process.outpath = cms.EndPath(process.output)
