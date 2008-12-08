@@ -12,8 +12,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h" 
 
-#include "SimDataFormats/HepMCProduct/interface/HepMCProduct.h"
-
+#include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 #include "DataFormats/Common/interface/Ref.h"
 #include "DataFormats/Math/interface/Vector3D.h"
 #include "DataFormats/JetReco/interface/PFJet.h"

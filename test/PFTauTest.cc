@@ -29,8 +29,7 @@
 
 #include "FWCore/ServiceRegistry/interface/Service.h" // Framework services
 #include "PhysicsTools/UtilAlgos/interface/TFileService.h" // Framework service for histograms
-
-#include "SimDataFormats/HepMCProduct/interface/HepMCProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 //#include <Math/GenVector/VectorUtil.h>
 
 // get rid of this damn TLorentzVector!
