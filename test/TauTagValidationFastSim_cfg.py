@@ -22,10 +22,17 @@ process.DQMStore = cms.Service("DQMStore")
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-        '/store/relval/CMSSW_2_2_1/RelValZTT/GEN-SIM-RECO/STARTUP_V7_v2/0002/18AD12CB-9FC4-DD11-8B2A-001D09F2546F.root',
-        '/store/relval/CMSSW_2_2_1/RelValZTT/GEN-SIM-RECO/STARTUP_V7_v2/0002/4E4D1ACA-9FC4-DD11-9140-0019B9F72BAA.root',
-        '/store/relval/CMSSW_2_2_1/RelValZTT/GEN-SIM-RECO/STARTUP_V7_v2/0002/FA493ED0-9FC4-DD11-B271-001D09F2B2CF.root',
-        '/store/relval/CMSSW_2_2_1/RelValZTT/GEN-SIM-RECO/STARTUP_V7_v2/0004/B6F66289-FEC4-DD11-A125-000423D6BA18.root'
+'rfio:/castor/cern.ch/user/b/beaudett/grid/CMSSW_2_2_1/iteration-5/ZTT_Tauola_cfi_GEN_FASTSIM_IDEAL_0.root',
+'rfio:/castor/cern.ch/user/b/beaudett/grid/CMSSW_2_2_1/iteration-5/ZTT_Tauola_cfi_GEN_FASTSIM_IDEAL_1.root',
+'rfio:/castor/cern.ch/user/b/beaudett/grid/CMSSW_2_2_1/iteration-5/ZTT_Tauola_cfi_GEN_FASTSIM_IDEAL_10.root',
+'rfio:/castor/cern.ch/user/b/beaudett/grid/CMSSW_2_2_1/iteration-5/ZTT_Tauola_cfi_GEN_FASTSIM_IDEAL_2.root',
+'rfio:/castor/cern.ch/user/b/beaudett/grid/CMSSW_2_2_1/iteration-5/ZTT_Tauola_cfi_GEN_FASTSIM_IDEAL_3.root',
+'rfio:/castor/cern.ch/user/b/beaudett/grid/CMSSW_2_2_1/iteration-5/ZTT_Tauola_cfi_GEN_FASTSIM_IDEAL_4.root',
+'rfio:/castor/cern.ch/user/b/beaudett/grid/CMSSW_2_2_1/iteration-5/ZTT_Tauola_cfi_GEN_FASTSIM_IDEAL_5.root',
+'rfio:/castor/cern.ch/user/b/beaudett/grid/CMSSW_2_2_1/iteration-5/ZTT_Tauola_cfi_GEN_FASTSIM_IDEAL_6.root',
+'rfio:/castor/cern.ch/user/b/beaudett/grid/CMSSW_2_2_1/iteration-5/ZTT_Tauola_cfi_GEN_FASTSIM_IDEAL_7.root',
+'rfio:/castor/cern.ch/user/b/beaudett/grid/CMSSW_2_2_1/iteration-5/ZTT_Tauola_cfi_GEN_FASTSIM_IDEAL_8.root',
+'rfio:/castor/cern.ch/user/b/beaudett/grid/CMSSW_2_2_1/iteration-5/ZTT_Tauola_cfi_GEN_FASTSIM_IDEAL_9.root'
 )
 )
 
@@ -47,7 +54,7 @@ process.p = cms.Path(  process.TauMCProducer
     		      *process.PFTausBothProngs
                       *process.PFTausHighEfficiencyBothProngs
                       *process.TauEfficiencies
-                      *process.saveTauEff)
+                      *process.saveTauEffFast)
 
 
 #process.outpath = cms.EndPath(process.output)
