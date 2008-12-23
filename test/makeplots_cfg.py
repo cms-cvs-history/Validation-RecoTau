@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process('EWKTauMuon')
+process = cms.Process('MakingPlots')
 
 process.load('Validation.RecoTau.plotterTauTagValidation_cff')
 
