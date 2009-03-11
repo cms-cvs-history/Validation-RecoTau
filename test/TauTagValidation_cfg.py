@@ -4,10 +4,10 @@ process = cms.Process("TEST")
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-        '/store/relval/CMSSW_3_1_0_pre1/RelValZTT/GEN-SIM-RECO/STARTUP_30X_v1/0001/260FDDAF-F7F7-DD11-9672-001D09F2538E.root',
-        '/store/relval/CMSSW_3_1_0_pre1/RelValZTT/GEN-SIM-RECO/STARTUP_30X_v1/0001/8ED461AD-F7F7-DD11-B49F-000423D986C4.root',
-        '/store/relval/CMSSW_3_1_0_pre1/RelValZTT/GEN-SIM-RECO/STARTUP_30X_v1/0001/D05D05C6-06F8-DD11-A268-001617C3B6E2.root',
-        '/store/relval/CMSSW_3_1_0_pre1/RelValZTT/GEN-SIM-RECO/STARTUP_30X_v1/0001/F0979216-F7F7-DD11-ADF4-000423D95030.root'
+        '/store/relval/CMSSW_3_1_0_pre3/RelValZTT/GEN-SIM-RECO/STARTUP_30X_v1/0001/102A7D74-300A-DE11-B318-000423D6006E.root',
+        '/store/relval/CMSSW_3_1_0_pre3/RelValZTT/GEN-SIM-RECO/STARTUP_30X_v1/0001/C6345BA8-300A-DE11-A5F2-000423D6CA42.root',
+        '/store/relval/CMSSW_3_1_0_pre3/RelValZTT/GEN-SIM-RECO/STARTUP_30X_v1/0001/E4F6CB66-300A-DE11-BAF4-000423D60FF6.root',
+        '/store/relval/CMSSW_3_1_0_pre3/RelValZTT/GEN-SIM-RECO/STARTUP_30X_v1/0001/FE324A2E-800A-DE11-A3A3-000423D99A8E.root'
 )
 )
 
@@ -28,7 +28,7 @@ process.load("Validation.RecoTau.RelValHistogramEff_cfi")
 ###################################################################################################
 
 process.saveTauEff = cms.EDAnalyzer("DQMSimpleFileSaver",
-  outputFileName = cms.string('CMSSW_3_1_0_pre1_tauGenJets.root')
+  outputFileName = cms.string('CMSSW_3_1_0_pre3_tauGenJets.root')
 )
                                  
 process.p = cms.Path(
