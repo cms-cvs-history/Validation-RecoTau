@@ -12,7 +12,8 @@ process.source = cms.Source("PoolSource",
 )
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+#    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(100)
 )
 
 process.DQMStore = cms.Service("DQMStore")
@@ -20,6 +21,10 @@ process.DQMStore = cms.Service("DQMStore")
 process.load("Validation.RecoTau.TauTagValidationProducer_cff")
 process.load("Validation.RecoTau.TauTagValidation_cfi")
 process.load("Validation.RecoTau.RelValHistogramEff_cfi")
+process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
+process.load("FastSimulation.Configuration.CommonInputs_cff")
+process.load("Configuration.StandardSequences.MagneticField_38T_cff")
+
 
 ###################################################################################################
 #
@@ -32,6 +37,7 @@ process.saveTauEff = cms.EDAnalyzer("DQMSimpleFileSaver",
 )
                                  
 process.p = cms.Path(
+    process.PFTau+
     process.tauGenJetProducer +
     process.tauTagValidation +
     process.TauEfficiencies +

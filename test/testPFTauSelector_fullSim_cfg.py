@@ -38,12 +38,12 @@ process.TauMCProducer  = cms.EDProducer("HLTTauMCProducer",
                               EtaMax         = cms.untracked.double(2.5)
 )
 
-#process.pfRecoTauProducer.LeadChargedHadrCand_minPt = cms.double(1.0)
-#process.pfRecoTauProducerHighEfficiency.JetPtMin = cms.double(15.0)
+#process.fixedConePFTauProducer.LeadChargedHadrCand_minPt = cms.double(1.0)
+#process.shrinkingConePFTauProducer.JetPtMin = cms.double(15.0)
 
-process.pfRecoTauDiscriminationByChargeIsolationHighEfficiency = cms.EDProducer("PFRecoTauDiscriminationByIsolation",
+process.shrinkingConePFTauDiscriminationByChargeIsolation = cms.EDProducer("PFRecoTauDiscriminationByIsolation",
     ApplyDiscriminationByECALIsolation = cms.bool(False),
-    PFTauProducer = cms.InputTag('pfRecoTauProducerHighEfficiency'),
+    PFTauProducer = cms.InputTag('shrinkingConePFTauProducer'),
     ManipulateTracks_insteadofChargedHadrCands = cms.bool(False),
     # following parameters are considered when ManipulateTracks_insteadofChargedHadrCands paremeter is set true
     # *BEGIN*
@@ -53,9 +53,9 @@ process.pfRecoTauDiscriminationByChargeIsolationHighEfficiency = cms.EDProducer(
     ECALIsolAnnulus_Candsmaxn = cms.int32(0)
 )
 
-process.pfRecoTauDiscriminationByGammaIsolationHighEfficiency = cms.EDProducer("PFRecoTauDiscriminationByIsolation",
+process.shrinkingConePFTauDiscriminationByGammaIsolation = cms.EDProducer("PFRecoTauDiscriminationByIsolation",
     ApplyDiscriminationByECALIsolation = cms.bool(True),
-    PFTauProducer = cms.InputTag('pfRecoTauProducerHighEfficiency'),
+    PFTauProducer = cms.InputTag('shrinkingConePFTauProducer'),
     ManipulateTracks_insteadofChargedHadrCands = cms.bool(False),
     # following parameters are considered when ManipulateTracks_insteadofChargedHadrCands paremeter is set true
     # *BEGIN*
@@ -65,8 +65,8 @@ process.pfRecoTauDiscriminationByGammaIsolationHighEfficiency = cms.EDProducer("
     ECALIsolAnnulus_Candsmaxn = cms.int32(0)
 )
 
-process.pfRecoTauDiscriminationByNeutralHadronsHighEfficiency = cms.EDProducer("PFRecoTauDiscriminationByNeutralHadrons",
-                                                                               PFTauProducer = cms.InputTag('pfRecoTauProducerHighEfficiency'),
+process.shrinkingConePFTauDiscriminationByNeutralHadrons = cms.EDProducer("PFRecoTauDiscriminationByNeutralHadrons",
+                                                                               PFTauProducer = cms.InputTag('shrinkingConePFTauProducer'),
                                                                                NumberOfAllowedNeutralHadronsInSignalCone = cms.int32(0)                                                                     
 )
 
@@ -75,20 +75,20 @@ process.load("Validation/RecoTau/TauTagValidation_cfi")
 process.load("Validation/RecoTau/TauTagValidationGenJets_cfi")
 process.load("Validation.RecoTau.GenJetRefProducer_cfi")
 
-process.generatorLevelJets.TauProducer = cms.string('pfRecoTauProducerHighEfficiency')
+process.generatorLevelJets.TauProducer = cms.string('shrinkingConePFTauProducer')
 process.generatorLevelJets.discriminators               = cms.VPSet(
-    cms.PSet( discriminator = cms.string("pfRecoTauDiscriminationByLeadingTrackPtCutHighEfficiency"),selectionCut = cms.double(0.5)),
-    cms.PSet( discriminator = cms.string("pfRecoTauDiscriminationByNeutralHadronsHighEfficiency"),selectionCut = cms.double(0.5)),
-    cms.PSet( discriminator = cms.string("pfRecoTauDiscriminationByChargeIsolationHighEfficiency"),selectionCut = cms.double(0.5)),
-    cms.PSet( discriminator = cms.string("pfRecoTauDiscriminationByGammaIsolationHighEfficiency"),selectionCut = cms.double(0.5))
+    cms.PSet( discriminator = cms.string("shrinkingConePFTauDiscriminationByLeadingTrackPtCut"),selectionCut = cms.double(0.5)),
+    cms.PSet( discriminator = cms.string("shrinkingConePFTauDiscriminationByNeutralHadrons"),selectionCut = cms.double(0.5)),
+    cms.PSet( discriminator = cms.string("shrinkingConePFTauDiscriminationByChargeIsolation"),selectionCut = cms.double(0.5)),
+    cms.PSet( discriminator = cms.string("shrinkingConePFTauDiscriminationByGammaIsolation"),selectionCut = cms.double(0.5))
  )
 
 
 #process.p1 = cms.Path(
     *process.PFTau
-#    *process.pfRecoTauDiscriminationByChargeIsolationHighEfficiency
-#    *process.pfRecoTauDiscriminationByGammaIsolationHighEfficiency
-#    *process.pfRecoTauDiscriminationByNeutralHadronsHighEfficiency
+#    *process.shrinkingConePFTauDiscriminationByChargeIsolation
+#    *process.shrinkingConePFTauDiscriminationByGammaIsolation
+#    *process.shrinkingConePFTauDiscriminationByNeutralHadrons
 #    *process.GenJetProducer
 #    *process.generatorLevelJets
     
