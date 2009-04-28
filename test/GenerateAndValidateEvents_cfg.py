@@ -9,7 +9,8 @@ options.register( 'isSignal',
                   1,
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
-                  "If true, generate and validate Z-TauTau (hadronic only) events. Otherwise, generate QCD FlatPt 15-3000 events."
+                  #"If true, generate and validate Z-TauTau (hadronic only) events. Otherwise, generate QCD FlatPt 15-3000 events."
+                  "Options:\n\t0\tGenerate QCD\n\t1\tGenerate ZTT, hadronic only\n\t2\tGenerate ZEE\n\t3\tGenerate ZMM"
                  )
 options.register( 'Label',
                   "TauValidation",
@@ -45,8 +46,15 @@ process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(options.maxEvents)
 )
 
+process.DQMStore = cms.Service("DQMStore")
 process.load("Validation.RecoTau.TauTagValidationProducer_cff")
+process.load("FastSimulation.Configuration.FamosSequences_cff")
 process.load("FastSimulation.Configuration.RandomServiceInitialization_cff")
+process.load("Validation.RecoTau.RelValHistogramEff_cfi")
+process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
+process.load("RecoTauTag.Configuration.RecoTauTag_EventContent_cff")
+process.load("FastSimulation.Configuration.CommonInputs_cff")
+process.load("Configuration.StandardSequences.MagneticField_38T_cff")
 
 MyFileLabel = ""
 
@@ -54,10 +62,18 @@ if options.isSignal:
    MyFileLabel = "ZTT"
    process.load("Configuration.Generator.ZTT_Tauola_All_hadronic_cfi")
    process.load("Validation.RecoTau.TauTagValidation_cfi")
+   process.buildDenominator = cms.Sequence(process.genParticles*process.tauGenJetProducer)
 else:
    MyFileLabel = "QCD"
    process.load("Configuration.Generator.QCDForPF_cfi")
    process.load("Validation.RecoTau.TauTagValidationGenJets_cfi")
+   process.load("PhysicsTools.JetMCAlgos.GenJetsSelector_iterativeCone5GenJets_cfi")
+   process.buildDenominator = cms.Sequence(process.genParticles*
+                                           process.genParticlesForJets*
+                                           process.iterativeCone5GenJets*
+                                           process.iterativeCone5GenJetsEta25 +
+                                           process.iterativeCone5GenJetsPt5Cumulative)
+
 
 options.writeEDMFile = options.writeEDMFile.replace(".root", "_%s.root" % MyFileLabel)
 
@@ -70,15 +86,6 @@ if options.batchNumber >= 0:
    options.writeEDMFile = options.writeEDMFile.replace(".root", "_%i.root" % options.batchNumber)
    print "I'm setting the random seed to ", newSeed, " output file: ", options.writeEDMFile
 
-process.DQMStore = cms.Service("DQMStore")
-
-process.load("Validation.RecoTau.RelValHistogramEff_cfi")
-process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
-process.load("RecoTauTag.Configuration.RecoTauTag_EventContent_cff")
-process.load("FastSimulation.Configuration.CommonInputs_cff")
-
-process.load("FastSimulation.Configuration.FamosSequences_cff")
-process.load("Configuration.StandardSequences.MagneticField_38T_cff")
 
 process.saveTauEff = cms.EDAnalyzer("DQMSimpleFileSaver",
   outputFileName = cms.string('%s_%s.root' % (options.Label, MyFileLabel))
@@ -93,13 +100,12 @@ else:
                                  
 process.p = cms.Path(
     process.ProductionFilterSequence*
-    process.genParticles*
 #    process.famosWithTauTagging*
     process.famosWithElectrons*
     process.famosWithPFTauTagging+
     process.famosWithTauTagging+
-#    process.famosWithEverything*
-    process.tauGenJetProducer +
+#    process.famosWithEverything*       
+    process.buildDenominator*
     process.tauTagValidationWithTanc +
     process.runDQMFileActions
     )
@@ -107,8 +113,9 @@ process.p = cms.Path(
 TauTagValOutputCommands = cms.PSet(
       outputCommands = cms.untracked.vstring('drop *',
          'keep recoPFCandidates_*_*_*',
-         'keep *_genParticles_*_*',
-         'keep *_tauGenJets_*_*',
+         'keep *_genParticles*_*_*',
+         'keep *_iterativeCone5GenJets_*_*',
+         'keep *_tauGenJets*_*_*',
          'keep *_selectedGenTauDecays*_*_*'
          )
       )
@@ -123,8 +130,8 @@ if options.writeEDMFile != "":
          fileName = cms.untracked.string (options.writeEDMFile)
    )
    process.out_step = cms.EndPath(process.out)
+   process.schedule = cms.Schedule(process.p,process.out_step)
 else:
-   process.out_step = cms.EndPath()
+   process.schedule = cms.Schedule(process.p)
 
-process.schedule = cms.Schedule(process.p,process.out_step)
 

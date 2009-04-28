@@ -77,12 +77,12 @@ for iJob in xrange(0, nJobs):
    preventCollision = random.randint(0, 10000000000)
    setupCommands  = "cd $PWD; scramv1 runtime -sh > tempEnvs_%i; source tempEnvs_%i; rm tempEnvs_%i; cd -; mkdir toCopyToCastor;" % (preventCollision,preventCollision,preventCollision)
    cmsRunCommand  = "cmsRun $PWD/GenerateAndValidateEvents_cfg.py maxEvents=%i isSignal=%i batchNumber=%i " % (nEvents, SignalFlag, iJob)
-   edmFileCommands = ""
+   edmFileCommands = ";"
    if edmOut != "":
       edmFileCommands = "writeEDMFile=toCopyToCastor/%s; rfcp toCopyToCastor/*.root %s;" % (edmOut, castorLocation)
    cleanupCommand = "cp *.root $PWD; "
 
    totalCommand = setupCommands + cmsRunCommand + edmFileCommands + cleanupCommand
-   bsubCommand  = "bsub -J %s_%i -q 1nh \"%s\"" % (isSignal, iJob, totalCommand)
+   bsubCommand  = "bsub -J %s_%i -q 8nh \"%s\"" % (isSignal, iJob, totalCommand)
    os.system(bsubCommand)
 

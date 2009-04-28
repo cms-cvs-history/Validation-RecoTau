@@ -173,13 +173,13 @@ ReleasesToBuildFrom = []
         EDProducer defined in Validation.RecoTau.TauTagValidation_cfi
 """
 
-PreFourTanc = TauValidationInfo("CMSSW_3_1_0_pre4_ZTT.root", 
-                                      "CMSSW_3_1_0_pre4_QCD.root",
-                                      "310pre4 TaNC",
+PreFourTanc = TauValidationInfo("Signal.root", 
+                                      "Background.root",
+                                      "310pre5 TaNC",
                                       Validation.RecoTau.TauTagValidation_cfi.RunTancValidation)
 
-PreFourIso = TauValidationInfo("CMSSW_3_1_0_pre4_ZTT.root", 
-                                      "CMSSW_3_1_0_pre4_QCD.root",
+PreFourIso = TauValidationInfo("Signal.root", 
+                                      "Background.root",
                                       "310pre4 Iso",
          #                             Validation.RecoTau.TauTagValidation_cfi.CaloTausBothProngs)
                                       Validation.RecoTau.TauTagValidation_cfi.PFTausHighEfficiencyLeadingPionBothProngs)
