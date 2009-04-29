@@ -18,14 +18,14 @@ selectedGenTauDecaysToHadrons = cms.EDFilter("TauGenJetDecayModeSelector",
 )
 
 # require generator level hadrons produced in tau-decay to be within muon acceptance
-selectedGenTauDecaysToHadronsEta25Cumulative = cms.EDFilter("GenJetSelector",
+selectedGenTauDecaysToHadronsEta25Cumulative = cms.EDFilter("TauGenJetSelector",
      src = cms.InputTag("selectedGenTauDecaysToHadrons"),
      cut = cms.string('abs(eta) < 2.5'),
      filter = cms.bool(False)
 )
 
 # require generator level hadrons produced in tau-decay to have transverse momentum above threshold
-selectedGenTauDecaysToHadronsPt5Cumulative = cms.EDFilter("GenJetSelector",
+selectedGenTauDecaysToHadronsPt5Cumulative = cms.EDFilter("TauGenJetSelector",
      src = cms.InputTag("selectedGenTauDecaysToHadronsEta25Cumulative"),
      cut = cms.string('pt > 5.'),
      filter = cms.bool(False)
