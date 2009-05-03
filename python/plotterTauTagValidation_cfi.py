@@ -1,5 +1,5 @@
 # This test config file that needs to be modified to have two files being compared
-#
+
 
 import FWCore.ParameterSet.Config as cms
 
@@ -7,8 +7,8 @@ import FWCore.ParameterSet.Config as cms
 # Give the correct test and reference labels on the plots
 #########################################################
 
-test = cms.string('CMSSW_3_1_0_pre2')
-reference = cms.string('CMSSW_3_1_0_pre1')
+test = cms.string('TaNC Weighted')
+reference = cms.string('TaNC Unweighted')
 
 ###########################
 # Load Files to be compared
@@ -16,12 +16,13 @@ reference = cms.string('CMSSW_3_1_0_pre1')
 
 loadTau = cms.EDAnalyzer("DQMFileLoader",
   test = cms.PSet(
-    inputFileNames = cms.vstring('/afs/cern.ch/user/v/vasquez/scratch0/removavableTest/CMSSW_3_1_0_pre2/src/Validation/RecoTau/test/CMSSW_3_1_0_pre2_tauGenJets.root'),
+    inputFileNames = cms.vstring('SignalWeightedFixed_Eff.root'),
     scaleFactor = cms.double(1.),
     dqmDirectory_store = cms.string('test')
   ),
   reference = cms.PSet(
-    inputFileNames = cms.vstring('/afs/cern.ch/user/v/vasquez/scratch0/CMSSW_3_1_0_pre1/src/Validation/RecoTau/test/CMSSW_3_1_0_pre1_tauGenJets.root'),
+    #inputFileNames = cms.vstring('/afs/cern.ch/user/f/friis/scratch0/MyValidationArea/228/src/Validation/RecoTau/test/CMSSW_2_2_8_ZTT.root'),
+    inputFileNames = cms.vstring('Signal_Eff.root'),
     scaleFactor = cms.double(1.),
     dqmDirectory_store = cms.string('reference')
   )

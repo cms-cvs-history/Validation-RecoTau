@@ -15,6 +15,7 @@
 from ROOT import TH1F, TGraph, TCanvas, TPad, EColor, TFile, TGraphAsymmErrors, Double, TLegend, gPad, TPaveText, gROOT, gStyle
 import FWCore.ParameterSet.Config as cms
 import copy
+import os
 import Validation.RecoTau.TauTagValidation_cfi 
 
 """
@@ -163,6 +164,7 @@ class TauValidationInfo:
 myCanvas = TCanvas("Validation", "Validation", 800, 800)
 
 ReleasesToBuildFrom = []
+OverlaysToDraw = []
 
 """
         USER:
@@ -173,16 +175,27 @@ ReleasesToBuildFrom = []
         EDProducer defined in Validation.RecoTau.TauTagValidation_cfi
 """
 
-PreFourTanc = TauValidationInfo("Signal.root", 
-                                      "Background.root",
-                                      "310pre5 TaNC",
+PreFourTanc = TauValidationInfo("SignalWeightedFixed.root", 
+                                      "BackgroundWeightedFixed.root",
+                                      "229 TaNC Weighted",
                                       Validation.RecoTau.TauTagValidation_cfi.RunTancValidation)
 
-PreFourIso = TauValidationInfo("Signal.root", 
+Unweighted = TauValidationInfo("Signal.root", 
                                       "Background.root",
-                                      "310pre4 Iso",
+                                      "229 TaNC Unweighted",
+         #                             Validation.RecoTau.TauTagValidation_cfi.CaloTausBothProngs)
+                                      Validation.RecoTau.TauTagValidation_cfi.RunTancValidation)
+
+Isolation  = TauValidationInfo("SignalWeightedFixed.root", 
+                                      "BackgroundWeightedFixed.root",
+                                      "229 Shrinking Iso",
          #                             Validation.RecoTau.TauTagValidation_cfi.CaloTausBothProngs)
                                       Validation.RecoTau.TauTagValidation_cfi.PFTausHighEfficiencyLeadingPionBothProngs)
+
+
+TaNCMVABenchmarkOverlay = ("MVABenchmarkOperatingCurve.root",
+                           "TaNC",
+                           EColor.kBlue)
 
 """
         USER:
@@ -192,8 +205,10 @@ PreFourIso = TauValidationInfo("Signal.root",
 """
 
 ReleasesToBuildFrom.append(PreFourTanc)
-ReleasesToBuildFrom.append(PreFourIso)
+ReleasesToBuildFrom.append(Unweighted)
+ReleasesToBuildFrom.append(Isolation)
 
+OverlaysToDraw.append(TaNCMVABenchmarkOverlay)
 
 # Build the TGraphs of sigEff versus bkgFakeRate for each release
 for aRelease in ReleasesToBuildFrom:
@@ -205,17 +220,30 @@ CurrentHistogram = 0
 
 for aRelease in ReleasesToBuildFrom:
    if CurrentHistogram == 0:
-      aRelease.SummaryTGraph.Draw("ALP")
+      #aRelease.SummaryTGraph.Draw("ALP")
+      aRelease.SummaryTGraph.Draw("AL")
       CurrentHistogram = aRelease.SummaryTGraph.GetHistogram()
    else:
-      aRelease.SummaryTGraph.Draw("LP")
+      aRelease.SummaryTGraph.Draw("L")
 
+for rootFile, label, color in OverlaysToDraw:
+   if not os.path.exists(rootFile):
+      print "Error - can't open root file (%s) w/ performance overlay!" % rootFile
+      break
+
+   opCurveFile = TFile(rootFile, "READ")
+   MyGraph = opCurveFile.Get("%s_PerformanceCurve" % label)
+   MyGraph.SetLineColor(color)
+   MyGraph.Draw("L")
+   TauValidationInfo.SummaryLegend.AddEntry(MyGraph, "BMP finder", "L")
 
 CurrentHistogram.SetAxisRange(0, 1)
 CurrentHistogram.GetYaxis().SetRangeUser(0.0001,1)
 CurrentHistogram.GetXaxis().SetTitle("Efficiency")
 CurrentHistogram.GetYaxis().SetTitle("Fake Rate")
+CurrentHistogram.GetXaxis().SetRangeUser(0., 1.)
 CurrentHistogram.SetTitle("Performance Points")
+CurrentHistogram.SetBins(1, 0.0, 1.0)
 
 gPad.SetLogy(True)
 
@@ -227,4 +255,6 @@ TauValidationInfo.SummaryLegend.Draw()
 TauValidationInfo.DiscriminatorLegend.Draw()
 CutLabel.Draw()
 
-myCanvas.SaveAs("EffVersusFakeRateResults.png")
+myCanvas.Update()
+
+myCanvas.SaveAs("EffVersusFakeRateResults.pdf")

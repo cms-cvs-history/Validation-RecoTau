@@ -52,11 +52,15 @@ process.load("FastSimulation.Configuration.FamosSequences_cff")
 process.load("FastSimulation.Configuration.RandomServiceInitialization_cff")
 process.load("Validation.RecoTau.RelValHistogramEff_cfi")
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
+process.caloRecoTauProducer.ESRecHitsSource = cms.InputTag("caloRecHits","EcalRecHitsES")
+process.caloRecoTauProducer.EBRecHitsSource = cms.InputTag("caloRecHits","EcalRecHitsEB")
+process.caloRecoTauProducer.EERecHitsSource = cms.InputTag("caloRecHits","EcalRecHitsEE")
+process.load("RecoTauTag.Configuration.RecoTauTag_FakeConditions_cff")
 process.load("RecoTauTag.Configuration.RecoTauTag_EventContent_cff")
-process.load("FastSimulation.Configuration.CommonInputs_cff")
+process.load("FastSimulation.Configuration.CommonInputsFake_cff")
 process.load("Configuration.StandardSequences.MagneticField_38T_cff")
 
-MyFileLabel = ""
+process.TauTagMVAComputerRecord.connect = cms.string('sqlite_file:/afs/cern.ch/user/f/friis/scratch0/TancLocalWeighted.db')
 
 if options.isSignal:
    MyFileLabel = "ZTT"
@@ -81,7 +85,7 @@ if options.batchNumber >= 0:
    MyFileLabel += "_%i" % options.batchNumber
    newSeed = process.RandomNumberGeneratorService.theSource.initialSeed.value() + options.batchNumber 
    process.RandomNumberGeneratorService.theSource.initialSeed = cms.untracked.uint32(newSeed)
-   process.RandomNumberGeneratorService.generator.initialSeed = cms.untracked.uint32(newSeed)
+   #process.RandomNumberGeneratorService.generator.initialSeed = cms.untracked.uint32(newSeed)
    print options.writeEDMFile
    options.writeEDMFile = options.writeEDMFile.replace(".root", "_%i.root" % options.batchNumber)
    print "I'm setting the random seed to ", newSeed, " output file: ", options.writeEDMFile
@@ -99,12 +103,9 @@ else:
 
                                  
 process.p = cms.Path(
-    process.ProductionFilterSequence*
-#    process.famosWithTauTagging*
-    process.famosWithElectrons*
+#    process.ProductionFilterSequence*
     process.famosWithPFTauTagging+
     process.famosWithTauTagging+
-#    process.famosWithEverything*       
     process.buildDenominator*
     process.tauTagValidationWithTanc +
     process.runDQMFileActions
