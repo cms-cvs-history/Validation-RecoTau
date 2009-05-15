@@ -199,6 +199,11 @@ else:
 
 process.validation *= process.saveTauEff #save the output
 
+# if we are running in default 22X, change all names to the 'old style'
+if options.translateToLegacyNames:
+   from Validation.RecoTau.RecoTauValidation_cfi import UseLegacyProductNames
+   UseLegacyProductNames(process.validation)
+
 process.schedule.append(process.validation)
 
 if options.batchNumber >= 0:

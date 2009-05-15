@@ -15,7 +15,7 @@
 //
 // Original Author:  Ricardo Vasquez Sierra
 //         Created:  October 8, 2008
-// $Id: TauTagValidation.cc,v 1.10 2009/03/28 18:26:06 vasquez Exp $
+// $Id: TauTagValidation.cc,v 1.11 2009/05/15 08:56:54 friis Exp $
 //
 //
 // user include files
@@ -144,7 +144,7 @@ void TauTagValidation::beginJob(const edm::EventSetup& iConfig)
 	// {
 	
 	if ( DiscriminatorLabel.find("LeadingTrackPtCut") != string::npos){
-	  if ( TauProducer_.find("PFTau") != string::npos)
+	  if ( TauProducer_.find("PFTau") != string::npos || TauProducer_.find("pfRecoTau") != string::npos )
 	    {
 	      nPFJet_LeadingChargedHadron_ChargedHadronsSignal_	        =dbeTau->book1D(DiscriminatorLabel + "_ChargedHadronsSignal",DiscriminatorLabel + "_ChargedHadronsSignal", 21, -0.5, 20.5);		 
 	      nPFJet_LeadingChargedHadron_ChargedHadronsIsolAnnulus_    =dbeTau->book1D(DiscriminatorLabel + "_ChargedHadronsIsolAnnulus",DiscriminatorLabel + "_ChargedHadronsIsolAnnulus", 21, -0.5, 20.5);	 
@@ -163,7 +163,7 @@ void TauTagValidation::beginJob(const edm::EventSetup& iConfig)
 	}
 	
 	if ( DiscriminatorLabel.find("ByIsolationLater") != string::npos ){
-	  if ( TauProducer_.find("PFTau") != string::npos)
+	  if ( TauProducer_.find("PFTau") != string::npos || TauProducer_.find("pfRecoTau") != string::npos )
 	    {
 	      nIsolated_NoChargedHadrons_ChargedHadronsSignal_	      =dbeTau->book1D(DiscriminatorLabel + "_ChargedHadronsSignal",DiscriminatorLabel + "_ChargedHadronsSignal", 21, -0.5, 20.5);	 	      
 	      nIsolated_NoChargedHadrons_GammasSignal_		      =dbeTau->book1D(DiscriminatorLabel + "_GammasSignal",DiscriminatorLabel + "_GammasSignal",21, -0.5, 20.5);			   
@@ -180,7 +180,7 @@ void TauTagValidation::beginJob(const edm::EventSetup& iConfig)
 	}
 
 	if ( DiscriminatorLabel.find("ByIsolation") != string::npos ){
-	  if ( TauProducer_.find("PFTau") != string::npos)
+	  if ( TauProducer_.find("PFTau") != string::npos || TauProducer_.find("pfRecoTau") != string::npos )
 	    {
 	      nIsolated_NoChargedNoGammas_ChargedHadronsSignal_        =dbeTau->book1D(DiscriminatorLabel + "_ChargedHadronsSignal",DiscriminatorLabel + "_ChargedHadronsSignal", 21, -0.5, 20.5);	  
 	      nIsolated_NoChargedNoGammas_GammasSignal_                =dbeTau->book1D(DiscriminatorLabel + "_GammasSignal",DiscriminatorLabel + "_GammasSignal",21, -0.5, 20.5);	 
@@ -241,7 +241,7 @@ void TauTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& 
 
   // ------------------------------ PFTauCollection Matched and other discriminators ---------------------------------------------------------
 
-  if ( TauProducer_.find("PFTau") != string::npos)
+  if ( TauProducer_.find("PFTau") != string::npos || TauProducer_.find("pfRecoTau") != string::npos )
     {
       Handle<PFTauCollection> thePFTauHandle;
       iEvent.getByLabel(TauProducerInputTag_,thePFTauHandle);
@@ -265,10 +265,11 @@ void TauTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& 
 
 	thePFTauClosest = pfTauProduct->size();
 
+
 	for (PFTauCollection::size_type iPFTau=0 ; iPFTau <  pfTauProduct->size() ; iPFTau++) 
 	  {		    
-	    if (algo_->deltaR(gen_particle, & pfTauProduct->at(iPFTau)) < delta){
-	      delta = algo_->deltaR(gen_particle, & pfTauProduct->at(iPFTau));
+	    if (algo_->deltaR(gen_particle, &pfTauProduct->at(iPFTau)) < delta){
+	      delta = algo_->deltaR(gen_particle, &pfTauProduct->at(iPFTau));
 	      thePFTauClosest = iPFTau;
 	    }
 	  }
@@ -294,7 +295,9 @@ void TauTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& 
 	    string currentDiscriminatorLabel = it->getParameter<string>("discriminator");	      
 	    iEvent.getByLabel(currentDiscriminatorLabel, currentDiscriminator);
 	    
+            //cout << "disc " << currentDiscriminatorLabel << endl;
 	    if ((*currentDiscriminator)[thePFTau] >= it->getParameter<double>("selectionCut")){
+            //cout << "disc passed " << currentDiscriminatorLabel << endl;
 	      ptTauVisibleMap.find(  currentDiscriminatorLabel )->second->Fill(RefJet->pt());
 	      etaTauVisibleMap.find(  currentDiscriminatorLabel )->second->Fill(RefJet->eta());
 	      phiTauVisibleMap.find(  currentDiscriminatorLabel )->second->Fill(RefJet->phi()*180.0/TMath::Pi());

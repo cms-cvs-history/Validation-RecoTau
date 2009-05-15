@@ -1146,7 +1146,8 @@ def TranslateToLegacyProdNames(input):
    fixedDiscriminationRegex = re.compile('fixedConePFTauDiscrimination(\w*)')
    input = fixedDiscriminationRegex.sub(r'pfRecoTauDiscrimination\1', input)
    input = re.sub('shrinkingConePFTauProducer', 'pfRecoTauProducerHighEfficiency', input)
-   shrinkingDiscriminationRegex = re.compile('shrinkingConePFTauDiscrimination(\w*)')
+   #shrinkingDiscriminationRegex = re.compile('shrinkingConePFTauDiscrimination(\w*)')
+   shrinkingDiscriminationRegex = re.compile('shrinkingConePFTauDiscrimination([0-9a-zA-Z]*)')
    input = shrinkingDiscriminationRegex.sub(r'pfRecoTauDiscrimination\1HighEfficiency', input)
    return input
 
@@ -1211,6 +1212,45 @@ def RemoveComparisonPlotCommands(module):
          if drawJob != "TauIdEffStepByStep":
             module.drawJobs.__delattr__(drawJob)
             print "Removing comparison plot", drawJob
+
+def TranslateEverythingToLegacyNames(module):
+   if hasattr(module, "parameterNames_"):
+      # make sure this is a module, not an operand
+      listOfParameters = module.parameterNames_()
+      for param in listOfParameters:
+         # Get the attribute to change
+         theSubParam = getattr(module,param)
+         if hasattr(theSubParam, 'pythonTypeName'):
+            # do replacement on all string like types
+            if theSubParam.pythonTypeName() == 'cms.string':
+               theSubParam = cms.string(TranslateToLegacyProdNames(theSubParam.value()))
+               setattr(module, param, theSubParam)
+            elif theSubParam.pythonTypeName() == 'cms.vstring':
+               theSubParam = cms.vstring( [TranslateToLegacyProdNames(theString) for theString in theSubParam.value()] )
+               setattr(module, param, theSubParam)
+            elif theSubParam.pythonTypeName() == 'cms.InputTag':
+               theSubParam = cms.InputTag(TranslateToLegacyProdNames(theSubParam.value()))
+               setattr(module, param, theSubParam)
+
+            elif theSubParam.pythonTypeName() == 'cms.VPSet':
+               # This is another sub PSet.  Recurse down the chain and find its substrings to translate
+               #for aPSet in theSubParam.value():
+               for aPSet in theSubParam:
+                  TranslateEverythingToLegacyNames(aPSet)
+               newVPSet = [TranslateEverythingToLegacyNames(aPSet) for aPSet in theSubParam]
+               setattr(module, param, newVPSet)
+
+            elif theSubParam.pythonTypeName() == 'cms.PSet':
+               newPSet = TranslateEverythingToLegacyNames(theSubParam)
+               setattr(module, param, newPSet)
+
+   return module
+
+
+
+def UseLegacyProductNames(mySequence):
+   myFunctor = ApplyFunctionToSequence(TranslateEverythingToLegacyNames)
+   mySequence.visit(myFunctor)
 
 def SetPlotDirectory(myPlottingSequence, directory):
    myFunctor = ApplyFunctionToSequence(SetBaseDirectory(directory))

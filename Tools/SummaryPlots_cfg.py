@@ -19,7 +19,7 @@ options.register( 'usesLegacyProdNames',
                   0,
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
-                  "Set to 1 if the reference files contains old (eg pfRecoTauProducer) PFTau product names"
+                  "Set to 1 if the files contains old (eg pfRecoTauProducer) PFTau product names"
                  ) 
 
 options.parseArguments()
@@ -70,8 +70,13 @@ from Validation.RecoTau.RecoTauValidation_cfi import SetPlotOnlyStepByStep
 SetTestFileToPlot(process, testRootFile)
 SetReferenceFileToPlot(process, None)
 
+from Validation.RecoTau.RecoTauValidation_cfi import UseLegacyProductNames
+if options.usesLegacyProdNames == 1:
+   UseLegacyProductNames(process.plotTauValidation)
+
 # Set the right plot directory
 SetPlotDirectory(process.plotTauValidation, PlotOutputDir)
+
 
 # Only plot the summaries (we aren't comparing to anything)
 SetPlotOnlyStepByStep(process.plotTauValidation)
