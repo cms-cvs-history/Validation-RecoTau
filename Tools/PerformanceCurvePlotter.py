@@ -1,5 +1,5 @@
 """
-        PlotEfficiencyVersusFakeRate
+        PerformanceCurvePlotter
 
         Author: Evan K. Friis, UC Davis (friis@physics.ucdavis.edu)
 
@@ -10,12 +10,37 @@
         to reproduce (independently) the TancBenchmark plots produced in
         RecoTauTag/TauTagTools/test/MVABenchmarks.py
 
+
+            Instructions:
+
+            Add the releases to as shown.  You must specify and signal 
+            and backround file for each release, and a descriptive label.
+            To choose the chain of discriminators to plot, select the appropriate
+            EDProducer defined in Validation.RecoTau.TauTagValidation_cfi
+
+            PreFourTanc = TauValidationInfo("Signal.root", 
+                                            "Background.root",
+                                            "310pre5 TaNC",
+                                            Validation.RecoTau.RecoTauValidation_cfi.RunTancValidation)
+
+            PreFourIso = TauValidationInfo("Signal.root", 
+                                            "Background.root",
+                                            "310pre4 Iso",
+                                            Validation.RecoTau.RecoTauValidation_cfi.PFTausHighEfficiencyLeadingPionBothProngs)
+
+
+            ReleasesToBuildFrom = []
+            ReleasesToBuildFrom.append(PreFourTanc)
+            ReleasesToBuildFrom.append(PreFourIso)
+
+            PlotPerformanceCurves(ReleasesToBuildFrom, "output.png")
+
 """
 
 from ROOT import TH1F, TGraph, TCanvas, TPad, EColor, TFile, TGraphAsymmErrors, Double, TLegend, gPad, TPaveText, gROOT, gStyle
 import FWCore.ParameterSet.Config as cms
 import copy
-import Validation.RecoTau.TauTagValidation_cfi 
+import Validation.RecoTau.RecoTauValidation_cfi 
 
 """
         Kinematic cuts applied to the sample.  The Validation histograms
@@ -31,11 +56,6 @@ VarUnit         = "GeV/c"
 # Uncomment me to display electron and muon rejection performance
 HideMuonAndElectronRej = True
 
-# Cut label on the plots
-CutLabel = TPaveText(0.6, 0.1, 0.9, 0.27, "brNDC")
-CutLabel.AddText("%0.1f%s < %s < %0.1f%s" % (KinematicVarMin, VarUnit, LatexVar, KinematicVarMax, VarUnit))
-CutLabel.SetFillStyle(0)
-CutLabel.SetBorderSize(0)
 
 gROOT.SetBatch(True)
 gROOT.SetStyle("Plain")
@@ -160,71 +180,46 @@ class TauValidationInfo:
       self.SummaryLegend.AddEntry( self.SummaryTGraph, self.Label,"L")
       TauValidationInfo.StaticSummaryLineColorIterator += 1
 
-myCanvas = TCanvas("Validation", "Validation", 800, 800)
 
-ReleasesToBuildFrom = []
+def PlotPerformanceCurves(ReleasesToBuildFrom, OutputFile):
+   # Setup
+   myCanvas = TCanvas("Validation", "Validation", 800, 800)
+   # Cut label on the plots
+   CutLabel = TPaveText(0.6, 0.1, 0.9, 0.27, "brNDC")
+   CutLabel.AddText("%0.1f%s < %s < %0.1f%s" % (KinematicVarMin, VarUnit, LatexVar, KinematicVarMax, VarUnit))
+   CutLabel.SetFillStyle(0)
+   CutLabel.SetBorderSize(0)
 
-"""
-        USER:
+   # Build the TGraphs of sigEff versus bkgFakeRate for each release
+   for aRelease in ReleasesToBuildFrom:
+      aRelease.LoadHistograms()
+      aRelease.ComputeEfficiencies()
+      aRelease.BuildTGraphSummary()
 
-        Add the releases to compare here.  You must specify and signal 
-        and backround file for each release, and a descriptive label.
-        To choose the chain of discriminators to plot, select the appropriate
-        EDProducer defined in Validation.RecoTau.TauTagValidation_cfi
-"""
+   CurrentHistogram = 0
 
-PreFourTanc = TauValidationInfo("Signal.root", 
-                                      "Background.root",
-                                      "310pre5 TaNC",
-                                      Validation.RecoTau.TauTagValidation_cfi.RunTancValidation)
-
-PreFourIso = TauValidationInfo("Signal.root", 
-                                      "Background.root",
-                                      "310pre4 Iso",
-         #                             Validation.RecoTau.TauTagValidation_cfi.CaloTausBothProngs)
-                                      Validation.RecoTau.TauTagValidation_cfi.PFTausHighEfficiencyLeadingPionBothProngs)
-
-"""
-        USER:
-
-        To be plotted, the validation parameters must be added to the 
-        'ReleasesToBuildFrom' list
-"""
-
-ReleasesToBuildFrom.append(PreFourTanc)
-ReleasesToBuildFrom.append(PreFourIso)
+   for aRelease in ReleasesToBuildFrom:
+      if CurrentHistogram == 0:
+         aRelease.SummaryTGraph.Draw("ALP")
+         CurrentHistogram = aRelease.SummaryTGraph.GetHistogram()
+      else:
+         aRelease.SummaryTGraph.Draw("LP")
 
 
-# Build the TGraphs of sigEff versus bkgFakeRate for each release
-for aRelease in ReleasesToBuildFrom:
-   aRelease.LoadHistograms()
-   aRelease.ComputeEfficiencies()
-   aRelease.BuildTGraphSummary()
+   CurrentHistogram.SetAxisRange(0, 1)
+   CurrentHistogram.GetYaxis().SetRangeUser(0.0001,1)
+   CurrentHistogram.GetXaxis().SetTitle("Efficiency")
+   CurrentHistogram.GetYaxis().SetTitle("Fake Rate")
+   CurrentHistogram.SetTitle("Performance Points")
 
-CurrentHistogram = 0
+   gPad.SetLogy(True)
 
-for aRelease in ReleasesToBuildFrom:
-   if CurrentHistogram == 0:
-      aRelease.SummaryTGraph.Draw("ALP")
-      CurrentHistogram = aRelease.SummaryTGraph.GetHistogram()
-   else:
-      aRelease.SummaryTGraph.Draw("LP")
+   for aRelease in ReleasesToBuildFrom:
+      for aPoint in aRelease.DiscriminatorPoints:
+         aPoint['PerformancePoint'].Draw("P")
 
+   TauValidationInfo.SummaryLegend.Draw()
+   TauValidationInfo.DiscriminatorLegend.Draw()
+   CutLabel.Draw()
 
-CurrentHistogram.SetAxisRange(0, 1)
-CurrentHistogram.GetYaxis().SetRangeUser(0.0001,1)
-CurrentHistogram.GetXaxis().SetTitle("Efficiency")
-CurrentHistogram.GetYaxis().SetTitle("Fake Rate")
-CurrentHistogram.SetTitle("Performance Points")
-
-gPad.SetLogy(True)
-
-for aRelease in ReleasesToBuildFrom:
-   for aPoint in aRelease.DiscriminatorPoints:
-      aPoint['PerformancePoint'].Draw("P")
-
-TauValidationInfo.SummaryLegend.Draw()
-TauValidationInfo.DiscriminatorLegend.Draw()
-CutLabel.Draw()
-
-myCanvas.SaveAs("EffVersusFakeRateResults.png")
+   myCanvas.SaveAs(OutputFile)
