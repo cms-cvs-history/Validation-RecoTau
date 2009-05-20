@@ -11,6 +11,5 @@ alias Compare='cmsRun $VALTOOLS/Compare_cfg.py'
 alias Summarize='cmsRun $VALTOOLS/SummaryPlots_cfg.py'
 alias PerformanceCurves='python $VALTOOLS/PlotPerformanceCurves.py'
 alias BuildWebpage='python $VALTOOLS/BuildWebpage.py'
-alias SubmitResults='python $PFVALTOOLS/submit.py'
 
 
