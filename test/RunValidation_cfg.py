@@ -15,7 +15,7 @@ if not calledBycmsRun():
    print "Run 'cmsRun RunTauValidation_cfg.py help' for options."
    # quit here so we dont' create a bunch of directories
    #  if the user only wants the help
-   sys.exit()
+   #sys.exit()
 
 # Make sure we dont' clobber another directory! Skip in batch mode (runs from an LSF machine)
 if not CMSSWEnvironmentIsCurrent() and options.batchNumber == -1:
@@ -35,34 +35,42 @@ process.load("Configuration.StandardSequences.Services_cff")
 """
    Data is stored in
 
-   Validation_[Release]_[Label]/[EventType]_[DataSource]_[Conditions]
+   TauID/[EventType]_[DataSource]_[Conditions]_[label]
 
 """
 
-outputDirName = "Validation_%s" % ReleaseVersion
+#outputDirName = "Validation_%s" % ReleaseVersion
+outputDirName = "TauID"
 
-if (options.label != "none"):
-   outputDirName += "_" + options.label
 
 outputDir = os.path.join(os.getcwd(), outputDirName) 
 # This is the directory where we store the stuff about our current configuration
 outputBaseDir = outputDir
 
 subDirName = ""
-#subDirName += ReleaseVersion
-#subDirName += "_"
-#if (options.label != "none"):
-#   subDirName += "_" + options.label
 
 subDirName += "%s_%s" % (options.eventType, options.dataSource)
 
 if options.conditions != "whatever":
    subDirName += "_%s" % options.conditions
 
+if (options.label != "none"):
+   subDirName += "_" + options.label
+
 outputDir = os.path.join(outputDir, subDirName)
 
 # Store configuration, showtags, etc in a sub directory
 configDir = os.path.join(outputDir, "Config")
+
+if os.path.exists(outputDir):
+   print "Output directory %s already exists!  OK to overwrite?" % outputDir
+   while True:
+      input = raw_input("Please enter [y/n] ")
+      if (input == 'y'):
+         break
+      elif (input == 'n'):
+         print " ...exiting."
+         sys.exit()
 
 if not os.path.exists(outputDir):
    os.makedirs(outputDir)
@@ -200,7 +208,7 @@ else:
 process.validation *= process.saveTauEff #save the output
 
 # if we are running in default 22X, change all names to the 'old style'
-if options.translateToLegacyNames:
+if options.usesLegacyProdNames:
    from Validation.RecoTau.RecoTauValidation_cfi import UseLegacyProductNames
    UseLegacyProductNames(process.validation)
 

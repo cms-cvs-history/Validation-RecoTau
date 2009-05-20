@@ -103,14 +103,14 @@ options.register( 'edmFileContents',
                   "Specify event content. Not yet implemented"
                 )
 
-options.register( 'translateToLegacyNames',
+options.register( 'usesLegacyProdNames',
                    0,
                    VarParsing.VarParsing.multiplicity.singleton,
                    VarParsing.VarParsing.varType.int,
                    "If 1, use the old style (eg pfRecoTauProducer) product names everywhere."
                 )
 
-allowedOptions['translateToLegacyNames'] = [0, 1]
+allowedOptions['usesLegacyProdNames'] = [0, 1]
 
 
 ################################

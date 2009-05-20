@@ -72,11 +72,12 @@ SetReferenceFileToPlot(process, None)
 
 from Validation.RecoTau.RecoTauValidation_cfi import UseLegacyProductNames
 if options.usesLegacyProdNames == 1:
+   # remove the tanc from the sequence
+   process.plotTauValidation = cms.Sequence(process.plotTauValidationNoTanc)
    UseLegacyProductNames(process.plotTauValidation)
 
 # Set the right plot directory
 SetPlotDirectory(process.plotTauValidation, PlotOutputDir)
-
 
 # Only plot the summaries (we aren't comparing to anything)
 SetPlotOnlyStepByStep(process.plotTauValidation)

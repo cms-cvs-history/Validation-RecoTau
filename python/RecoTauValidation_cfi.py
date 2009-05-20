@@ -1110,14 +1110,14 @@ plotPFTauHighEfficiencyEfficienciesLeadingPion = cms.EDAnalyzer("DQMHistPlotter"
   outputFilePath = cms.string('./shrinkingConePFTauProducerLeadingPion/'),
 )
 
-plotTauValidation = cms.Sequence(
+plotTauValidationNoTanc = cms.Sequence(
       plotPFTauEfficiencies
       +plotPFTauHighEfficiencyEfficiencies
       +plotCaloTauEfficiencies
-      +plotTancValidation
       +plotPFTauHighEfficiencyEfficienciesLeadingPion
       )
 
+plotTauValidation = cms.Sequence(plotTauValidationNoTanc+plotTancValidation)
 
 loadAndPlotTauValidation = cms.Sequence(
       loadTau
@@ -1251,6 +1251,8 @@ def TranslateEverythingToLegacyNames(module):
 def UseLegacyProductNames(mySequence):
    myFunctor = ApplyFunctionToSequence(TranslateEverythingToLegacyNames)
    mySequence.visit(myFunctor)
+   mySequence.remove(RunTancValidation)
+   mySequence.remove(plotTancValidation)
 
 def SetPlotDirectory(myPlottingSequence, directory):
    myFunctor = ApplyFunctionToSequence(SetBaseDirectory(directory))
