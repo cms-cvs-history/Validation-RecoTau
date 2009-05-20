@@ -5,10 +5,10 @@ readFiles = cms.untracked.vstring()
 secFiles = cms.untracked.vstring() 
 source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
 readFiles.extend( [
-       '/store/relval/CMSSW_3_1_0_pre6/RelValZTT/GEN-SIM-RECO/STARTUP_31X_v1/0002/FE76B34E-8F32-DE11-8208-000423D9853C.root',
-       '/store/relval/CMSSW_3_1_0_pre6/RelValZTT/GEN-SIM-RECO/STARTUP_31X_v1/0002/C4077B7A-1733-DE11-84AA-001617C3B77C.root',
-       '/store/relval/CMSSW_3_1_0_pre6/RelValZTT/GEN-SIM-RECO/STARTUP_31X_v1/0002/B4C86624-8B32-DE11-A2B3-000423D98B6C.root',
-       '/store/relval/CMSSW_3_1_0_pre6/RelValZTT/GEN-SIM-RECO/STARTUP_31X_v1/0002/4AB04CA2-9032-DE11-AD66-000423D992DC.root' ] );
+   '/store/relval/CMSSW_3_1_0_pre7/RelValZTT/GEN-SIM-RECO/STARTUP_31X_v1/0004/CE5810FB-C941-DE11-887D-001D09F28D54.root',
+   '/store/relval/CMSSW_3_1_0_pre7/RelValZTT/GEN-SIM-RECO/STARTUP_31X_v1/0004/9CA80F94-E641-DE11-BEB0-001D09F231B0.root',
+   '/store/relval/CMSSW_3_1_0_pre7/RelValZTT/GEN-SIM-RECO/STARTUP_31X_v1/0004/7CF1F926-CD41-DE11-BC24-001D09F2915A.root',
+   '/store/relval/CMSSW_3_1_0_pre7/RelValZTT/GEN-SIM-RECO/STARTUP_31X_v1/0004/348F91A9-BC41-DE11-B7C9-001D09F2910A.root' ] );
 
 
 secFiles.extend( [
