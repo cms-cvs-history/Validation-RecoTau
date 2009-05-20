@@ -10,7 +10,6 @@ readFiles.extend( [
    '/store/relval/CMSSW_3_1_0_pre7/RelValZTT/GEN-SIM-RECO/STARTUP_31X_v1/0004/7CF1F926-CD41-DE11-BC24-001D09F2915A.root',
    '/store/relval/CMSSW_3_1_0_pre7/RelValZTT/GEN-SIM-RECO/STARTUP_31X_v1/0004/348F91A9-BC41-DE11-B7C9-001D09F2910A.root' ] );
 
-
 secFiles.extend( [
                ] )
 
