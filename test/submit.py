@@ -27,7 +27,7 @@ if len(args)!=0:
 
 
 website = valtools.website()
-bench = valtools.benchmark( options.extension ) 
+bench = valtools.benchmark( options.extension )
 
 print 'submitting benchmark:', bench
 
@@ -44,7 +44,8 @@ else:
     print bench, bench.benchmarkOnWebSite(website)
     if(options.force==True):
         shutil.rmtree(bench.benchmarkOnWebSite(website))
-    shutil.copytree(os.path.join("..", bench.__str__()), bench.benchmarkOnWebSite(website) ) 
+    #shutil.copytree(os.path.join("..", os.path.basename(bench.__str__())), bench.benchmarkOnWebSite(website) ) 
+    shutil.copytree("../TauID", bench.benchmarkOnWebSite(website) ) 
     #print os.path.abspath(bench.__str__()), bench.benchmarkOnWebSite(website)  
     print 'done. Access your benchmark here:'
     print bench.benchmarkUrl( website )
