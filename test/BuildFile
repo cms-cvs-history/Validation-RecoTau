@@ -8,10 +8,8 @@
 <use name=DataFormats/Math>
 <use name=DataFormats/TauReco>
 <use name=FWCore/ServiceRegistry>
-<use name=PhysicsTools/UtilAlgos>
 <library file=PFTauTest.cc name=PFTauTest>
   <use name=FWCore/Framework>
-  <use name=RecoTauTag/TauTagTools>
   <flags EDM_PLUGIN=1>
 </library>
 <library file=PFTauAnalyzer.cc name=PFTauAnalyzer>
