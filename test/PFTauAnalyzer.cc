@@ -791,5 +791,5 @@ void PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
   }
   theEventTree->Fill(); 
 }
-DEFINE_SEAL_MODULE();
-DEFINE_ANOTHER_FWK_MODULE(PFTauAnalyzer);
+
+DEFINE_FWK_MODULE(PFTauAnalyzer);

@@ -100,5 +100,5 @@ void CaloTauTest::analyze(const Event& iEvent, const EventSetup& iSetup){
 }
 void CaloTauTest::endJob() { }
 
-DEFINE_SEAL_MODULE();
-DEFINE_ANOTHER_FWK_MODULE(CaloTauTest);
+
+DEFINE_FWK_MODULE(CaloTauTest);

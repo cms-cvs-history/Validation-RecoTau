@@ -108,5 +108,5 @@ void PFTauTest::endJob(){
   */
 }
 
-DEFINE_SEAL_MODULE();
-DEFINE_ANOTHER_FWK_MODULE(PFTauTest);
+
+DEFINE_FWK_MODULE(PFTauTest);
