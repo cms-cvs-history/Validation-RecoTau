@@ -15,12 +15,14 @@
 //
 // Original Author:  Ricardo Vasquez Sierra
 //         Created:  October 8, 2008
-// $Id: TauTagValidation.cc,v 1.11 2009/05/15 08:56:54 friis Exp $
+// $Id: TauTagValidation.cc,v 1.12 2009/12/18 20:45:16 wmtan Exp $
 //
 //
 // user include files
 
 #include "Validation/RecoTau/interface/TauTagValidation.h"
+
+#include "FWCore/Version/interface/GetReleaseVersion.h"
 
 using namespace edm;
 using namespace std;
