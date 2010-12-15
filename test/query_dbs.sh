@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 echo "Finding tau validation datasets for $CMSSW_VERSION"
 
@@ -26,7 +26,7 @@ echo "    Creating new EventSource file"
 lastfile=`tail -n1 tmp_head | awk -F, '{print $1}'`
 let hline=`wc -l tmp_head | awk '{print $1}'`-1
 head -n$hline tmp_head > EventSource_QCD_RECO_cff.py
-echo "   "$lastfile >> EventSource_QCD_RECO_cff.py
+echo "  "$lastfile >> EventSource_QCD_RECO_cff.py
 cat tmp_tail >> EventSource_QCD_RECO_cff.py
 
 echo "    Removing temporary files"
