@@ -691,15 +691,15 @@ void PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
       }
       
       PFCandidateRefVector theSignalPFChargedHadrCands,theSignalPFNeutrHadrCands,theSignalPFGammaCands,theSignalPFCands;
-      //if (UseCHCandLeadCHCand_tksDZconstraint_ && theleadPFChargedHadrCand_rectkavailable) 
-	//theSignalPFChargedHadrCands=thePFTauElementsOperators.PFChargedHadrCandsInCone((*theleadPFChargedHadrCand).momentum(),"DR",test_trackersignalcone_size_,test_Cand_minpt_,CHCandLeadCHCand_tksmaxDZ_,theleadPFChargedHadrCand_rectkDZ, myPV);
-      theSignalPFChargedHadrCands=thePFTauElementsOperators.PFChargedHadrCandsInCone((*theleadPFChargedHadrCand).momentum(),"DR",test_trackersignalcone_size_,test_Cand_minpt_);
+      if (UseCHCandLeadCHCand_tksDZconstraint_ && theleadPFChargedHadrCand_rectkavailable) 
+         theSignalPFChargedHadrCands=thePFTauElementsOperators.PFChargedHadrCandsInCone((*theleadPFChargedHadrCand).momentum(),"DR",test_trackersignalcone_size_,test_Cand_minpt_,CHCandLeadCHCand_tksmaxDZ_,theleadPFChargedHadrCand_rectkDZ, myPV);
+      else theSignalPFChargedHadrCands=thePFTauElementsOperators.PFChargedHadrCandsInCone((*theleadPFChargedHadrCand).momentum(),"DR",test_trackersignalcone_size_,test_Cand_minpt_);
       theSignalPFNeutrHadrCands=thePFTauElementsOperators.PFNeutrHadrCandsInCone((*theleadPFChargedHadrCand).momentum(),"DR",test_HCALsignalcone_size_,test_Cand_minpt_);
       theSignalPFGammaCands=thePFTauElementsOperators.PFGammaCandsInCone((*theleadPFChargedHadrCand).momentum(),"DR",test_ECALsignalcone_size_,test_Cand_minpt_);
       
       PFCandidateRefVector theIsolPFChargedHadrCands,theIsolPFNeutrHadrCands,theIsolPFGammaCands,theIsolPFCands;
-      //if (UseCHCandLeadCHCand_tksDZconstraint_ && theleadPFChargedHadrCand_rectkavailable) //theIsolPFChargedHadrCands=thePFTauElementsOperators.PFChargedHadrCandsInAnnulus((*theleadPFChargedHadrCand).momentum(),"DR",test_trackersignalcone_size_,"DR",test_trackerisolcone_size_,test_Cand_minpt_,CHCandLeadCHCand_tksmaxDZ_,theleadPFChargedHadrCand_rectkDZ, myPV);
-      theIsolPFChargedHadrCands=thePFTauElementsOperators.PFChargedHadrCandsInAnnulus((*theleadPFChargedHadrCand).momentum(),"DR",test_trackersignalcone_size_,"DR",test_trackerisolcone_size_,test_Cand_minpt_);
+      if (UseCHCandLeadCHCand_tksDZconstraint_ && theleadPFChargedHadrCand_rectkavailable) theIsolPFChargedHadrCands=thePFTauElementsOperators.PFChargedHadrCandsInAnnulus((*theleadPFChargedHadrCand).momentum(),"DR",test_trackersignalcone_size_,"DR",test_trackerisolcone_size_,test_Cand_minpt_,CHCandLeadCHCand_tksmaxDZ_,theleadPFChargedHadrCand_rectkDZ, myPV);
+      else theIsolPFChargedHadrCands=thePFTauElementsOperators.PFChargedHadrCandsInAnnulus((*theleadPFChargedHadrCand).momentum(),"DR",test_trackersignalcone_size_,"DR",test_trackerisolcone_size_,test_Cand_minpt_);
       theIsolPFNeutrHadrCands=thePFTauElementsOperators.PFNeutrHadrCandsInAnnulus((*theleadPFChargedHadrCand).momentum(),"DR",test_HCALsignalcone_size_,"DR",test_HCALisolcone_size_,test_Cand_minpt_);
       theIsolPFGammaCands=thePFTauElementsOperators.PFGammaCandsInAnnulus((*theleadPFChargedHadrCand).momentum(),"DR",test_ECALsignalcone_size_,"DR",test_ECALisolcone_size_,test_Cand_minpt_);  
       //
