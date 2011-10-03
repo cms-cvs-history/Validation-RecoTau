@@ -97,8 +97,10 @@ StandardMatchingParameters = cms.PSet(
    SaveOutputHistograms         = cms.bool(False), #TRUE FOR TEST ONLY
    #RefCollection                = cms.InputTag("TauGenJetProducer","selectedGenTauDecaysToHadronsPt5Cumulative"),
    RefCollection                = denominator,
-   TauPtCut                     = cms.double(0.),
-   chainCuts                    = cms.bool(True) #Decide whether to chain discriminators or not
+   TauPtCut                     = cms.double(0.), #almost deprecated, since recoCuts provides more flexibility
+   recoCuts                     = cms.string(''), #filter reconstructed candidates. leave this empty to select all.
+   genCuts                      = cms.string('pt > 20 & abs(eta) < 2.3'), #filter generated candidates. leave this empty to select all.
+   chainCuts                    = cms.bool(False) #Decide whether to chain discriminators or not
 )
 
 PFTausHighEfficiencyLeadingPionBothProngs = cms.EDAnalyzer("TauTagValidation",
