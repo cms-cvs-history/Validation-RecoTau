@@ -98,8 +98,8 @@ StandardMatchingParameters = cms.PSet(
    #RefCollection                = cms.InputTag("TauGenJetProducer","selectedGenTauDecaysToHadronsPt5Cumulative"),
    RefCollection                = denominator,
    TauPtCut                     = cms.double(0.), #almost deprecated, since recoCuts provides more flexibility
-   recoCuts                     = cms.string(''), #filter reconstructed candidates. leave this empty to select all.
-   genCuts                      = cms.string('pt > 20 & abs(eta) < 2.3'), #filter generated candidates. leave this empty to select all.
+   recoCuts                     = cms.string(''), #filter reconstructed candidates. leave this empty to select all. or use sth like: pt > 20 & abs(eta) < 2.3
+   genCuts                      = cms.string(''), #filter generated candidates. leave this empty to select all. or use sth like: pt > 20 & abs(eta) < 2.3
    chainCuts                    = cms.bool(False) #Decide whether to chain discriminators or not
 )
 
@@ -688,3 +688,4 @@ def SetSmartLogScale(myPlottingSequence):
 def SetPlotOnlyStepByStep(myPlottingSequence):
    myFunctor = ApplyFunctionToSequence(RemoveComparisonPlotCommands)
    myPlottingSequence.visit(myFunctor)
+
