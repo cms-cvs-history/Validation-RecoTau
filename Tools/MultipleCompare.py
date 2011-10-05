@@ -58,9 +58,11 @@ def Divide(hNum,hDen):
 def DetermineHistType(name):
   #automatically derive all plot types in the future?
   type = ''
+  label = ''
   #assuming plots name like: tauType_plotType_xAxis or tauType_plotType_selection
   matches = re.match(r'(.*)_(.*)_(.*)', name)
   if matches:
+    label = matches.group(3)
     knowntypes = (['pTRatio','SumPt','Size'])
     for knowntype in knowntypes:
       if matches.group(2) == knowntype:
@@ -71,7 +73,7 @@ def DetermineHistType(name):
     type = 'Eff'
 
   #print 'type is ' + type
-  return [type, matches.group(3)]
+  return [type, label]
 
 def DrawTitle(text):
 	title = TLatex()
@@ -202,6 +204,10 @@ pTResMode = False
 if histType=='pTRatio':
   pTResMode = True
 
+drawStats = False
+if len(histoList)<3:
+  drawStats = True
+
 ylabel = 'Efficiency'
 
 if options.fakeRate:
@@ -210,18 +216,20 @@ elif pTResMode:
   ylabel = 'a.u.'
 
 #legend = TLegend(0.6,0.83,0.6+0.39,0.83+0.17)
-x1 = 0.65
+x1 = 0.55
 x2 = 1-gStyle.GetPadRightMargin()
 y2 = 1-gStyle.GetPadTopMargin()
 lineHeight = .025
 if len(histoList) == 1:
-  lineHeight = .05
+  lineHeight = .15
 y1 = y2 - lineHeight*len(histoList)
 legend = TLegend(x1,y1,x2,y2)
 legend.SetFillColor(0)
-if pTResMode:
+legend.SetMargin(0.1)
+legend.SetTextAlign(32)#3*10=right,3*1=top
+if drawStats:
   y2 = y1
-  y1 = y2 - .05*len(histoList)
+  y1 = y2 - .07*len(histoList)
   statsBox = TPaveText(x1,y1,x2,y2,"NDC")
   statsBox.SetFillColor(0)
   statsBox.SetTextAlign(12)#3*10=right,3*1=top
@@ -280,7 +288,8 @@ for histoPath,color in zip(histoList,colors):
       legend.AddEntry(testH,histoPath[histoPath.rfind('/')+1:histoPath.find(histType)],'p')
     else:
       legend.AddEntry(testH,DetermineHistType(histoPath)[1],'p')
-    if pTResMode:
+#    if pTResMode:
+    if drawStats:
         text = statsBox.AddText(statTemplate % ('Dots',testH.GetMean(), testH.GetRMS()) )
         text.SetTextColor(color)
     if first:
@@ -313,7 +322,7 @@ for histoPath,color in zip(histoList,colors):
     refHs.append(refH)
     refH.SetLineColor(color)
     refH.SetLineWidth(1)
-    if options.normalize or pTResMode:
+    if options.normalize or pTResMode or drawStats:
       if testH.GetEntries() > 0:
         refH.DrawNormalized('same hist')
       text = statsBox.AddText(statTemplate % ('Line',refH.GetMean(), refH.GetRMS()) )
@@ -359,7 +368,7 @@ if refFile != None:
             diffPad.Update()
     effPad.cd()
     legend.Draw()
-    if pTResMode:
+    if pTResMode or drawStats:
         statsBox.Draw()
     canvas.Print(options.out)
 
