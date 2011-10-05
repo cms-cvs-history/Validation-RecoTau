@@ -221,12 +221,10 @@ x2 = 1-gStyle.GetPadRightMargin()
 y2 = 1-gStyle.GetPadTopMargin()
 lineHeight = .025
 if len(histoList) == 1:
-  lineHeight = .15
+  lineHeight = .05
 y1 = y2 - lineHeight*len(histoList)
 legend = TLegend(x1,y1,x2,y2)
 legend.SetFillColor(0)
-legend.SetMargin(0.1)
-legend.SetTextAlign(32)#3*10=right,3*1=top
 if drawStats:
   y2 = y1
   y1 = y2 - .07*len(histoList)
