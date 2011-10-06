@@ -7,11 +7,35 @@ import math
 import re
 import Validation.RecoTau.RecoTauValidation_cfi as validation
 from optparse import OptionParser
+from ROOT import *
 
 __author__  = "Mauro Verzetti (mauro.verzetti@cern.ch)"
 __doc__ = """Script to plot the content of a Validation .root file and compare it to a different file:\n\n
 Usage: MultipleCompare.py -T testFile [options] [search strings that you want to apply '*' is supported as special character]"""
 
+def LoadCommandlineOptions(argv):
+  sys.argv = argv
+  parser = OptionParser(description=__doc__)
+  parser.add_option('--TestFile','-T',metavar='testFile', type=str,help='Sets the test file',dest='test',default = '')
+  parser.add_option('--RefFile','-R',metavar='refFile', type=str,help='Sets the reference file',dest='ref',default = '')
+  parser.add_option('--output','-o',metavar='outputFile', type=str,help='Sets the output file',dest='out',default = 'MultipleCompare.png')
+  parser.add_option('--logScale',action="store_true", dest="logScale", default=False, help="Sets the log scale in the plot")
+  parser.add_option('--fakeRate','-f',action="store_true", dest="fakeRate", default=False, help="Sets the fake rate options and put the correct label (implies --logScale)")
+  #not needed as automatically defined# parser.add_option('--ptResolution','-p',action="store_true", dest="ptRes", default=False, help="Sets the pt resolution options and put the correct label (normalizes the plot also)")
+  parser.add_option('--testLabel','-t',metavar='testLabel', type=str,help='Sets the label to put in the plots for test file',dest='testLabel',default = None)
+  parser.add_option('--refLabel','-r',metavar='refLabel', type=str,help='Sets the label to put in the plots for ref file',dest='refLabel',default = None)
+  parser.add_option('--maxLog',metavar='number', type=float,help='Sets the maximum of the scale in log scale (requires --logScale or -f to work)',dest='maxLog',default = 3)
+  parser.add_option('--minDiv',metavar='number', type=float,help='Sets the minimum of the scale in the ratio pad',dest='minDiv',default = 0.001)
+  parser.add_option('--maxDiv',metavar='number', type=float,help='Sets the maximum of the scale in the ratio pad',dest='maxDiv',default = 2)
+  parser.add_option('--logDiv',action="store_true", dest="logDiv", default=False, help="Sets the log scale in the plot")
+  parser.add_option('--normalize',action="store_true", dest="normalize", default=False, help="plot normalized")
+  parser.add_option('--maxRange',metavar='number',type=float, dest="maxRange", default=1.6, help="Sets the maximum range in linear plots")
+  parser.add_option('--rebin', dest="rebin", type=int, default=-1, help="Sets the rebinning scale")
+  parser.add_option('--branding','-b',metavar='branding', type=str,help='Define a branding to label the plots (in the top right corner)',dest='branding',default = None)
+  #parser.add_option('--search,-s',metavar='searchStrings', type=str,help='Sets the label to put in the plots for ref file',dest='testLabel',default = None) No idea on how to tell python to use all the strings before a new option, thus moving this from option to argument (but may be empty)  
+  
+  (options,toPlot) = parser.parse_args()
+  return [options, toPlot]
 
 def GetContent(dir):
     tempList = dir.GetListOfKeys()
@@ -84,7 +108,7 @@ def DrawTitle(text):
 	topMargin = 1 - 0.5*gStyle.GetPadTopMargin()
 	title.DrawLatex(leftMargin, topMargin, text)
 
-def DrawBranding():
+def DrawBranding(options):
   if options.branding != None:
     text = TLatex()
     text.SetNDC();
@@ -141,126 +165,113 @@ def Rebin(tfile, histoPath, rebinVal):
     retVal.Divide(num,den,1,1,'B')
     return retVal
 
-parser = OptionParser(description=__doc__)
-parser.add_option('--TestFile','-T',metavar='testFile', type=str,help='Sets the test file',dest='test',default = '')
-parser.add_option('--RefFile','-R',metavar='refFile', type=str,help='Sets the reference file',dest='ref',default = '')
-parser.add_option('--output','-o',metavar='outputFile', type=str,help='Sets the output file',dest='out',default = 'MultipleCompare.png')
-parser.add_option('--logScale',action="store_true", dest="logScale", default=False, help="Sets the log scale in the plot")
-parser.add_option('--fakeRate','-f',action="store_true", dest="fakeRate", default=False, help="Sets the fake rate options and put the correct label (implies --logScale)")
-#not needed as automatically defined# parser.add_option('--ptResolution','-p',action="store_true", dest="ptRes", default=False, help="Sets the pt resolution options and put the correct label (normalizes the plot also)")
-parser.add_option('--testLabel','-t',metavar='testLabel', type=str,help='Sets the label to put in the plots for test file',dest='testLabel',default = None)
-parser.add_option('--refLabel','-r',metavar='refLabel', type=str,help='Sets the label to put in the plots for ref file',dest='refLabel',default = None)
-parser.add_option('--maxLog',metavar='number', type=float,help='Sets the maximum of the scale in log scale (requires --logScale or -f to work)',dest='maxLog',default = 3)
-parser.add_option('--minDiv',metavar='number', type=float,help='Sets the minimum of the scale in the ratio pad',dest='minDiv',default = 0.001)
-parser.add_option('--maxDiv',metavar='number', type=float,help='Sets the maximum of the scale in the ratio pad',dest='maxDiv',default = 2)
-parser.add_option('--logDiv',action="store_true", dest="logDiv", default=False, help="Sets the log scale in the plot")
-parser.add_option('--normalize',action="store_true", dest="normalize", default=False, help="plot normalized")
-parser.add_option('--maxRange',metavar='number',type=float, dest="maxRange", default=1.6, help="Sets the maximum range in linear plots")
-parser.add_option('--rebin', dest="rebin", type=int, default=-1, help="Sets the rebinning scale")
-parser.add_option('--branding','-b',metavar='branding', type=str,help='Define a branding to label the plots (in the top right corner)',dest='branding',default = None)
-#parser.add_option('--search,-s',metavar='searchStrings', type=str,help='Sets the label to put in the plots for ref file',dest='testLabel',default = None) No idea on how to tell python to use all the strings before a new option, thus moving this from option to argument (but may be empty)
 
-(options,toPlot) = parser.parse_args()
+def main(argv=None):
+  if argv is None:
+    argv = sys.argv
 
-from ROOT import *
-gROOT.SetStyle('Plain')
-gROOT.SetBatch()
-gStyle.SetPalette(1)
-gStyle.SetOptStat(0)
-gStyle.SetPadGridX(True)
-gStyle.SetPadGridY(True)
-gStyle.SetOptTitle(0)
-gStyle.SetPadTopMargin(0.1)
-gStyle.SetPadBottomMargin(0.1)
-gStyle.SetPadLeftMargin(0.13)
-gStyle.SetPadRightMargin(0.07)
+  options, toPlot = LoadCommandlineOptions(argv)
+
+  gROOT.SetStyle('Plain')
+  gROOT.SetBatch()
+  gStyle.SetPalette(1)
+  gStyle.SetOptStat(0)
+  gStyle.SetPadGridX(True)
+  gStyle.SetPadGridY(True)
+  gStyle.SetOptTitle(0)
+  gStyle.SetPadTopMargin(0.1)
+  gStyle.SetPadBottomMargin(0.1)
+  gStyle.SetPadLeftMargin(0.13)
+  gStyle.SetPadRightMargin(0.07)
 
 
-testFile = TFile(options.test)
-refFile = None
-if options.ref != None:
+  testFile = TFile(options.test)
+  refFile = None
+  if options.ref != None:
     refFile = TFile(options.ref)
 
-#Takes the position of all plots that were produced
-plotList = []
-MapDirStructure( testFile,'',plotList)
+  #Takes the position of all plots that were produced
+  plotList = []
+  MapDirStructure( testFile,'',plotList)
 
-histoList = []
-for plot in toPlot:
+  histoList = []
+  for plot in toPlot:
     for path in plotList:
         if Match(plot.lower(),path.lower()):
             histoList.append(path)
 
-print histoList
+#  print "options: ",options
+#  print "toPlot: ",toPlot
+  print histoList
 
-if len(histoList)<1:
-  print '\tError: Please specify at least one histogram.'
-  sys.exit()
+  if len(histoList)<1:
+    print '\tError: Please specify at least one histogram.'
+    sys.exit()
 
 
-#WARNING: For now the hist type is assumed to be constant over all histos.
-histType = DetermineHistType(histoList[0])[0]
-pTResMode = False
-if histType=='pTRatio':
-  pTResMode = True
+  #WARNING: For now the hist type is assumed to be constant over all histos.
+  histType = DetermineHistType(histoList[0])[0]
+  pTResMode = False
+  if histType=='pTRatio':
+    pTResMode = True
 
-drawStats = False
-if len(histoList)<3:
-  drawStats = True
+  ylabel = 'Efficiency'
 
-ylabel = 'Efficiency'
+  if options.fakeRate:
+    ylabel = 'Fake rate'
+  elif pTResMode:
+    ylabel = 'a.u.'
 
-if options.fakeRate:
-  ylabel = 'Fake rate'
-elif pTResMode:
-  ylabel = 'a.u.'
+  drawStats = False
+  if pTResMode or options.normalize or len(histoList)<3:
+    drawStats = True
 
-#legend = TLegend(0.6,0.83,0.6+0.39,0.83+0.17)
-x1 = 0.55
-x2 = 1-gStyle.GetPadRightMargin()
-y2 = 1-gStyle.GetPadTopMargin()
-lineHeight = .025
-if len(histoList) == 1:
-  lineHeight = .05
-y1 = y2 - lineHeight*len(histoList)
-legend = TLegend(x1,y1,x2,y2)
-legend.SetFillColor(0)
-if drawStats:
-  y2 = y1
-  y1 = y2 - .07*len(histoList)
-  statsBox = TPaveText(x1,y1,x2,y2,"NDC")
-  statsBox.SetFillColor(0)
-  statsBox.SetTextAlign(12)#3*10=right,3*1=top
-  statsBox.SetMargin(0.05)
-  statsBox.SetBorderSize(1)
+  #legend = TLegend(0.6,0.83,0.6+0.39,0.83+0.17)
+  x1 = 0.55
+  x2 = 1-gStyle.GetPadRightMargin()
+  y2 = 1-gStyle.GetPadTopMargin()
+  lineHeight = .025
+  if len(histoList) == 1:
+    lineHeight = .05
+  y1 = y2 - lineHeight*len(histoList)
+  legend = TLegend(x1,y1,x2,y2)
+  legend.SetFillColor(0)
+  if drawStats:
+    y2 = y1
+    y1 = y2 - .07*len(histoList)
+    statsBox = TPaveText(x1,y1,x2,y2,"NDC")
+    statsBox.SetFillColor(0)
+    statsBox.SetTextAlign(12)#3*10=right,3*1=top
+    statsBox.SetMargin(0.05)
+    statsBox.SetBorderSize(1)
 
     
-canvas = TCanvas('MultiPlot','MultiPlot',validation.standardDrawingStuff.canvasSizeX.value(),832)
-effPad = TPad('effPad','effPad',0,0.25,1.,1.,0,0)
-effPad.SetBottomMargin(0.1);
-effPad.SetTopMargin(0.1);
-effPad.SetLeftMargin(0.13);
-effPad.SetRightMargin(0.07);
-effPad.Draw()
-header = ''
-if options.testLabel != None:
-  header += 'Dots: '+options.testLabel
-if options.refLabel != None:
-  header += ' Line: '+options.refLabel
-DrawTitle(header)
-DrawBranding()
-#legend.SetHeader(header)
-diffPad = TPad('diffPad','diffPad',0.,0.,1,.25,0,0)
-diffPad.Draw()
-colors = [2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1]
-first = True
-divHistos = []
-statTemplate = '%s Mean: %.3f RMS: %.3f'
-testHs = []
-refHs = []
-for histoPath,color in zip(histoList,colors):
+  canvas = TCanvas('MultiPlot','MultiPlot',validation.standardDrawingStuff.canvasSizeX.value(),832)
+  effPad = TPad('effPad','effPad',0,0.25,1.,1.,0,0)
+  effPad.SetBottomMargin(0.1);
+  effPad.SetTopMargin(0.1);
+  effPad.SetLeftMargin(0.13);
+  effPad.SetRightMargin(0.07);
+  effPad.Draw()
+  header = ''
+  if options.testLabel != None:
+    header += 'Dots: '+options.testLabel
+  if options.refLabel != None:
+    header += ' Line: '+options.refLabel
+  DrawTitle(header)
+  DrawBranding(options)
+  #legend.SetHeader(header)
+  diffPad = TPad('diffPad','diffPad',0.,0.,1,.25,0,0)
+  diffPad.Draw()
+  colors = [2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1]
+  first = True
+  divHistos = []
+  statTemplate = '%s Mean: %.3f RMS: %.3f'
+  testHs = []
+  refHs = []
+  for histoPath,color in zip(histoList,colors):
     if(options.rebin == -1):
-        testH = testFile.Get(histoPath)
+      testH = testFile.Get(histoPath)
     else:
         testH = Rebin(testFile,histoPath,options.rebin)
     if type(testH) != TH1F:
@@ -286,7 +297,6 @@ for histoPath,color in zip(histoList,colors):
       legend.AddEntry(testH,histoPath[histoPath.rfind('/')+1:histoPath.find(histType)],'p')
     else:
       legend.AddEntry(testH,DetermineHistType(histoPath)[1],'p')
-#    if pTResMode:
     if drawStats:
         text = statsBox.AddText(statTemplate % ('Dots',testH.GetMean(), testH.GetRMS()) )
         text.SetTextColor(color)
@@ -295,14 +305,22 @@ for histoPath,color in zip(histoList,colors):
         #testH.GetYaxis().SetRangeUser(0.0,options.maxRange)
         if options.logScale:
             effPad.SetLogy()
-        testH.Draw('ex0')
         if options.normalize or pTResMode:
           if testH.GetEntries() > 0:
             testH.DrawNormalized('P')
+        else:
+          testH.Draw('ex0')
         if ylabel=='Fake rate':
             testH.GetYaxis().SetRangeUser(0.001,options.maxLog)
             effPad.SetLogy()
             effPad.Update()
+        if not effPad.GetLogy():
+          #tune y axis range
+          effPad.Update()
+          if (ylabel == 'Efficiency' or ylabel=='Fake rate') and effPad.GetUymax() < 1.:
+            testH.SetAxisRange(0., 1., "Y")#show fixed range
+          else:
+            testH.SetAxisRange(0., effPad.GetUymax(), "Y")#start from zero if possible
     else:
         if options.normalize or pTResMode:
           if testH.GetEntries() > 0:
@@ -320,13 +338,14 @@ for histoPath,color in zip(histoList,colors):
     refHs.append(refH)
     refH.SetLineColor(color)
     refH.SetLineWidth(1)
-    if options.normalize or pTResMode or drawStats:
+    if options.normalize or pTResMode:
       if testH.GetEntries() > 0:
         refH.DrawNormalized('same hist')
-      text = statsBox.AddText(statTemplate % ('Line',refH.GetMean(), refH.GetRMS()) )
-      text.SetTextColor(color)
     else:
         refH.DrawCopy('same hist')
+    if options.normalize or pTResMode or drawStats:
+      text = statsBox.AddText(statTemplate % ('Line',refH.GetMean(), refH.GetRMS()) )
+      text.SetTextColor(color)
     refH.SetFillColor(color)
     refH.SetFillStyle(3001)
     if not (options.normalize or pTResMode):
@@ -343,8 +362,8 @@ for histoPath,color in zip(histoList,colors):
           refH.Scale(1./entries)
         divHistos.append(Divide(testH,refH))
 
-firstD = True
-if refFile != None:
+  firstD = True
+  if refFile != None:
     for histo,color in zip(divHistos,colors):
         diffPad.cd()
         histo.SetMarkerSize(1)
@@ -371,4 +390,5 @@ if refFile != None:
     canvas.Print(options.out)
 
 
-
+if __name__ == '__main__':
+  sys.exit(main())
