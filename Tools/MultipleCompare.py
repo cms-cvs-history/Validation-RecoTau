@@ -307,7 +307,8 @@ def main(argv=None):
             effPad.SetLogy()
         if options.normalize or pTResMode:
           if testH.GetEntries() > 0:
-            testH.DrawNormalized('P')
+            testH.Sumw2()
+            testH.DrawNormalized('ex0 P')
         else:
           testH.Draw('ex0')
         if ylabel=='Fake rate':
@@ -348,19 +349,16 @@ def main(argv=None):
       text.SetTextColor(color)
     refH.SetFillColor(color)
     refH.SetFillStyle(3001)
-    if not (options.normalize or pTResMode):
-        refH.Draw('same e3')
-        divHistos.append(Divide(testH,refH))
-    else:
+    if options.normalize or pTResMode:
         entries = testH.GetEntries()
-        testH.Sumw2()
         if entries > 0:
           testH.Scale(1./entries)
         entries = refH.GetEntries()
         refH.Sumw2()
         if entries > 0:
           refH.Scale(1./entries)
-        divHistos.append(Divide(testH,refH))
+    refH.Draw('same e3')
+    divHistos.append(Divide(testH,refH))
 
   firstD = True
   if refFile != None:
