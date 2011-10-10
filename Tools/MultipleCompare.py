@@ -165,6 +165,53 @@ def Rebin(tfile, histoPath, rebinVal):
     retVal.Divide(num,den,1,1,'B')
     return retVal
 
+def optimizeRange(argv, hists):
+  if len(hists) < 1:
+    return
+  min = -1
+  max = -1
+  if argv.count('minDiv') < 1 or argv.count('maxDiv') < 1:
+    for hist in hists:
+      #Divide() sets bin to zero if division not possible. Ignore these bins.
+      minTmp = getMinimumIncludingErrors(hist)
+      if minTmp < min or min == -1:
+        min = minTmp
+      maxTmp = getMaximumIncludingErrors(hist)
+      if maxTmp > max or max == -1:
+        max = maxTmp
+  if argv.count('minDiv') > 0:
+    min = options.minDiv
+  if argv.count('maxDiv') > 0:
+    max = options.maxDiv
+  else:
+    if max > 2:
+      max = 2 #maximal bound      
+  hists[0].SetAxisRange(min, max, "Y")
+
+
+def getMaximumIncludingErrors(hist):
+#find minimum considering also the errors
+  distance = 1.5
+  max = -1
+  for i in range(1, hist.GetNbinsX()):
+    if hist.GetBinContent(i) > max:
+      max = hist.GetBinContent(i) + distance*hist.GetBinError(i)
+  return max
+
+def getMinimumIncludingErrors(hist):
+  #find minimum considering also the errors
+  #ignoring zero bins
+  distance = 1.5
+  min = -1
+  for i in range(1, hist.GetNbinsX()):
+    if hist.GetBinContent(i)<=0.:
+      continue
+    if hist.GetBinContent(i) < min or min==-1:
+      min = hist.GetBinContent(i) - distance*hist.GetBinError(i)
+      if min < 0:
+        min = 0  
+  return min
+
 
 def main(argv=None):
   if argv is None:
@@ -206,6 +253,8 @@ def main(argv=None):
 
   if len(histoList)<1:
     print '\tError: Please specify at least one histogram.'
+    if len(toPlot)>0:
+      print 'Check your plot list:', toPlot
     sys.exit()
 
 
@@ -362,6 +411,7 @@ def main(argv=None):
 
   firstD = True
   if refFile != None:
+    optimizeRange(argv, divHistos)
     for histo,color in zip(divHistos,colors):
         diffPad.cd()
         histo.SetMarkerSize(1)
@@ -373,7 +423,6 @@ def main(argv=None):
         histo.GetXaxis().SetLabelSize(0.)
         histo.GetXaxis().SetTitleSize(0.)
         if firstD:
-            histo.GetYaxis().SetRangeUser(options.minDiv,options.maxDiv)
             if options.logDiv:
                 diffPad.SetLogy()
             histo.Draw('ex0')
