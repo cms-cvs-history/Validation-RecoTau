@@ -209,6 +209,9 @@ void TauTagValidation::beginJob()
       plotName = plotType + "isolationPFNeutrHadrCands";
       tmpME = dbeTau_->book1D(DiscriminatorLabel + plotName, histogramName + plotName + xaxisLabel + yaxislabel, bins, -0.5, bins-0.5);
       plotMap_.insert( std::make_pair( DiscriminatorLabel + plotName, tmpME ) );
+      plotName = plotType + "isolationPFGammaCands";
+      tmpME = dbeTau_->book1D(DiscriminatorLabel + plotName, histogramName + plotName + xaxisLabel + yaxislabel, bins, -0.5, bins-0.5);
+      plotMap_.insert( std::make_pair( DiscriminatorLabel + plotName, tmpME ) );
 
       plotType = "_SumPt_";
       xaxisLabel = ";p_{T}^{sum}/ GeV";
@@ -225,6 +228,9 @@ void TauTagValidation::beginJob()
       plotMap_.insert( std::make_pair( DiscriminatorLabel + plotName, tmpME ) );
       plotName = plotType + "isolationPFNeutrHadrCands";
       tmpME = dbeTau_->book1D(DiscriminatorLabel + plotName, histogramName + plotName + xaxisLabel + yaxislabel, bins, 0., 30.);
+      plotMap_.insert( std::make_pair( DiscriminatorLabel + plotName, tmpME ) );
+      plotName = plotType + "isolationPFGammaCands";
+      tmpME = dbeTau_->book1D(DiscriminatorLabel + plotName, histogramName + plotName + xaxisLabel + yaxislabel, bins, 0., 20.);
       plotMap_.insert( std::make_pair( DiscriminatorLabel + plotName, tmpME ) );
 
 
@@ -417,6 +423,8 @@ void TauTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& 
           if( element != plotMap_.end() ) element->second->Fill( thePFTau->isolationPFChargedHadrCands().size() );
           element = plotMap_.find( currentDiscriminatorLabel + plotType + "isolationPFNeutrHadrCands" );
           if( element != plotMap_.end() ) element->second->Fill( thePFTau->isolationPFNeutrHadrCands().size() );
+          element = plotMap_.find( currentDiscriminatorLabel + plotType + "isolationPFGammaCands" );
+          if( element != plotMap_.end() ) element->second->Fill( thePFTau->isolationPFGammaCands().size() );
 
           plotType = "_SumPt_";
           element = plotMap_.find( currentDiscriminatorLabel + plotType + "signalPFCands" );
@@ -427,6 +435,8 @@ void TauTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& 
           if( element != plotMap_.end() ) element->second->Fill( getSumPt( thePFTau->isolationPFChargedHadrCands() ) );
           element = plotMap_.find( currentDiscriminatorLabel + plotType + "isolationPFNeutrHadrCands" );
           if( element != plotMap_.end() ) element->second->Fill( getSumPt( thePFTau->isolationPFNeutrHadrCands() ) );
+          element = plotMap_.find( currentDiscriminatorLabel + plotType + "isolationPFGammaCands" );
+          if( element != plotMap_.end() ) element->second->Fill( getSumPt( thePFTau->isolationPFGammaCands() ) );
           
           
           //deprecated
