@@ -83,9 +83,11 @@ def DetermineHistType(name):
   #automatically derive all plot types in the future?
   type = ''
   label = ''
+  prefix = ''
   #assuming plots name like: tauType_plotType_xAxis or tauType_plotType_selection
-  matches = re.match(r'(.*)_(.*)_(.*)', name)
+  matches = re.match(r'.*/(.*)_(.*)_(.*)', name)
   if matches:
+    prefix = matches.group(1) 
     label = matches.group(3)
     knowntypes = (['pTRatio','SumPt','Size'])
     for knowntype in knowntypes:
@@ -96,8 +98,15 @@ def DetermineHistType(name):
   else:
     type = 'Eff'
 
+  prefixParts = prefix.partition('Discrimination')
+  if prefixParts[2] != '':
+    prefix = prefixParts[2]
+    prefixParts = prefix.partition('By')
+    if prefixParts[2] != '':
+      prefix = prefixParts[2]
+
   #print 'type is ' + type
-  return [type, label]
+  return [type, label, prefix]
 
 def DrawTitle(text):
 	title = TLatex()
@@ -108,8 +117,8 @@ def DrawTitle(text):
 	topMargin = 1 - 0.5*gStyle.GetPadTopMargin()
 	title.DrawLatex(leftMargin, topMargin, text)
 
-def DrawBranding(options):
-  if options.branding != None:
+def DrawBranding(options, label=''):
+  if options.branding != None or label != '':
     text = TLatex()
     text.SetNDC();
     text.SetTextAlign(11)#3*10=right,3*1=top
@@ -121,7 +130,9 @@ def DrawBranding(options):
       text.SetTextAngle(-90.0)
     rightMargin = 1 - gStyle.GetPadRightMargin()
     topMargin = 1 - gStyle.GetPadTopMargin()
-    text.DrawLatex(rightMargin+.01, topMargin+0.025, options.branding);
+    if label!='':
+      label += ': '
+    text.DrawLatex(rightMargin+.01, topMargin+0.025, label+options.branding);
 
 
 def FindParents(histoPath):
@@ -165,27 +176,54 @@ def Rebin(tfile, histoPath, rebinVal):
     retVal.Divide(num,den,1,1,'B')
     return retVal
 
-def optimizeRange(argv, hists):
+def findRange(hists, min0=-1, max0=-1):
   if len(hists) < 1:
     return
+  #auto ranges if no user value provided
+  min = min0
+  max = max0
+  if min0 == -1 or max0 == -1:
+    for hist in hists:
+      if min0 == -1:
+        #Divide() sets bin to zero if division not possible. Ignore these bins.
+        minTmp = getMinimumIncludingErrors(hist)
+        if minTmp < min or min == -1:
+          min = minTmp
+      if max0 == -1:
+        maxTmp = getMaximumIncludingErrors(hist)
+        if maxTmp > max or max == -1:
+          max = maxTmp
+  return [min, max]
+
+def optimizeRangeMainPad(argv, pad, hists):
+  pad.Update()
+  if pad.GetLogy() and argv.count('maxLog') > 0:
+    maxLog = options.maxLog
+  else:
+    maxLog = -1
+  min, max = findRange(hists, -1, maxLog)
+  if pad.GetLogy():
+    if min == 0:
+      min = 0.001
+    if max < 2:
+      max = 2. #prefere fixed range for easy comparison
+  else:
+    if min < 0.7:
+      min = 0. #start from zero if possible
+    if max <= 1.1:
+      max = 1.2 #prefere fixed range for easy comparison
+  hists[0].SetAxisRange(min, max, "Y")
+
+def optimizeRangeSubPad(argv, hists):
   min = -1
   max = -1
-  if argv.count('minDiv') < 1 or argv.count('maxDiv') < 1:
-    for hist in hists:
-      #Divide() sets bin to zero if division not possible. Ignore these bins.
-      minTmp = getMinimumIncludingErrors(hist)
-      if minTmp < min or min == -1:
-        min = minTmp
-      maxTmp = getMaximumIncludingErrors(hist)
-      if maxTmp > max or max == -1:
-        max = maxTmp
   if argv.count('minDiv') > 0:
     min = options.minDiv
   if argv.count('maxDiv') > 0:
     max = options.maxDiv
-  else:
-    if max > 2:
-      max = 2 #maximal bound      
+  min, max = findRange(hists, min, max)
+  if max > 2:
+    max = 2 #maximal bound
   hists[0].SetAxisRange(min, max, "Y")
 
 
@@ -201,7 +239,7 @@ def getMaximumIncludingErrors(hist):
 def getMinimumIncludingErrors(hist):
   #find minimum considering also the errors
   #ignoring zero bins
-  distance = 1.5
+  distance = 2.
   min = -1
   for i in range(1, hist.GetNbinsX()):
     if hist.GetBinContent(i)<=0.:
@@ -259,7 +297,7 @@ def main(argv=None):
 
 
   #WARNING: For now the hist type is assumed to be constant over all histos.
-  histType = DetermineHistType(histoList[0])[0]
+  histType, label, prefix = DetermineHistType(histoList[0])
   pTResMode = False
   if histType=='pTRatio':
     pTResMode = True
@@ -272,7 +310,7 @@ def main(argv=None):
     ylabel = 'a.u.'
 
   drawStats = False
-  if pTResMode or options.normalize or len(histoList)<3:
+  if (pTResMode or options.normalize) and len(histoList)<3:
     drawStats = True
 
   #legend = TLegend(0.6,0.83,0.6+0.39,0.83+0.17)
@@ -284,6 +322,7 @@ def main(argv=None):
     lineHeight = .05
   y1 = y2 - lineHeight*len(histoList)
   legend = TLegend(x1,y1,x2,y2)
+  #legend.SetHeader(label)
   legend.SetFillColor(0)
   if drawStats:
     y2 = y1
@@ -309,7 +348,6 @@ def main(argv=None):
     header += ' Line: '+options.refLabel
   DrawTitle(header)
   DrawBranding(options)
-  #legend.SetHeader(header)
   diffPad = TPad('diffPad','diffPad',0.,0.,1,.25,0,0)
   diffPad.Draw()
   colors = [2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1,2,3,4,6,5,7,28,1]
@@ -337,6 +375,8 @@ def main(argv=None):
         testH.GetXaxis().SetTitle( getattr(validation.standardDrawingStuff.xAxes,xAx).xAxisTitle.value())
     if not testH.GetYaxis().GetTitle():  #only overwrite label if none already existing
       testH.GetYaxis().SetTitle(ylabel)
+    if label!='':
+      testH.GetXaxis().SetTitle(label+': '+testH.GetXaxis().GetTitle())
     testH.GetXaxis().SetTitleOffset(1.1)
     testH.GetYaxis().SetTitleOffset(1.5)
     testH.SetMarkerSize(1)
@@ -345,13 +385,12 @@ def main(argv=None):
     if histType == 'Eff':
       legend.AddEntry(testH,histoPath[histoPath.rfind('/')+1:histoPath.find(histType)],'p')
     else:
-      legend.AddEntry(testH,DetermineHistType(histoPath)[1],'p')
+      legend.AddEntry(testH,DetermineHistType(histoPath)[2],'p')
     if drawStats:
         text = statsBox.AddText(statTemplate % ('Dots',testH.GetMean(), testH.GetRMS()) )
         text.SetTextColor(color)
     if first:
         first = False
-        #testH.GetYaxis().SetRangeUser(0.0,options.maxRange)
         if options.logScale:
             effPad.SetLogy()
         if options.normalize or pTResMode:
@@ -360,17 +399,6 @@ def main(argv=None):
             testH.DrawNormalized('ex0 P')
         else:
           testH.Draw('ex0')
-        if ylabel=='Fake rate':
-            testH.GetYaxis().SetRangeUser(0.001,options.maxLog)
-            effPad.SetLogy()
-            effPad.Update()
-        if not effPad.GetLogy():
-          #tune y axis range
-          effPad.Update()
-          if (ylabel == 'Efficiency' or ylabel=='Fake rate') and effPad.GetUymax() < 1.:
-            testH.SetAxisRange(0., 1., "Y")#show fixed range
-          else:
-            testH.SetAxisRange(0., effPad.GetUymax(), "Y")#start from zero if possible
     else:
         if options.normalize or pTResMode:
           if testH.GetEntries() > 0:
@@ -393,7 +421,7 @@ def main(argv=None):
         refH.DrawNormalized('same hist')
     else:
         refH.DrawCopy('same hist')
-    if options.normalize or pTResMode or drawStats:
+    if drawStats:
       text = statsBox.AddText(statTemplate % ('Line',refH.GetMean(), refH.GetRMS()) )
       text.SetTextColor(color)
     refH.SetFillColor(color)
@@ -409,9 +437,10 @@ def main(argv=None):
     refH.Draw('same e3')
     divHistos.append(Divide(testH,refH))
 
+  optimizeRangeMainPad(argv, effPad, testHs)
+  
   firstD = True
   if refFile != None:
-    optimizeRange(argv, divHistos)
     for histo,color in zip(divHistos,colors):
         diffPad.cd()
         histo.SetMarkerSize(1)
@@ -430,9 +459,11 @@ def main(argv=None):
         else:
             histo.Draw('same ex0')
             diffPad.Update()
+    optimizeRangeSubPad(argv, divHistos)
+
     effPad.cd()
     legend.Draw()
-    if pTResMode or drawStats:
+    if drawStats:
         statsBox.Draw()
     canvas.Print(options.out)
 
