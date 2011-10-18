@@ -94,6 +94,38 @@ class Scanner(object):
     def leave(self, visitee):
         pass
 
+def DisableQCuts(sequence):
+   scanner = Scanner()
+   sequence.visit(scanner)
+   disabled = cms.PSet(
+    isolationQualityCuts = cms.PSet(
+        minTrackHits = cms.uint32(0),
+        minTrackVertexWeight = cms.double(-1),
+        minTrackPt = cms.double(0),
+        maxTrackChi2 = cms.double(9999),
+        minTrackPixelHits = cms.uint32(0),
+        minGammaEt = cms.double(0),
+        maxDeltaZ = cms.double(0.2),
+        maxTransverseImpactParameter = cms.double(9999)
+        ),
+    pvFindingAlgo = cms.string('highestWeightForLeadTrack'),
+    primaryVertexSrc = cms.InputTag("offlinePrimaryVertices"),
+    signalQualityCuts = cms.PSet(
+        minTrackHits = cms.uint32(0),
+        minTrackVertexWeight = cms.double(-1),
+        minTrackPt = cms.double(0),
+        maxTrackChi2 = cms.double(9999),
+        minTrackPixelHits = cms.uint32(0),
+        minGammaEt = cms.double(0),
+        maxDeltaZ = cms.double(0.2),
+        maxTransverseImpactParameter = cms.double(9999)
+        )
+    )
+   for module in scanner.modules():
+      if hasattr(module,'qualityCuts'):
+         setattr(module,'qualityCuts',disabled)
+
+
 def SetPlotSequence(sequence):
     """SetSequence(seqence)\n
     This Function return a PSet of the sequence given to be used by DQMHistEffProducer"""
