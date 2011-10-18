@@ -5,7 +5,7 @@ export VALTEST=${CMSSW_BASE}/src/Validation/RecoTau/test
 export PFVALTOOLS=${CMSSW_RELEASE_BASE}/src/Validation/RecoParticleFlow/Benchmarks/Tools
 export PYTHONPATH=${PFVALTOOLS}:${PYTHONPATH}
 export PATH=${VALTOOLS}:${PATH}
-export PastResults=/afs/cern.ch/cms/Physics/particleflow/Validation/cms-project-pfvalidation/Releases/
+export PastResults=/afs/cern.ch/cms/Physics/tau/Validation/cms-project-tauvalidation/releases/
 
 cmsenv
 
