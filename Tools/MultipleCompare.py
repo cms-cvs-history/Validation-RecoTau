@@ -11,7 +11,7 @@ from ROOT import *
 
 __author__  = "Mauro Verzetti (mauro.verzetti@cern.ch)"
 __doc__ = """Script to plot the content of a Validation .root file and compare it to a different file:\n\n
-Usage: MultipleCompare.py -T testFile [options] [search strings that you want to apply '*' is supported as special character]"""
+Usage: MultipleCompare.py -T testFile -R refFile [options] [search strings that you want to apply '*' is supported as special character]"""
 
 def LoadCommandlineOptions(argv):
   sys.argv = argv
@@ -21,7 +21,6 @@ def LoadCommandlineOptions(argv):
   parser.add_option('--output','-o',metavar='outputFile', type=str,help='Sets the output file',dest='out',default = 'MultipleCompare.png')
   parser.add_option('--logScale',action="store_true", dest="logScale", default=False, help="Sets the log scale in the plot")
   parser.add_option('--fakeRate','-f',action="store_true", dest="fakeRate", default=False, help="Sets the fake rate options and put the correct label (implies --logScale)")
-  #not needed as automatically defined# parser.add_option('--ptResolution','-p',action="store_true", dest="ptRes", default=False, help="Sets the pt resolution options and put the correct label (normalizes the plot also)")
   parser.add_option('--testLabel','-t',metavar='testLabel', type=str,help='Sets the label to put in the plots for test file',dest='testLabel',default = None)
   parser.add_option('--refLabel','-r',metavar='refLabel', type=str,help='Sets the label to put in the plots for ref file',dest='refLabel',default = None)
   parser.add_option('--maxLog',metavar='number', type=float,help='Sets the maximum of the scale in log scale (requires --logScale or -f to work)',dest='maxLog',default = 3)
@@ -210,7 +209,7 @@ def optimizeRangeMainPad(argv, pad, hists):
   else:
     if min < 0.7:
       min = 0. #start from zero if possible
-    if max <= 1.1:
+    if max <= 1.1 and max > 0.7:
       max = 1.2 #prefere fixed range for easy comparison
   hists[0].SetAxisRange(min, max, "Y")
 
@@ -298,19 +297,19 @@ def main(argv=None):
 
   #WARNING: For now the hist type is assumed to be constant over all histos.
   histType, label, prefix = DetermineHistType(histoList[0])
-  pTResMode = False
-  if histType=='pTRatio':
-    pTResMode = True
+  #decide whether or not to scale to an integral of 1
+  #should usually not be used most plot types. they are already normalized.
+  scaleToIntegral = False
+  if options.normalize:
+    scaleToIntegral = True
 
   ylabel = 'Efficiency'
 
   if options.fakeRate:
     ylabel = 'Fake rate'
-  elif pTResMode:
-    ylabel = 'a.u.'
 
   drawStats = False
-  if (pTResMode or options.normalize) and len(histoList)<3:
+  if histType=='pTRatio' and len(histoList)<3:
     drawStats = True
 
   #legend = TLegend(0.6,0.83,0.6+0.39,0.83+0.17)
@@ -367,8 +366,6 @@ def main(argv=None):
         sys.exit()
     testHs.append(testH)
     xAx = histoPath[histoPath.find('Eff')+len('Eff'):]
-    if pTResMode:
-        xAx = 'PFtau p_{T}/genVis p_{T} '
     effPad.cd()
     if not testH.GetXaxis().GetTitle():  #only overwrite label if none already existing
       if hasattr(validation.standardDrawingStuff.xAxes,xAx):
@@ -393,14 +390,19 @@ def main(argv=None):
         first = False
         if options.logScale:
             effPad.SetLogy()
-        if options.normalize or pTResMode:
+        if scaleToIntegral:
           if testH.GetEntries() > 0:
-            testH.Sumw2()
-            testH.DrawNormalized('ex0 P')
+            if not testH.GetSumw2N():
+              testH.Sumw2()
+              testH.DrawNormalized('ex0 P')
+            else:
+              print "--> Warning! You tried to normalize a histogram which seems to be already scaled properly. Draw it unscaled."
+              scaleToIntegral = False
+              testH.Draw('ex0')
         else:
           testH.Draw('ex0')
     else:
-        if options.normalize or pTResMode:
+        if scaleToIntegral:
           if testH.GetEntries() > 0:
             testH.DrawNormalized('same p')
         else:
@@ -416,7 +418,7 @@ def main(argv=None):
     refHs.append(refH)
     refH.SetLineColor(color)
     refH.SetLineWidth(1)
-    if options.normalize or pTResMode:
+    if scaleToIntegral:
       if testH.GetEntries() > 0:
         refH.DrawNormalized('same hist')
     else:
@@ -426,7 +428,7 @@ def main(argv=None):
       text.SetTextColor(color)
     refH.SetFillColor(color)
     refH.SetFillStyle(3001)
-    if options.normalize or pTResMode:
+    if scaleToIntegral:
         entries = testH.GetEntries()
         if entries > 0:
           testH.Scale(1./entries)
