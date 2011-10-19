@@ -2,8 +2,8 @@
  *  
  *  Class to produce efficiency histograms by dividing nominator by denominator histograms
  *
- *  $Date: 2011/04/06 12:20:33 $
- *  $Revision: 1.2 $
+ *  $Date: 2011/10/19 11:50:04 $
+ *  $Revision: 1.1.2.1 $
  *  \author Christian Veelken, UC Davis
  */
 
@@ -79,27 +79,29 @@ void DQMHistNormalizer::endRun(const edm::Run& r, const edm::EventSetup& c)
       string meName = (*matchingElement)->getFullname();
       string refRegex = meName.substr(0, meName.rfind("/")) + reference_;
       vector<MonitorElement *> refelement = dqmStore.getMatchingContents(refRegex);
-
+      
       //Error handling
       if(refelement.size() > 1){
-	edm::LogInfo("DQMHistNormalizer")<<"DQMHistNormalizer::endRun: Warning! found multiple normalizing references for "<<meName<<"!";
-	for(vector<MonitorElement *>::const_iterator multiple = refelement.begin(); multiple != refelement.end(); ++multiple) 
-	  edm::LogInfo("DQMHistNormalizer")<<"     " << (*multiple)->getFullname();
+        edm::LogInfo("DQMHistNormalizer")<<"DQMHistNormalizer::endRun: Warning! found multiple normalizing references for "<<meName<<"!";
+        for(vector<MonitorElement *>::const_iterator multiple = refelement.begin(); multiple != refelement.end(); ++multiple){
+          edm::LogInfo("DQMHistNormalizer")<<"     " << (*multiple)->getFullname();
+        }
+        continue;        
       }
       else if(refelement.size() == 0){
-	edm::LogInfo("DQMHistNormalizer")<<"DQMHistNormalizer::endRun: Error! normalizing references for "<<meName<<" not found! Skipping...";
-	continue;
+        edm::LogInfo("DQMHistNormalizer")<<"DQMHistNormalizer::endRun: Error! normalizing references for "<<meName<<" not found! Skipping...";
+        continue;
       }
-
+      
       float norm = refelement[0]->getTH1()->GetEntries();
       TH1* hist = (*matchingElement)->getTH1();
       if ( norm != 0. ) {
-	if( !hist->GetSumw2N() ) hist->Sumw2();
-	hist->Scale(1/norm);//use option "width" to divide the bin contents and errors by the bin width?
+        if( !hist->GetSumw2N() ) hist->Sumw2();
+        hist->Scale(1/norm);//use option "width" to divide the bin contents and errors by the bin width?
       }else{
-	edm::LogInfo("DQMHistNormalizer")<<"DQMHistNormalizer::endRun: Error! Normalization failed in "<<hist->GetTitle()<<"!";
+        edm::LogInfo("DQMHistNormalizer")<<"DQMHistNormalizer::endRun: Error! Normalization failed in "<<hist->GetTitle()<<"!";
       }
-
+      
     }//    for(vector<MonitorElement *>::const_iterator matchingElement = matchingElemts.begin(); matchingElement = matchingElemts.end(); ++matchingElement)
   }//  for ( std::vector<string>::const_iterator toNorm = plotNamesToNormalize_.begin(); toNorm != plotNamesToNormalize_.end(); ++toNorm ) {
 }
