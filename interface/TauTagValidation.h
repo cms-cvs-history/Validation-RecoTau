@@ -62,8 +62,7 @@ public:
   virtual void endJob();
 
 private:
-  ///scale all histograms in scaledPlots_
-  void normalize();
+
   ///sum the transversal momentum of all candidates
   double getSumPt(const reco::PFCandidateRefVector & 	candidates);
   ///get rid of redundant parts to shorten the label
@@ -109,8 +108,7 @@ private:
   std::map<std::string,  MonitorElement *> etaTauVisibleMap;
   std::map<std::string,  MonitorElement *> phiTauVisibleMap;
   std::map<std::string,  MonitorElement *> pileupTauVisibleMap;
-  ///map of plots that will be normalized to events and entries during endJob()
-  std::map<std::string,  MonitorElement *> scaledPlots_;
+  std::map<std::string,  MonitorElement *> plotMap_;
 
   // All the extra MonitorElements that we would like to add for each Tau Tagging step
   // First for the PFTaus
