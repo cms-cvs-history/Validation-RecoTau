@@ -227,27 +227,31 @@ def optimizeRangeSubPad(argv, hists):
 
 
 def getMaximumIncludingErrors(hist):
-#find minimum considering also the errors
-  distance = 1.5
+#find maximum considering also the errors
+  distance = 1.
   max = -1
+  pos = 0
   for i in range(1, hist.GetNbinsX()):
-    if hist.GetBinContent(i) > max:
-      max = hist.GetBinContent(i) + distance*hist.GetBinError(i)
-  return max
+    if hist.GetBinContent(i) > max:#ignore errors here
+      max = hist.GetBinContent(i)
+      pos = i
+  return max + distance*hist.GetBinError(pos)
 
 def getMinimumIncludingErrors(hist):
   #find minimum considering also the errors
   #ignoring zero bins
-  distance = 2.
+  distance = 1.
   min = -1
+  pos = 0
   for i in range(1, hist.GetNbinsX()):
-    if hist.GetBinContent(i)<=0.:
+    if hist.GetBinContent(i)<=0.:#ignore errors here
       continue
     if hist.GetBinContent(i) < min or min==-1:
-      min = hist.GetBinContent(i) - distance*hist.GetBinError(i)
+      min = hist.GetBinContent(i)
+      pos = i
       if min < 0:
         min = 0  
-  return min
+  return min - distance*hist.GetBinError(pos)
 
 
 def main(argv=None):
@@ -439,7 +443,10 @@ def main(argv=None):
     refH.Draw('same e3')
     divHistos.append(Divide(testH,refH))
 
-  optimizeRangeMainPad(argv, effPad, testHs)
+  tmpHists = []
+  tmpHists.extend(testHs)
+  tmpHists.extend(refHs)
+  optimizeRangeMainPad(argv, effPad, tmpHists)
   
   firstD = True
   if refFile != None:
