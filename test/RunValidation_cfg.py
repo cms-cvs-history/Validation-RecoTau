@@ -204,6 +204,14 @@ outputFileNameBase += ".root"
 
 print "HPSTanc pt Cut set to: %i. If you want a different one change it in RecoTauValidation_cfi" % validation.RunHPSTanc_HPSValidation.TauPtCut.value()
 
+if validation.StandardMatchingParameters.recoCuts.value() != "" and validation.StandardMatchingParameters.genCuts.value() != "":
+  print 'Matching: cut(s) set to: reco "%s", gen "%s".' % (validation.StandardMatchingParameters.recoCuts.value(), validation.StandardMatchingParameters.genCuts.value())
+else:
+  if validation.StandardMatchingParameters.recoCuts.value() != "":
+    print 'Matching: reco cut(s) set to: "%s".' % validation.StandardMatchingParameters.recoCuts.value()
+  if validation.StandardMatchingParameters.genCuts.value() != "":
+    print 'Matching: gen cut(s) set to: "%s".' % validation.StandardMatchingParameters.genCuts.value()
+
 if options.gridJob:
    outputFileName = 'TauVal_GridJob.root'
 else:
