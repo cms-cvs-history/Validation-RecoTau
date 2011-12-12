@@ -27,7 +27,7 @@ def SetFakePars(module):
 pfTauRunDQMValidation = cms.Sequence()
 
 tauGenJets = copy.deepcopy(tauGenJets)
-zttDenominator = objectTypeSelectedTauValDenominator.clone()
+zttDenominator = objectTypeSelectedTauValDenominatorModule.clone()
 zttKinemSelection= kinematicSelectedTauValDenominator.clone(src = cms.InputTag("zttDenominator"))
 
 zttModifier = ApplyFunctionToSequence(SetSignalPars)
@@ -37,7 +37,7 @@ pfTauRunDQMValidation += TauValNumeratorAndDenominator
 from Validation.RecoTau.ValidateTausOnQCD_cff import *
 
 genParticlesForJetsQCD= genParticlesForJets.clone()
-qcdDenominator = objectTypeSelectedTauValDenominator.clone()
+qcdDenominator = objectTypeSelectedTauValDenominatorModule.clone()
 qcdKinemSelection= kinematicSelectedTauValDenominator.clone(src = cms.InputTag("qcdDenominator"))
 
 qcdModifier = ApplyFunctionToSequence(SetFakePars)
@@ -60,8 +60,17 @@ produceDenoms = cms.Sequence(
 
 plotPsetSignal = Utils.SetPlotSequence(TauValNumeratorAndDenominator)
 plotPsetFake = Utils.SetPlotSequence(TauValNumeratorAndDenominator2)
-TauEfficienciesFake = TauEfficiencies.clone(plots = plotPsetFake)
-TauEfficiencies.plots = plotPsetSignal
+
+efficienciesFake = efficiencies.clone(plots = plotPsetFake)
+TauEfficienciesFake = cms.Sequence(
+   efficienciesFake*
+   normalizePlots
+)
+efficiencies.plots = plotPsetSignal
+TauEfficiencies = cms.Sequence(
+   efficiencies*
+   normalizePlots
+)
 
 runTauEff = cms.Sequence(TauEfficienciesFake + TauEfficiencies)
 

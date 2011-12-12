@@ -4,12 +4,10 @@ readFiles = cms.untracked.vstring()
 secFiles = cms.untracked.vstring() 
 source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
 readFiles.extend( [
-        'file:./Samples/RelValZEE/12F886E5-5A1B-DF11-8625-001A928116E0.root',
-        'file:./Samples/RelValZEE/644D54F3-551B-DF11-892A-0018F3D09708.root',
-        'file:./Samples/RelValZEE/6A421747-4E1B-DF11-B902-0018F34D0D62.root',
-        'file:./Samples/RelValZEE/701D60CC-531B-DF11-955A-001731AF6B85.root',
-        'file:./Samples/RelValZEE/D8886291-541B-DF11-8BC0-003048678ADA.root'
-      ] )
+                   'file:///disk1/perchalla/store/relval/CMSSW_4_2_8/RelValZEE/GEN-SIM-RECO/START42_V12-v1/0028/66C13220-A1BB-E011-A16A-001A92971B36.root',
+                   'file:///disk1/perchalla/store/relval/CMSSW_4_2_8/RelValZEE/GEN-SIM-RECO/START42_V12-v1/0025/C4A1AC08-06BB-E011-84BA-001A92971ACE.root',
+                   'file:///disk1/perchalla/store/relval/CMSSW_4_2_8/RelValZEE/GEN-SIM-RECO/START42_V12-v1/0025/529A2B04-05BB-E011-837A-001A92811708.root'
+                   ] )
 
 
 secFiles.extend( [

@@ -45,7 +45,8 @@ process.load("Configuration.StandardSequences.Services_cff")
 outputDirName = "TauID"
 
 
-outputDir = os.path.join(os.getcwd(), outputDirName) 
+#outputDir = os.path.join(os.getcwd(), outputDirName)
+outputDir = "/user/perchalla/output/CMSSW_4_2_8/"+outputDirName
 # This is the directory where we store the stuff about our current configuration
 outputBaseDir = outputDir
 
