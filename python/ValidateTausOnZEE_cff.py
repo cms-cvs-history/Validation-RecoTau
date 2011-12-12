@@ -20,13 +20,15 @@ selectElectrons = cms.EDProducer(
 selectElectronsForGenJets = copy.deepcopy(genParticlesForJets)
 selectElectronsForGenJets.src = cms.InputTag("selectElectrons")
 
-objectTypeSelectedTauValDenominator = copy.deepcopy(iterativeCone5GenJets)
-objectTypeSelectedTauValDenominator.src = cms.InputTag("selectElectronsForGenJets")
+objectTypeSelectedTauValDenominatorModule = copy.deepcopy(iterativeCone5GenJets)
+objectTypeSelectedTauValDenominatorModule.src = cms.InputTag("selectElectronsForGenJets")
+
+kinematicSelectedTauValDenominator.src = cms.InputTag('objectTypeSelectedTauValDenominatorModule')
 
 produceDenominator = cms.Sequence(
       selectElectrons
       +selectElectronsForGenJets
-      +objectTypeSelectedTauValDenominator
+      +objectTypeSelectedTauValDenominatorModule
       +kinematicSelectedTauValDenominator
       )
 

@@ -72,7 +72,7 @@ DENOMINATOR
 
 # require generator level hadrons produced in tau-decay to have transverse momentum above threshold
 kinematicSelectedTauValDenominator = cms.EDFilter("GenJetSelector",
-     src = cms.InputTag("objectTypeSelectedTauValDenominator"),
+     src = cms.InputTag("dummy"),#cms.InputTag("objectTypeSelectedTauValDenominator"),
      cut = cms.string('pt > 5. && abs(eta) < 2.5'),
      filter = cms.bool(False)
 )

@@ -6,20 +6,19 @@ from PhysicsTools.HepMCCandAlgos.genParticles_cfi import *
 from RecoJets.Configuration.RecoGenJets_cff import *
 from RecoJets.Configuration.GenJetParticles_cff import *
 
-objectTypeSelectedTauValDenominator = copy.deepcopy(iterativeCone5GenJets)
+kinematicSelectedTauValDenominator.src = cms.InputTag('iterativeCone5GenJets')
 
 produceDenominator = cms.Sequence(
-      genParticlesForJets
-      *objectTypeSelectedTauValDenominator
-      *kinematicSelectedTauValDenominator
-      )
+    genParticlesForJets
+    *kinematicSelectedTauValDenominator
+    )
 
 runTauValidationBatchMode = cms.Sequence(
-      produceDenominator
-      +TauValNumeratorAndDenominator
-      )
+    produceDenominator
+    +TauValNumeratorAndDenominator
+    )
 
 runTauValidation = cms.Sequence(
-      runTauValidationBatchMode
-      +TauEfficiencies
-      )
+    runTauValidationBatchMode
+    +TauEfficiencies
+    )
