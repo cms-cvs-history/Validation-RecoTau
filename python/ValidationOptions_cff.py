@@ -32,10 +32,11 @@ options.register( 'eventType',
                         \n\t\t\tZTT\
                         \n\t\t\tQCD\
                         \n\t\t\tZEE\
-                        \n\t\t\tZMM\n"
+                        \n\t\t\tZMM\
+                        \n\t\t\tRealData\n"
                  )
 
-allowedOptions['eventType'] = [ 'ZTT', 'QCD', 'ZEE', 'ZMM' ]
+allowedOptions['eventType'] = [ 'ZTT', 'QCD', 'ZEE', 'ZMM', 'RealData' ]
 
 options.register( 'label',
                   "none",
