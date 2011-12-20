@@ -17,20 +17,25 @@ selectElectrons = cms.EDProducer(
     )
 )
 
-selectElectronsForGenJets = copy.deepcopy(genParticlesForJets)
-selectElectronsForGenJets.src = cms.InputTag("selectElectrons")
+selectStableElectrons = genParticlesForJets.clone(src = cms.InputTag("selectElectrons"))
 
-objectTypeSelectedTauValDenominatorModule = copy.deepcopy(iterativeCone5GenJets)
-objectTypeSelectedTauValDenominatorModule.src = cms.InputTag("selectElectronsForGenJets")
+#objectTypeSelectedTauValDenominatorModule = copy.deepcopy(iterativeCone5GenJets)
+#objectTypeSelectedTauValDenominatorModule.src = cms.InputTag("selectElectronsForGenJets")
 
-kinematicSelectedTauValDenominator.src = cms.InputTag('objectTypeSelectedTauValDenominatorModule')
+kinematicSelectedTauValDenominator = cms.EDFilter(
+   "TauValGenPSelector", #"GenJetSelector"
+   src = cms.InputTag('selectStableElectrons'),
+   cut = kinematicSelectedTauValDenominatorCut,#cms.string('pt > 5. && abs(eta) < 2.5'), #Defined: Validation.RecoTau.RecoTauValidation_cfi 
+   filter = cms.bool(False)
+)
 
 produceDenominator = cms.Sequence(
-      selectElectrons
-      +selectElectronsForGenJets
-      +objectTypeSelectedTauValDenominatorModule
-      +kinematicSelectedTauValDenominator
-      )
+    selectElectrons
+    +selectStableElectrons
+#      +selectElectronsForGenJets
+#      +objectTypeSelectedTauValDenominatorModule
+    +kinematicSelectedTauValDenominator
+    )
 
 runTauValidationBatchMode = cms.Sequence(
       produceDenominator
