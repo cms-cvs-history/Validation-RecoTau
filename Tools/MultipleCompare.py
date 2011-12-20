@@ -16,6 +16,7 @@ Usage: MultipleCompare.py -T testFile -R refFile [options] [search strings that 
 def LoadCommandlineOptions(argv):
   sys.argv = argv
   parser = OptionParser(description=__doc__)
+  parser.add_option('--myhelp',metavar='', action="store_true",help='prints this output message',dest='help',default = False)
   parser.add_option('--TestFile','-T',metavar='testFile', type=str,help='Sets the test file',dest='test',default = '')
   parser.add_option('--RefFile','-R',metavar='refFile', type=str,help='Sets the reference file',dest='ref',default = '')
   parser.add_option('--output','-o',metavar='outputFile', type=str,help='Sets the output file',dest='out',default = 'MultipleCompare.png')
@@ -34,6 +35,9 @@ def LoadCommandlineOptions(argv):
   #parser.add_option('--search,-s',metavar='searchStrings', type=str,help='Sets the label to put in the plots for ref file',dest='testLabel',default = None) No idea on how to tell python to use all the strings before a new option, thus moving this from option to argument (but may be empty)  
   
   (options,toPlot) = parser.parse_args()
+  if options.help:
+    parser.print_help()
+    sys.exit(0)
   return [options, toPlot]
 
 def GetContent(dir):
@@ -137,12 +141,12 @@ def DrawBranding(options, label=''):
 def FindParents(histoPath):
     root = histoPath[:histoPath.find('_')]
     par = histoPath[histoPath.find('Eff')+3:]
-    validationPlots = validation.TauEfficiencies.plots._Parameterizable__parameterNames
+    validationPlots = validation.efficiencies.plots._Parameterizable__parameterNames
     found =0
     num = ''
     den = ''
     for efficiency in validationPlots:
-        effpset = getattr(validation.TauEfficiencies.plots,efficiency)
+        effpset = getattr(validation.efficiencies.plots,efficiency)
         effName = effpset.efficiency.value()
         effNameCut = effName[effName.find('_'):effName.find('#')]
         if effNameCut in histoPath:
