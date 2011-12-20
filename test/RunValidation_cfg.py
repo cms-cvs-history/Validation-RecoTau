@@ -87,12 +87,11 @@ if not os.path.exists(configDir):
 ######################################
 
 def LoadDataCffFile(theFile):
-   if not os.path.isfile(theFile):
-      print "Error - %s is not a file!" % theFile
-      sys.exit()
-   outputFile = os.path.join(configDir, "DataSource_cff.py")
-   shutil.copy(theFile, outputFile)
-   process.load(theFile.replace(".py", ""))
+   outputFileName = os.path.join(configDir, "DataSource_cff.py")
+   process.load(theFile)
+   outputFile = open(outputFileName,'w')
+   outputFile.write('import FWCore.ParameterSet.Config as cms\n')
+   outputFile.write('source = %s\n'%process.source)
 
 process.schedule = cms.Schedule()
 
@@ -107,7 +106,7 @@ if options.dataSource.find('sim') != -1:
 if options.dataSource.find('recoFiles') != -1:
    myFile = options.sourceFile
    if myFile == 'none':
-      myFile = "EventSource_%s_RECO_cff.py" % options.eventType
+      myFile = "Validation.RecoTau.EventSource_%s_RECO_cff" % options.eventType
       #myFile = os.path.join(ReleaseBase, "Validation/RecoTau/test", "EventSource_%s_RECO_cff.py" % options.eventType)
    LoadDataCffFile(myFile)
    # check if we want to rerun PFTau
@@ -130,7 +129,7 @@ if options.dataSource.find('recoFiles') != -1:
 elif options.dataSource == 'digiFiles':
    myFile = options.sourceFile
    if myFile == 'none':
-      myFile = "EventSource_%s_DIGI_cff.py" % options.eventType
+      myFile = "Validation.RecoTau.EventSource_%s_DIGI_cff" % options.eventType
       #myFile = os.path.join(ReleaseBase, "Validation/RecoTau/test", "EventSource_%s_DIGI_cff.py" % options.eventType)
    LoadDataCffFile(myFile)
    # get the sequences need to redo RECO
