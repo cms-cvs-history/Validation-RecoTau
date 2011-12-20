@@ -12,7 +12,13 @@ objectTypeSelectedTauValDenominatorModule = cms.EDFilter("TauGenJetDecayModeSele
      filter = cms.bool(False)
 )
 
-kinematicSelectedTauValDenominator.src = cms.InputTag('objectTypeSelectedTauValDenominatorModule')
+# require generator level hadrons produced in tau-decay to have transverse momentum above threshold
+kinematicSelectedTauValDenominator = cms.EDFilter(
+   "GenJetSelector", #"GenJetSelector"
+   src = cms.InputTag('objectTypeSelectedTauValDenominatorModule'),
+   cut = kinematicSelectedTauValDenominatorCut,#cms.string('pt > 5. && abs(eta) < 2.5'), #Defined: Validation.RecoTau.RecoTauValidation_cfi 
+   filter = cms.bool(False)
+)
 
 produceDenominator = cms.Sequence(
       tauGenJets

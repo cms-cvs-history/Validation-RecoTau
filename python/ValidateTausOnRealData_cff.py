@@ -3,13 +3,17 @@ from Validation.RecoTau.RecoTauValidation_cfi import *
 import copy
 
 from RecoJets.Configuration.RecoPFJets_cff import *
-from RecoJets.Configuration.GenJetParticles_cff import *
 
-kinematicSelectedTauValDenominator.src = cms.InputTag("ak5PFJets") ##FIXME: this should be a filter
+kinematicSelectedTauValDenominator = cms.EDFilter( ##FIXME: this should be a filter
+   "TauValPFJetSelector", #"GenJetSelector"
+   src = cms.InputTag("ak5PFJets"),
+   cut = kinematicSelectedTauValDenominatorCut,#cms.string('pt > 5. && abs(eta) < 2.5'), #Defined: Validation.RecoTau.RecoTauValidation_cfi 
+   filter = cms.bool(False)
+)
+
 
 produceDenominator = cms.Sequence(
-      genParticlesForJets
-      *kinematicSelectedTauValDenominator
+      kinematicSelectedTauValDenominator
       )
 
 runTauValidationBatchMode = cms.Sequence(
