@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 #import Validation.RecoTau.ValidateTausOnZTT_cff as zttVal
-from Validation.RecoTau.ValidateTausOnZTT_cff import *
+from Validation.RecoTau.dataTypes.ValidateTausOnZTT_cff import *
 import copy
 import Validation.RecoTau.ValidationUtils as Utils
 
@@ -34,7 +34,7 @@ zttModifier = ApplyFunctionToSequence(SetSignalPars)
 TauValNumeratorAndDenominator.visit(zttModifier)        
 pfTauRunDQMValidation += TauValNumeratorAndDenominator
 
-from Validation.RecoTau.ValidateTausOnQCD_cff import *
+from Validation.RecoTau.dataTypes.ValidateTausOnQCD_cff import *
 
 genParticlesForJetsQCD= genParticlesForJets.clone()
 qcdDenominator = objectTypeSelectedTauValDenominatorModule.clone()
