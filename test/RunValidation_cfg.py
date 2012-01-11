@@ -106,9 +106,21 @@ if options.dataSource.find('sim') != -1:
 if options.dataSource.find('recoFiles') != -1:
    myFile = options.sourceFile
    if myFile == 'none':
-      myFile = "Validation.RecoTau.EventSource_%s_RECO_cff" % options.eventType
+      myFile = "Validation.RecoTau.sources.EventSource_%s_RECO_cff" % options.eventType
       #myFile = os.path.join(ReleaseBase, "Validation/RecoTau/test", "EventSource_%s_RECO_cff.py" % options.eventType)
    LoadDataCffFile(myFile)
+   if len(process.source.fileNames) == 0:
+      import Validation.RecoTau.DBSApi_cff as mydbs
+      if os.path.isfile('SourcesDatabase.xml'):
+         print "Trying to retrieve the input files from SourcesDatabase.xml..."
+         xml = open('SourcesDatabase.xml','r')
+         mydbs.loadXML(xml,options.eventType,process.source)
+      if len(process.source.fileNames) == 0:
+         print "Accessing DBS to retrieve the input files..."
+         mydbs.FillSource(options.eventType,process.source)
+      if len(process.source.fileNames) == 0:
+         sys.exit(0)
+      print process.source
    # check if we want to rerun PFTau
    if options.dataSource.find('PFTau') != -1:
       process.load("Configuration.StandardSequences.Geometry_cff")
@@ -228,7 +240,7 @@ process.saveTauEff = cms.EDAnalyzer("DQMSimpleFileSaver",
   outputFileName = cms.string(outputFileName)
 )
 
-process.load("Validation.RecoTau.ValidateTausOn%s_cff" % options.eventType)
+process.load("Validation.RecoTau.dataTypes.ValidateTausOn%s_cff" % options.eventType)
 process.validation = cms.Path(process.produceDenominator)
 
 if options.batchNumber >= 0 or options.gridJob:
