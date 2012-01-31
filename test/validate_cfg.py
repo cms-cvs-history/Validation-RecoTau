@@ -133,7 +133,7 @@ if options.rereco:
         process.GlobalTag.globaltag = "%s::All" % options.gt
         print "Using global tag:", process.GlobalTag.globaltag
     else:
-        from Configuration.PyReleaseValidation.autoCond import autoCond
+        from Configuration.AlCa.autoCond import autoCond
         process.GlobalTag.globaltag = autoCond['mc']
         print "Autoloaded global tag:", autoCond['mc']
     process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")

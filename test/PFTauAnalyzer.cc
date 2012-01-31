@@ -320,13 +320,13 @@ void PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
       bool tau_decayingtomununubar = false;
       bool tau_decayingto1prongnu = false;
       bool tau_decayingtopi0chargedpinu  = false;
-      /* bool tau_decayingto2pi0chargedpinu = false; */
-      /* bool tau_decayingto3pi0chargedpinu = false; */
-      /* bool tau_decayingto4pi0chargedpinu = false; */  
-      /* bool tau_decayingtopi0chargedpinugam  = false; */
+      bool tau_decayingto2pi0chargedpinu = false;
+      bool tau_decayingto3pi0chargedpinu = false;
+      bool tau_decayingto4pi0chargedpinu = false;  
+      bool tau_decayingtopi0chargedpinugam  = false;
       bool tau_decayingto3prongsnu          = false;
-      /* bool tau_decayingto3prongs1pi0nu      = false; */
-      /* bool tau_decayingto3prongs2pi0nu      = false; */
+      bool tau_decayingto3prongs1pi0nu      = false;
+      bool tau_decayingto3prongs2pi0nu      = false;
       
       if (tau_children_n==2) {
 	HepMC::GenVertex::particles_out_const_iterator i_1sttaudaughter=TheParticle->end_vertex()->particles_out_const_begin();
@@ -444,12 +444,12 @@ void PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
 	  isttaudaughter++;
 	}
        }
-       if      (npi == 1 && npi0 == 2)  	   {/* tau_decayingto2pi0chargedpinu   = true; */ GenTau_decaytype[iGenTau] = 5; }
-       else if (npi == 1 && npi0 == 3)  	   {/* tau_decayingto3pi0chargedpinu   = true; */ GenTau_decaytype[iGenTau] = 6; }
-       else if (npi == 1 && npi0 == 4)  	   {/* tau_decayingto4pi0chargedpinu   = true; */ GenTau_decaytype[iGenTau] = 7; }  
-       else if (npi == 1 && npi0 == 1 && ngam >0)  {/* tau_decayingtopi0chargedpinugam = true; */ GenTau_decaytype[iGenTau] = 8; } 
-       else if (npi == 3 && npi0 == 1)  	   {/* tau_decayingto3prongs1pi0nu     = true; */ GenTau_decaytype[iGenTau] = 10;}
-       else if (npi == 3 && npi0 == 2)  	   {/* tau_decayingto3prongs2pi0nu     = true; */ GenTau_decaytype[iGenTau] = 11;}
+       if      (npi == 1 && npi0 == 2)  	   {tau_decayingto2pi0chargedpinu   = true; GenTau_decaytype[iGenTau] = 5; }
+       else if (npi == 1 && npi0 == 3)  	   {tau_decayingto3pi0chargedpinu   = true; GenTau_decaytype[iGenTau] = 6; }
+       else if (npi == 1 && npi0 == 4)  	   {tau_decayingto4pi0chargedpinu   = true; GenTau_decaytype[iGenTau] = 7; }  
+       else if (npi == 1 && npi0 == 1 && ngam >0)  {tau_decayingtopi0chargedpinugam = true; GenTau_decaytype[iGenTau] = 8; } 
+       else if (npi == 3 && npi0 == 1)  	   {tau_decayingto3prongs1pi0nu     = true; GenTau_decaytype[iGenTau] = 10;}
+       else if (npi == 3 && npi0 == 2)  	   {tau_decayingto3prongs2pi0nu     = true; GenTau_decaytype[iGenTau] = 11;}
        else                             	   {GenTau_decaytype[iGenTau] = 12;}
       }
       
@@ -641,9 +641,9 @@ void PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     PFCandidateRef theleadPFChargedHadrCand=thePFTauElementsOperators.leadPFChargedHadrCand("DR",test_matchingcone_size_,test_leadCHCand_minpt_);
     bool theleadPFChargedHadrCand_rectkavailable=false;
     double theleadPFChargedHadrCand_rectkDZ=0.;
-    /* double thePFTau_refInnerPosition_x=0.; */
-    /* double thePFTau_refInnerPosition_y=0.; */
-    /* double thePFTau_refInnerPosition_z=0.; */
+    double thePFTau_refInnerPosition_x=0.;
+    double thePFTau_refInnerPosition_y=0.;
+    double thePFTau_refInnerPosition_z=0.;
     int ChargedHadrCands_n=0;
     if(theleadPFChargedHadrCand.isNonnull()){    
       // search for the Track which is the main constituent of a charged hadron PFCandidate ...
@@ -651,14 +651,11 @@ void PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
       if(theleadPFChargedHadrCand_rectk.isNonnull()){
 	theleadPFChargedHadrCand_rectkavailable=true;
 	theleadPFChargedHadrCand_rectkDZ=(*theleadPFChargedHadrCand_rectk).dz();
-	
-  /*
-  if((*theleadPFChargedHadrCand_rectk).innerOk()){
+	if((*theleadPFChargedHadrCand_rectk).innerOk()){
 	  thePFTau_refInnerPosition_x=(*theleadPFChargedHadrCand_rectk).innerPosition().x(); 
 	  thePFTau_refInnerPosition_y=(*theleadPFChargedHadrCand_rectk).innerPosition().y(); 
 	  thePFTau_refInnerPosition_z=(*theleadPFChargedHadrCand_rectk).innerPosition().z(); 
 	}
-  */
       }    	      
         
       int NeutrHadrCands_n=0;
