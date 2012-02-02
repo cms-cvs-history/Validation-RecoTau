@@ -7,7 +7,9 @@ from RecoJets.Configuration.RecoGenJets_cff import *
 from RecoJets.Configuration.GenJetParticles_cff import *
 
 from SimGeneral.HepPDTESSource.pythiapdt_cfi import *
-selectElectrons = cms.EDProducer(
+import PhysicsTools.PatAlgos.tools.helpers as helpers
+
+selectMuons = cms.EDProducer(
     "GenParticlePruner",
     src = cms.InputTag("genParticles"),
     select = cms.vstring(
@@ -17,35 +19,51 @@ selectElectrons = cms.EDProducer(
     )
 )
 
+selectStableMuons = genParticlesForJets.clone(src = cms.InputTag("selectMuons"))
 
-#selectElectronsForGenJets = copy.deepcopy(genParticlesForJets)
-
-#selectElectronsForGenJets.src = cms.InputTag("selectElectrons")
-
-#objectTypeSelectedTauValDenominatorModule = copy.deepcopy(iterativeCone5GenJets)
-#objectTypeSelectedTauValDenominatorModule.src = cms.InputTag("selectElectronsForGenJets")
-
-kinematicSelectedTauValDenominator = cms.EDFilter(
+kinematicSelectedTauValDenominatorZMM = cms.EDFilter(
    "TauValGenPSelector", #"GenJetSelector"
-   src = cms.InputTag('selectElectrons'),
+   src = cms.InputTag('selectMuons'),
    cut = kinematicSelectedTauValDenominatorCut,#cms.string('pt > 5. && abs(eta) < 2.5'), #Defined: Validation.RecoTau.RecoTauValidation_cfi 
    filter = cms.bool(False)
 )
 
-produceDenominator = cms.Sequence(
-      selectElectrons
-#      +selectElectronsForGenJets
+procAttributes = dir(proc) #Takes a snapshot of what there in the process
+helpers.cloneProcessingSnippet( proc, proc.TauValNumeratorAndDenominator, 'ZMM') #clones the sequence inside the process with ZMM postfix
+helpers.cloneProcessingSnippet( proc, proc.TauEfficiencies, 'ZMM') #clones the sequence inside the process with ZMM postfix
+helpers.massSearchReplaceAnyInputTag(proc.TauValNumeratorAndDenominatorZMM, 'kinematicSelectedTauValDenominator', 'kinematicSelectedTauValDenominatorZMM') #sets the correct input tag
+
+#adds to TauValNumeratorAndDenominator modules in the sequence ZMM to the extention name
+zttLabeler = lambda module : SetValidationExtention(module, 'ZMM')
+zttModifier = ApplyFunctionToSequence(zttLabeler)
+proc.TauValNumeratorAndDenominatorZMM.visit(zttModifier)
+
+#Sets the correct naming to efficiency histograms
+proc.efficienciesZMM.plots = Utils.SetPlotSequence(proc.TauValNumeratorAndDenominatorZMM)
+
+#checks what's new in the process (the cloned sequences and modules in them)
+newProcAttributes = filter( lambda x: (x not in procAttributes) and (x.find('ZMM') != -1), dir(proc) )
+
+#spawns a local variable with the same name as the proc attribute, needed for future process.load
+for newAttr in newProcAttributes:
+    locals()[newAttr] = getattr(proc,newAttr)
+
+produceDenominatorZMM = cms.Sequence(
+      selectMuons
+      +selectStableMuons
 #      +objectTypeSelectedTauValDenominatorModule
-      +kinematicSelectedTauValDenominator
+      +kinematicSelectedTauValDenominatorZMM
       )
 
+produceDenominator = produceDenominatorZMM
+
 runTauValidationBatchMode = cms.Sequence(
-      produceDenominator
-      +TauValNumeratorAndDenominator
+      produceDenominatorZMM
+      +TauValNumeratorAndDenominatorZMM
       )
 
 runTauValidation = cms.Sequence(
       runTauValidationBatchMode
-      +TauEfficiencies
+      +TauEfficienciesZMM
       )
 
