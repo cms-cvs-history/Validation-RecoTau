@@ -15,7 +15,7 @@
 //
 // Original Author:  Ricardo Vasquez Sierra
 //         Created:  October 8, 2008
-// $Id: TauTagValidation.cc,v 1.37 2012/03/20 16:30:42 mverzett Exp $
+// $Id: TauTagValidation.cc,v 1.38 2012/04/02 10:23:15 perchall Exp $
 //
 //
 // user include files
@@ -70,6 +70,7 @@ TauTagValidation::TauTagValidation(const edm::ParameterSet& iConfig):
   
   histoSettings_= (iConfig.exists("histoSettings")) ? iConfig.getParameter<edm::ParameterSet>("histoSettings") : edm::ParameterSet();
   PrimaryVertexCollection_ = (iConfig.exists("PrimaryVertexCollection")) ? iConfig.getParameter<InputTag>("PrimaryVertexCollection") : edm::InputTag("offlinePrimaryVertices");
+  // PVToMatch_ = (iConfig.exists("PVToMatch")) ? iConfig.getParameter<InputTag>("PVToMatch") : edm::InputTag("");
   // The vector of Tau Discriminators to be monitored
   // TauProducerDiscriminators_ = iConfig.getUntrackedParameter<std::vector<string> >("TauProducerDiscriminators");
   
@@ -144,6 +145,13 @@ void TauTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& 
   Handle<VertexCollection> pvHandle;
   iEvent.getByLabel(PrimaryVertexCollection_,pvHandle);
   
+  std::vector<reco::Vertex>::const_iterator theBestVertex = pvHandle->end();
+  for( std::vector<reco::Vertex>::const_iterator vtx = pvHandle->begin(); (vtx != pvHandle->end()) && (theBestVertex == pvHandle->end()); ++vtx){
+    if( !vtx->isFake() && vtx->ndof() > 4 && abs(vtx->z()) <= 24 && vtx->position().Rho() <= 2){
+      theBestVertex = vtx;
+    }
+  }
+
   if (!isGen) {
     std::cerr << " Reference collection: " << refCollection_ << " not found while running TauTagValidation.cc " << std::endl;
     return;
@@ -222,18 +230,37 @@ void TauTagValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& 
       if( !pass ) continue;
       //printf("TauTagValidation::analyze:selectGen: values: %f, %f\n", gen_particle->pt(), gen_particle->eta());
       
+      bool matchesToVertex = true;
+      // if(PVToMatch_.label() != ""){
+// 	  Handle<VertexCollection> pvToMatchHandle;
+// 	  iEvent.getByLabel(PVToMatch_,pvToMatchHandle);
+// 	  reco::Vertex PV = pvToMatchHandle->front();   
+// 	  if( abs(thePFTau->vertex().z() - PV.z()) > 0.2 ){
+// 	    matchesToVertex = false;
+// 	  }
+//       }
       
       for ( std::vector< edm::ParameterSet >::iterator it = discriminators_.begin(); it!= discriminators_.end();  it++)
       {
         string currentDiscriminatorLabel = it->getParameter<string>("discriminator");
         iEvent.getByLabel(currentDiscriminatorLabel, currentDiscriminator);
         
-        if ((*currentDiscriminator)[thePFTau] >= it->getParameter<double>("selectionCut")){
+        if ( (*currentDiscriminator)[thePFTau] >= it->getParameter<double>("selectionCut") && theBestVertex != pvHandle->end() && abs(thePFTau->vertex().z() - theBestVertex->z()) < 0.2){
           ptTauVisibleMap.find(  currentDiscriminatorLabel )->second->Fill(RefJet->pt());
           etaTauVisibleMap.find(  currentDiscriminatorLabel )->second->Fill(RefJet->eta());
           phiTauVisibleMap.find(  currentDiscriminatorLabel )->second->Fill(RefJet->phi()*180.0/TMath::Pi());
           pileupTauVisibleMap.find(  currentDiscriminatorLabel )->second->Fill(pvHandle->size());
           
+
+	  if ( currentDiscriminatorLabel.find("hps") != string::npos){
+	    //Disciminators rate vs. decay mode
+	    std::string plotName = "_vs_DecayMode";
+	    std::string xaxisLabel = ";Decay mode output code";
+	    std::string yaxislabel = ";Frequency";
+	    element = plotMap_.find( currentDiscriminatorLabel + plotName );
+	    if( element != plotMap_.end() ) element->second->Fill( (int) thePFTau->decayMode() );	
+	  }
+
 	  //fill the DeltaR plots
 	  /*if(thePFTau->jetRef().isAvailable() && thePFTau->jetRef().isNonnull())
 	    plotMap_.find( currentDiscriminatorLabel + "_dRTauRefJet")->second->Fill( algo_->deltaR(thePFTau.get(), thePFTau->jetRef().get() ) );*/
@@ -326,10 +353,10 @@ void TauTagValidation::beginJob() {
     dbeTau_->setCurrentFolder("RecoTauV/" + TauProducer_ + extensionName_ + "_ReferenceCollection" );
     
     //Histograms settings
-    hinfo ptHinfo = (histoSettings_.exists("pt")) ? hinfo(histoSettings_.getParameter<edm::ParameterSet>("pt")) : hinfo(75, 0., 150.);
+    hinfo ptHinfo = (histoSettings_.exists("pt")) ? hinfo(histoSettings_.getParameter<edm::ParameterSet>("pt")) : hinfo(75*2, 0., 150.*2);
     hinfo etaHinfo = (histoSettings_.exists("eta")) ? hinfo(histoSettings_.getParameter<edm::ParameterSet>("eta")) : hinfo(60, -3.0, 3.0);
     hinfo phiHinfo = (histoSettings_.exists("phi")) ? hinfo(histoSettings_.getParameter<edm::ParameterSet>("phi")) : hinfo(36, -180., 180.);
-    hinfo pileupHinfo = (histoSettings_.exists("pileup")) ? hinfo(histoSettings_.getParameter<edm::ParameterSet>("pileup")) : hinfo(25, 0., 25.0);
+    hinfo pileupHinfo = (histoSettings_.exists("pileup")) ? hinfo(histoSettings_.getParameter<edm::ParameterSet>("pileup")) : hinfo(50, 0., 50.0);
     //hinfo dRHinfo = (histoSettings_.exists("deltaR")) ? hinfo(histoSettings_.getParameter<edm::ParameterSet>("deltaR")) : hinfo(10, 0., 0.5);
 
     // What kind of Taus do we originally have!
@@ -378,7 +405,15 @@ void TauTagValidation::beginJob() {
       phiTauVisibleMap.insert( std::make_pair(DiscriminatorLabel,phiTemp));
       pileupTauVisibleMap.insert( std::make_pair(DiscriminatorLabel,pileupTemp));
 
-
+      if ( DiscriminatorLabel.find("hps") != string::npos){
+	//Disciminators rate vs. decay mode
+	std::string plotName = "_vs_DecayMode";
+	std::string xaxisLabel = ";Decay mode output code";
+	std::string yaxislabel = ";Frequency";
+	tmpME = dbeTau_->book1D(DiscriminatorLabel + plotName, histogramName + plotName + xaxisLabel + yaxislabel, 16, 0., 16.);
+	plotMap_.insert( std::make_pair( DiscriminatorLabel + plotName, tmpME ) );
+	
+      }
       /*/DR between tau and refJet
       tmpME =  dbeTau_->book1D(DiscriminatorLabel + "_dRTauRefJet", histogramName +"_dRTauRefJet;#DeltaR(#tau,refJet);Frequency", dRHinfo.nbins, dRHinfo.min, dRHinfo.max);
       plotMap_.insert( std::make_pair(DiscriminatorLabel + "_dRTauRefJet",tmpME));*/
