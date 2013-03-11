@@ -130,6 +130,8 @@ for entry in getattr(process, 'RunHPSValidation%s%s'%(dataType, postfix)).discri
    entry.discriminator = entry.discriminator.value() + postfix
 getattr(process,'efficiencies%s%s'%(dataType,postfix) ).plots = Utils.SetPlotSequence(getattr(process,'TauValNumeratorAndDenominator%s%s'%(dataType,postfix) ))
 effAnalyzer = getattr(process,'efficiencies%s%s'%(dataType,postfix) )
+print 'IOOOOOOOOOOOOOOOOO'
+print effAnalyzer
 for plotpset in effAnalyzer.plots.parameterNames_():
    num = getattr(effAnalyzer.plots,plotpset).numerator.value()
    den = getattr(effAnalyzer.plots,plotpset).denominator.value()
@@ -140,14 +142,14 @@ for plotpset in effAnalyzer.plots.parameterNames_():
 process.makeEff += getattr(process,'efficiencies%s%s'%(dataType,postfix) )
 
 
-process.loadFile   = cms.EDAnalyzer("DQMFileLoader",
+process.loadFile   = cms.EDAnalyzer("TauDQMFileLoader",
       myFiles = cms.PSet(
          inputFileNames = cms.vstring(OutputFile),
          scaleFactor = cms.double(1.),
          )
 )
 
-process.saveTauEff = cms.EDAnalyzer("DQMSimpleFileSaver",
+process.saveTauEff = cms.EDAnalyzer("TauDQMSimpleFileSaver",
 #  outputFileName = cms.string(OutputFile.replace('.root', '_Eff.root'))
   outputFileName = cms.string(OutputFile)
 )
