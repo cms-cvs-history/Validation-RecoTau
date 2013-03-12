@@ -171,7 +171,7 @@ runTauEffSingleMu =  cms.Sequence(
     )       
 
 runTauEffJet = TauEfficienciesRealData
-runTauEffMutiJet = runTauEffJet
+runTauEffMutiJet = cms.Sequence(runTauEffJet)
 
 runTauEffDoubleElectron = produceDenominatorRealElectronsData
 runTauEffTauPlusX = runTauEffDoubleElectron
