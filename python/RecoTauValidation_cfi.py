@@ -118,7 +118,10 @@ proc.templateAnalyzer = cms.EDAnalyzer(
    ExtensionName           = cms.string(""),
    TauProducer             = cms.InputTag(''),
    discriminators          = cms.VPSet(
-   )
+   ),
+   histoSettings = cms.PSet(
+       pt = cms.PSet( nbins = cms.int32(200), min = cms.double(0.), max = cms.double(800.) ), #hinfo(75, 0., 150.)
+       )
 )
 
 proc.RunHPSValidation = proc.templateAnalyzer.clone()
